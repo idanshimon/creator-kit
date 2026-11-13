@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "title": "Agentic FinOps & Cloud Reliability",
+  "subtitle": "One workload map. Connected cost drift, SLO evidence and human approvals. Synthetic estate.",
+  "badge": "v3",
+  "banner": "Synthetic telemetry only",
+  "entity_noun": "workloads",
+  "default_scope": "all",
+  "default_theme": "dark",
+  "tick": 84210,
+  "pending_reviews": 1,
+  "active_entity": "WKL-014",
+  "selected_entity": "WKL-014",
+  "awaiting_approval": true,
+  "agent": {
+    "model": "gpt-5.4-mini",
+    "beats": [
+      "Change",
+      "Notice",
+      "Decide",
+      "Approve",
+      "Act",
+      "Adapt",
+      "Prove"
+    ],
+    "gate_beat": 4,
+    "active_beat": 4,
+    "status_line": "Watching 12 workloads; WKL-014 paused at Beat 4 (Approve)"
+  },
+  "persona": {
+    "role": "Principal FinOps & SRE Lead — Core Platform",
+    "question": "Which production workload is burning budget or SLO margin right now, and is the right-sizing safe?",
+    "context": "Morning fleet review · measure: minutes from anomaly band crossing to operator approval",
+    "metric": "Crossing → acknowledgement: 4.2 min (target < 15m)",
+    "scope_label": "production fleet"
+  },
+  "sectors": [
+    {
+      "id": "inference",
+      "label": "AI Inference",
+      "faults": 1
+    },
+    {
+      "id": "data-plane",
+      "label": "Data Plane",
+      "faults": 1
+    },
+    {
+      "id": "edge-api",
+      "label": "Edge API",
+      "faults": 0
+    }
+  ],
+  "entities": [
+    {
+      "id": "WKL-014",
+      "label": "Hydra Embeddings Pool",
+      "sector": "inference",
+      "stage": "critical",
+      "score": 88.4,
+      "summary": "GPU idle reservation climbed to 64% while p99 latency shifted +42ms after batch-size config drift.",
+      "draft": "Shift 4 idle A100 nodes to spot-fallback pool and restore micro-batch window to 32ms (saves $1,420/day).",
+      "metrics": {
+        "BURN": "$412/hr",
+        "GPU UTIL": "36%",
+        "P99 LAT": "184ms",
+        "ERR RATE": "0.02%"
+      },
+      "watchers": [
+        {
+          "key": "gpu_idle",
+          "short": "IDLE",
+          "kind": "rule",
+          "name": "GPU Idle Rule",
+          "status": "alert",
+          "value": "64%",
+          "line": "64% idle > 45% threshold → +34.0 pts",
+          "weight": 0.85
+        },
+        {
+          "key": "cost_vel",
+          "short": "BURN",
+          "kind": "rule",
+          "name": "Spend Velocity",
+          "status": "alert",
+          "value": "+38%",
+          "line": "+38% hourly burn vs 7d baseline → +28.4 pts",
+          "weight": 0.7
+        },
+        {
+          "key": "slo_p99",
+          "short": "SLO",
+          "kind": "rule",
+          "name": "Latency Guard",
+          "status": "watching",
+          "value": "184ms",
+          "line": "Within 220ms ceiling; safe to compact nodes",
+          "weight": 0.45
+        },
+        {
+          "key": "planner",
+          "short": "AI",
+          "kind": "model",
+          "name": "FinOps Triage Model",
+          "status": "done",
+          "value": "drafted",
+          "line": "gpt-5.4-mini prepared scale-down plan",
+          "weight": 0.65
+        },
+        {
+          "key": "gate",
+          "short": "HUMAN",
+          "kind": "human",
+          "name": "SRE Approval Gate",
+          "status": "waiting",
+          "value": "pending",
+          "line": "Awaiting Principal SRE sign-off before Terraform apply",
+          "weight": 0.9
+        },
+        {
+          "key": "eval",
+          "short": "EVAL",
+          "kind": "system",
+          "name": "SLO Safety Gate",
+          "status": "watching",
+          "value": "0.94",
+          "line": "Replay suite score 0.94 >= 0.85 operating point",
+          "weight": 0.4
+        }
+      ],
+      "detail": {
+        "title": "Hydra Embeddings Pool",
+        "why_you": "The agent's proposed change exceeds the auto-approve limit for this workload, so a person must approve it. (Synthetic example.)",
+        "decision": {
+          "question": "Apply the agent's proposed change to this workload now?",
+          "options": [
+            {
+              "label": "Approve",
+              "effect": "The agent applies the change and verifies it in the next cycle.",
+              "recommended": true
+            },
+            {
+              "label": "Reject",
+              "effect": "Nothing changes; the item stays critical and is re-checked next cycle."
+            }
+          ],
+          "how": "In a real deployment each option links to the ticket or approval system."
+        },
+        "sections": [
+          {
+            "title": "What the agent found",
+            "text": "GPU idle reservation climbed to 64% while p99 latency shifted +42ms after batch-size config drift."
+          }
+        ],
+        "timeline": [
+          {
+            "t": "T-30m",
+            "text": "Threshold crossed"
+          },
+          {
+            "t": "T-12m",
+            "text": "Agent drafted a change"
+          }
+        ]
+      }
+    },
+    {
+      "id": "WKL-009",
+      "label": "Realtime Voice Gateway",
+      "sector": "inference",
+      "stage": "concerning",
+      "score": 64.0,
+      "summary": "Concurrent WebSocket sessions up 28%; token cache hit ratio dipped below 70%.",
+      "metrics": {
+        "BURN": "$195/hr",
+        "CACHE": "66%",
+        "P99 LAT": "112ms",
+        "SESSIONS": "1,420"
+      },
+      "watchers": [
+        {
+          "key": "cache",
+          "short": "CACHE",
+          "kind": "rule",
+          "name": "Prompt Cache Rule",
+          "status": "alert",
+          "value": "66%",
+          "line": "Below 75% target",
+          "weight": 0.6
+        },
+        {
+          "key": "gate",
+          "short": "HUMAN",
+          "kind": "human",
+          "name": "SRE Approval Gate",
+          "status": "idle",
+          "value": "idle",
+          "line": "No pending action",
+          "weight": 0.3
+        }
+      ]
+    },
+    {
+      "id": "WKL-021",
+      "label": "Claims Feature Store",
+      "sector": "data-plane",
+      "stage": "concerning",
+      "score": 59.5,
+      "summary": "Cross-region egress spike on hourly parquet compaction.",
+      "metrics": {
+        "BURN": "$148/hr",
+        "EGRESS": "1.8 TB",
+        "LAG": "14s",
+        "PARTITIONS": "64"
+      },
+      "watchers": [
+        {
+          "key": "egress",
+          "short": "EGRESS",
+          "kind": "rule",
+          "name": "Egress Guard",
+          "status": "alert",
+          "value": "1.8TB",
+          "line": "Cross-AZ transfer elevated",
+          "weight": 0.7
+        }
+      ]
+    },
+    {
+      "id": "WKL-003",
+      "label": "Vector Index Shard B",
+      "sector": "data-plane",
+      "stage": "at-risk",
+      "score": 44.2,
+      "summary": "HNSW memory pressure at 78%.",
+      "metrics": {
+        "BURN": "$88/hr",
+        "MEM": "78%",
+        "QPS": "3,100",
+        "P99 LAT": "29ms"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-007",
+      "label": "Telemetry Ingest Bus",
+      "sector": "data-plane",
+      "stage": "at-risk",
+      "score": 39.0,
+      "summary": "Consumer group lag 6s during burst.",
+      "metrics": {
+        "BURN": "$64/hr",
+        "LAG": "6s",
+        "THROUGHPUT": "85 MB/s",
+        "ERR": "0%"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-012",
+      "label": "Model Router Core",
+      "sector": "inference",
+      "stage": "at-risk",
+      "score": 41.8,
+      "summary": "Tier-2 cascade escalation rate at 19%.",
+      "metrics": {
+        "BURN": "$110/hr",
+        "ESC RATE": "19%",
+        "P99 LAT": "95ms",
+        "AVAIL": "99.98%"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-018",
+      "label": "FHIR Cohort Sync",
+      "sector": "data-plane",
+      "stage": "stable",
+      "score": 16.5,
+      "summary": "Nominal incremental delta sync.",
+      "metrics": {
+        "BURN": "$32/hr",
+        "LAG": "1.1s",
+        "ROWS/S": "12.4k",
+        "ERR": "0%"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-025",
+      "label": "Public Edge CDN",
+      "sector": "edge-api",
+      "stage": "stable",
+      "score": 12.0,
+      "summary": "94% edge cache hit ratio.",
+      "metrics": {
+        "BURN": "$28/hr",
+        "HIT": "94%",
+        "P99 LAT": "18ms",
+        "RPS": "18.2k"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-029",
+      "label": "Auth Token Broker",
+      "sector": "edge-api",
+      "stage": "at-risk",
+      "score": 35.4,
+      "summary": "JWKS refresh retry spikes on US-East.",
+      "metrics": {
+        "BURN": "$41/hr",
+        "P99 LAT": "44ms",
+        "RETRIES": "1.2%",
+        "RPS": "6.4k"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-031",
+      "label": "Audit Ledger Writer",
+      "sector": "data-plane",
+      "stage": "stable",
+      "score": 14.2,
+      "summary": "Append-only ledger healthy.",
+      "metrics": {
+        "BURN": "$19/hr",
+        "LAG": "0.4s",
+        "IOPS": "2,200",
+        "ERR": "0%"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-034",
+      "label": "Vision OCR Workers",
+      "sector": "inference",
+      "stage": "stable",
+      "score": 21.0,
+      "summary": "Queue depth < 4 documents.",
+      "metrics": {
+        "BURN": "$54/hr",
+        "QUEUE": "3",
+        "GPU UTIL": "74%",
+        "P99 LAT": "310ms"
+      },
+      "watchers": []
+    },
+    {
+      "id": "WKL-039",
+      "label": "Partner Webhook Relay",
+      "sector": "edge-api",
+      "stage": "stable",
+      "score": 18.6,
+      "summary": "All downstream endpoints green.",
+      "metrics": {
+        "BURN": "$22/hr",
+        "DELIVERY": "99.96%",
+        "P99 LAT": "62ms",
+        "RPS": "1.9k"
+      },
+      "watchers": []
+    }
+  ]
+}

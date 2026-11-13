@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "description": "Local open-weight TTS models for `creator.py narrate --engine qwen3|chatterbox`. Weights live in ignored local/models/hf (HF_HOME). A missing model is downloaded on first use at the pinned revision unless --offline; `creator.py voices fetch` bootstraps ahead of time.",
+  "runtime": {
+    "venv": "local/voice-venv",
+    "python": "3.12",
+    "packages": {
+      "mlx-audio": "0.6.4",
+      "mlx": "0.32.4",
+      "soundfile": "0.14.0",
+      "huggingface-hub": "2.4.0"
+    },
+    "hf_home": "local/models/hf",
+    "platform": "Apple Silicon (MLX)"
+  },
+  "models": {
+    "qwen3-stock": {
+      "engine": "qwen3",
+      "mode": "stock",
+      "repo": "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-bf16",
+      "revision": "52f4770fd9726457eae3d3b6aa92047a25a10776",
+      "upstream": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "license": "apache-2.0",
+      "size_gb": 4.52,
+      "languages": [
+        "en",
+        "zh",
+        "ja",
+        "ko",
+        "de",
+        "fr",
+        "ru",
+        "pt",
+        "es",
+        "it"
+      ],
+      "voices": {
+        "Ryan": "English male (native English speaker)",
+        "Aiden": "English male (native English speaker)",
+        "Vivian": "Chinese-native female",
+        "Serena": "Chinese-native female",
+        "Uncle_Fu": "Chinese-native older male",
+        "Dylan": "Beijing dialect male",
+        "Eric": "Sichuan dialect male"
+      },
+      "default_voice": "Ryan",
+      "supports_instruct": true,
+      "verified_languages": [
+        "en"
+      ]
+    },
+    "qwen3-clone": {
+      "engine": "qwen3",
+      "mode": "clone",
+      "repo": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16",
+      "revision": "a6eb4f68e4b056f1215157bb696209bc82a6db48",
+      "upstream": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+      "license": "apache-2.0",
+      "size_gb": 4.54,
+      "languages": [
+        "en",
+        "zh",
+        "ja",
+        "ko",
+        "de",
+        "fr",
+        "ru",
+        "pt",
+        "es",
+        "it"
+      ],
+      "needs": [
+        "ref_audio",
+        "ref_text"
+      ],
+      "verified_languages": [
+        "en"
+      ]
+    },
+    "chatterbox": {
+      "engine": "chatterbox",
+      "mode": "stock+clone",
+      "repo": "mlx-community/chatterbox-multilingual-v3",
+      "revision": "03565773edd72e949572557597af8063bb49a18a",
+      "upstream": "ResembleAI/chatterbox (Multilingual V3)",
+      "license": "mit",
+      "size_gb": 2.71,
+      "languages": [
+        "ar",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "fi",
+        "fr",
+        "he",
+        "hi",
+        "it",
+        "ja",
+        "ko",
+        "ms",
+        "nl",
+        "no",
+        "pl",
+        "pt",
+        "ru",
+        "sv",
+        "sw",
+        "tr",
+        "zh"
+      ],
+      "voices": {
+        "default": "Chatterbox built-in reference speaker (used for every language)"
+      },
+      "default_voice": "default",
+      "extra_repos": {
+        "mlx-community/S3TokenizerV2": "e0c9886f0e1c35ae85b1f27277416fb19fc72bec"
+      },
+      "overlay_files": {
+        "conds.safetensors": {
+          "repo": "mlx-community/chatterbox-fp16",
+          "revision": "4923fcca09086356aeab5191a2348c5a17a23694",
+          "why": "Multilingual V3 ships no default voice; this is Chatterbox's own built-in reference speaker"
+        }
+      },
+      "blocked_languages": {
+        "he": "Tested 2026-11-12 with mlx-audio 0.6.4: built-in and cloned voices, cfg_weight 0/0.5, produce unintelligible Hebrew (Whisper read-back). Re-test before enabling."
+      },
+      "verified_languages": [
+        "en"
+      ]
+    }
+  }
+}

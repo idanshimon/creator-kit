@@ -1,0 +1,51 @@
+{
+  "title": "SYNTHETIC: a workshop's changing rhythm",
+  "introduction": "Every number in this story is invented for software demonstration. These are not CMS numbers, real organizations, measured outcomes or evidence of an intervention's impact. Three small figures show how to read a snapshot without losing its provenance.",
+  "figures": [
+    {
+      "id": "completed",
+      "title": "More items reached the finish line",
+      "question": "How did the invented completion count change between the supplied windows?",
+      "interpretation": "In this fictional workshop, a reader might investigate capacity or demand. The completion count alone cannot identify the cause of the change.",
+      "unit": "items",
+      "kind": "scalar",
+      "source": {"url": "https://example.org/synthetic-workshop/completions", "label": "SYNTHETIC example fixture; no real source dataset"},
+      "extract": {"id": "SYNTHETIC-workshop-v1", "time": "2026-10-01T12:00:00Z", "mode": "local"},
+      "points": [
+        {"period": "Invented window A: 2025-01-01 through 2025-03-31", "value": 12},
+        {"period": "Invented window B: 2025-04-01 through 2025-06-30", "value": 15},
+        {"period": "Invented window C: 2025-10-01 through 2025-12-31 (gap preserved)", "value": 18}
+      ]
+    },
+    {
+      "id": "pooled-load",
+      "title": "Pooling changes the comparison",
+      "question": "What is the ratio of total observed effort to total predicted effort across two fictional benches?",
+      "interpretation": "A pooled ratio weights the contribution of each predicted denominator. It is not the average of bench-level ratios, and does not establish whether the prediction model is appropriate.",
+      "unit": "observed / predicted",
+      "kind": "pooled_ratio",
+      "source": {"url": "https://example.org/synthetic-workshop/effort", "label": "SYNTHETIC bench totals, deliberately unequal denominators"},
+      "extract": {"id": "SYNTHETIC-workshop-v1", "time": "2026-10-01T12:00:00Z", "mode": "local"},
+      "points": [
+        {"period": "Invented overlapping window: 2025-01-01 through 2025-06-30", "observed": [1, 9], "predicted": [2, 3]},
+        {"period": "Invented overlapping window: 2025-04-01 through 2025-09-30", "observed": [3, 5], "predicted": [4, 6]},
+        {"period": "Invented final window: 2025-10-01 through 2025-12-31", "observed": [1, 2], "predicted": [2, 2]}
+      ]
+    },
+    {
+      "id": "backlog",
+      "title": "The queue tells a different part of the story",
+      "question": "What remained unfinished at the end of each invented window?",
+      "interpretation": "Review the queue alongside completions before proposing a next step. These synthetic data do not include arrivals, priority, quality, staffing or work-item complexity.",
+      "unit": "items waiting",
+      "kind": "scalar",
+      "source": {"url": "https://example.org/synthetic-workshop/backlog", "label": "SYNTHETIC queue fixture; software demonstration only"},
+      "extract": {"id": "SYNTHETIC-workshop-v1", "time": "2026-10-01T12:00:00Z", "mode": "local"},
+      "points": [
+        {"period": "Invented snapshot: 2025-03-31", "value": 8},
+        {"period": "Invented snapshot: 2025-06-30", "value": 11},
+        {"period": "Invented snapshot: 2025-12-31", "value": 7}
+      ]
+    }
+  ]
+}

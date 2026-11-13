@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Creator Kit / interactive explainers",
+    "subtitle": "Author the facts. Validate the structure. Deliver an explorable diagram.",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "views": [
+      {"id": "author", "label": "1. Author", "focus": ["source", "creator"], "note": "Write typed JSON grounded in the real system. Choose architecture, workflow, sequence, dataflow or lifecycle."},
+      {"id": "validate", "label": "2. Validate", "focus": ["creator", "archify"], "note": "Creator verifies the pinned package, rejects remote brand capture, disables update checks and runs Archify delivery checks."},
+      {"id": "deliver", "label": "3. Explore", "focus": ["archify", "html"], "note": "Open the new standalone HTML. Select components, trace relationships and use the guided views. Visual review is still required."}
+    ]
+  },
+  "components": [
+    {"id": "source", "type": "external", "label": "Diagram JSON", "sublabel": "Grounded source + views", "pos": [40, 160], "size": [200, 90]},
+    {"id": "creator", "type": "backend", "label": "Creator CLI", "sublabel": "diagram validate / render", "pos": [370, 160], "size": [220, 90]},
+    {"id": "archify", "type": "backend", "label": "Archify 2.16.0", "sublabel": "Pinned local renderer", "pos": [720, 160], "size": [220, 90]},
+    {"id": "html", "type": "frontend", "label": "Interactive HTML", "sublabel": "Explore, trace and present", "pos": [1070, 160], "size": [220, 90]}
+  ],
+  "connections": [
+    {"id": "read", "from": "source", "to": "creator", "label": "local input"},
+    {"id": "check", "from": "creator", "to": "archify", "label": "deliver + check"},
+    {"id": "publish", "from": "archify", "to": "html", "label": "new file only"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Grounded, not inferred", "items": ["JSON describes the authored system; no automatic code analysis.", "Reference: creator.py and creator_tools/diagrams.py."]},
+    {"dot": "emerald", "title": "Local generation", "items": ["No API key or cloud inference needed.", "The HTML viewer may fetch Google Fonts when opened."]},
+    {"dot": "rose", "title": "Separate from video", "items": ["This artifact is interactive HTML, not an MP4.", "HyperFrames and the Studio timeline remain separate workflows."]}
+  ]
+}

@@ -1,0 +1,227 @@
+<!doctype html><html><head><meta charset="utf-8"><title>prompt-crawler</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05050a;--ln:#1d1d29;--tx:#d8d2c2;--dim:#5f5c6b;--gold:#f0b94a;--cyan:#38e1cf;--pink:#ff4f9a;--vio:#9a7bff}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:#05050a;color:var(--tx);font:11px "JetBrains Mono",ui-monospace,Menlo,monospace;display:grid;grid-template-rows:38px 1fr 236px;overflow:hidden}
+header{display:flex;gap:22px;align-items:center;padding:0 16px;border-bottom:1px solid var(--ln);background:#05050a;z-index:2}
+header b{color:var(--gold);letter-spacing:.08em}header .m{color:var(--dim)}header .m i{color:var(--tx);font-style:normal}
+.tabs{margin-left:auto;display:flex;gap:4px}.tab{color:var(--dim);cursor:pointer;padding:5px 12px;border:1px solid #2a2a36;border-radius:2px;text-transform:uppercase;font-size:10px;letter-spacing:.14em}
+.tab:hover{color:var(--tx)}.tab.on{color:#000;background:var(--gold)}
+#g{position:relative;overflow:hidden}canvas{display:block}
+#tip{position:absolute;max-width:440px;background:#07070dee;border:1px solid #f0b94a55;border-left:2px solid var(--gold);padding:10px 12px;pointer-events:none;display:none;line-height:1.5;box-shadow:0 0 30px #000}
+#tip .k{font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+#hud{position:absolute;left:16px;top:14px;line-height:1.5;pointer-events:none}
+#hud .n{font-size:24px;font-weight:300}#hud .l{font-size:9px;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+#legend{position:absolute;right:16px;top:14px;line-height:1.9;text-align:right;pointer-events:none;letter-spacing:.1em}
+#legend span{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:7px;box-shadow:0 0 8px currentColor}
+.row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr .8fr;gap:1px;background:var(--ln);border-top:1px solid var(--ln);z-index:2}
+.p{background:#08080e;padding:10px 12px;overflow:hidden}
+.p h4{margin:0 0 8px;font-size:9px;font-weight:400;letter-spacing:.2em;color:var(--dim);display:flex;justify-content:space-between}
+.p h4 em{font-style:normal;color:var(--gold)}
+#log{font-size:10.5px;line-height:1.6;height:192px;overflow:hidden}
+#log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.4}#log div:last-child{opacity:1}
+#log .r{display:inline-block;width:46px}
+.big{font-size:64px;font-weight:300;text-align:center;line-height:1;margin-top:10px;text-shadow:0 0 24px #f0b94a44}
+.sub{text-align:center;color:var(--dim);font-size:9px;letter-spacing:.16em;margin:4px 0 10px}
+.bar{height:3px;background:#1a1a24;margin:3px 0 7px}.bar i{display:block;height:100%}
+#heat span{display:inline-block;margin:2px;padding:2px 5px;border-radius:1px;font-size:10px}
+</style></head><body>
+<header><b>◉ PROMPT-CRAWLER</b><span class="m" id="meta"></span><div class="tabs" id="tabs"></div></header>
+<div id="g"><canvas id="c"></canvas><div id="hud"></div><div id="legend"></div><div id="tip"></div></div>
+<div class="row">
+ <div class="p"><h4>CRAWL LOG<em id="prog"></em></h4><div id="log"></div></div>
+ <div class="p"><h4>SECTIONS · ROUTE MIX<em id="secn"></em></h4><svg id="sec" width="100%" height="192"></svg></div>
+ <div class="p"><h4>COVERAGE RADAR</h4><svg id="rad" width="100%" height="192"></svg></div>
+ <div class="p"><h4>WORD HEAT</h4><div id="heat"></div></div>
+ <div class="p"><h4>SPEC SCORE</h4><div class="big" id="score">0</div><div class="sub" id="grade">OF 100</div><div id="routes"></div></div>
+</div>
+<script>
+const COL={code:"#38e1cf",model:"#f0b94a",human:"#ff4f9a"},KIND={rule:"#38e1cf",approval:"#ff4f9a",ambiguous:"#9a7bff",sourced:"#f0b94a",info:"#8a8698"};
+const rgba=(h,a)=>{const n=parseInt(h.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`};
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const SRC=typeof DATA!=="undefined"?Promise.resolve(DATA):d3.json(location.hash.slice(1)||"crawl.json");
+SRC.then(D=>{
+const strip=s=>s.replace(/^#+\s*/,"");
+d3.select("#meta").html(`<i>${D.file.split("/").slice(-2).join("/")}</i> · ${D.word_count} words · ${D.decisions} decisions · avg p <i>${D.avg_confidence}</i> · <span style="color:var(--cyan)">${D.method||""}</span>`);
+d3.select("#legend").html(Object.entries(COL).map(([k,v])=>`${k.toUpperCase()} <i style="color:var(--tx);font-style:normal">${D.routes[k]||0}</i><span style="color:${v};background:${v}"></span>`).join("<br>"));
+
+// ---------- graph ----------
+const host=document.getElementById("g"),cv=document.getElementById("c"),ctx=cv.getContext("2d"),DPR=Math.min(2,devicePixelRatio||1);
+let W,H;function size(){W=host.clientWidth;H=host.clientHeight;cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+"px";cv.style.height=H+"px"}size();
+const M=()=>Math.min(W,H);
+const used=D.sections.filter(s=>s.n);
+const secs=used.map((s,i)=>({id:"s"+i,raw:s.name,name:strip(s.name),hub:1,n:s.n,lit:0}));
+const sid=Object.fromEntries(secs.map(s=>[s.raw,s.id]));
+const root={id:"root",hub:2,fx:W/2,fy:H/2,x:W/2,y:H/2};
+const leaves=D.nodes.map(n=>({...n,id:"n"+n.id,idx:n.id,lit:0,bloom:0}));
+const nodes=[root,...secs,...leaves];
+const links=[...secs.map(s=>({source:"root",target:s.id,h:1,lit:0})),...leaves.map(n=>({source:sid[n.section],target:n.id,lit:0,bend:(Math.random()-.5)*.5}))];
+secs.forEach((s,i)=>{const a=i/secs.length*Math.PI*2;s.x=W/2+Math.cos(a)*M()*.34;s.y=H/2+Math.sin(a)*M()*.34});
+leaves.forEach(l=>{const s=secs.find(s=>s.raw===l.section);l.x=s.x+(Math.random()-.5)*40;l.y=s.y+(Math.random()-.5)*40});
+const sim=d3.forceSimulation(nodes)
+ .force("link",d3.forceLink(links).id(d=>d.id).distance(d=>d.h?M()*.34:22+Math.random()*34).strength(d=>d.h?.9:.5))
+ .force("charge",d3.forceManyBody().strength(d=>d.hub?-1200:-24).distanceMax(420))
+ .force("radial",d3.forceRadial(d=>d.hub==1?M()*.34:0,W/2,H/2).strength(d=>d.hub==1?.3:0))
+ .force("x",d3.forceX(W/2).strength(d=>d.hub?0:.012)).force("y",d3.forceY(H/2).strength(d=>d.hub?0:.02))
+ .force("col",d3.forceCollide(d=>d.hub==1?34:d.hub?50:4.5)).alphaDecay(.018);
+const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+
+// background nebula + stars, painted once
+const bg=document.createElement("canvas");function paintBg(){bg.width=W*DPR;bg.height=H*DPR;const b=bg.getContext("2d");b.scale(DPR,DPR);b.fillStyle="#05050a";b.fillRect(0,0,W,H);
+ [["#3b1d6e",.28,.3,.5],["#0d4a5a",.78,.62,.42],["#5c1d3f",.18,.82,.32],["#2a1a50",.62,.15,.3]].forEach(([c,x,y,r])=>{const g=b.createRadialGradient(W*x,H*y,0,W*x,H*y,Math.max(W,H)*r);g.addColorStop(0,rgba(c,.32));g.addColorStop(1,rgba(c,0));b.fillStyle=g;b.fillRect(0,0,W,H)});
+ for(let i=0;i<420;i++){const r=Math.random()**2;b.fillStyle=`rgba(${220+Math.random()*35|0},${210+Math.random()*45|0},255,${.08+r*.6})`;b.beginPath();b.arc(Math.random()*W,Math.random()*H,.3+r*1.1,0,7);b.fill()}}paintBg();
+
+// ---------- view state ----------
+let T=d3.zoomIdentity,filter="all",hover=null,t0=performance.now();
+d3.select(cv).call(d3.zoom().scaleExtent([.3,8]).on("zoom",e=>T=e.transform));
+d3.select("#tabs").selectAll("div").data(["all","code","model","human"]).join("div").attr("class",(d,i)=>"tab"+(i?"":" on")).text(d=>d)
+ .on("click",(e,f)=>{filter=f;d3.selectAll(".tab").classed("on",d=>d==f)});
+const vis=d=>filter=="all"||d.route==filter;
+
+// ---------- curve helpers ----------
+function ctrl(a,b,bend){const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y;return[mx-dy*bend,my+dx*bend]}
+function bez(a,c,b,t){const u=1-t;return[u*u*a.x+2*u*t*c[0]+t*t*b.x,u*u*a.y+2*u*t*c[1]+t*t*b.y]}
+// tapered ribbon arm: wide at the source, needle-thin at the tip
+function arm(a,b,bend,w0,w1,fill,N=16){const c=ctrl(a,b,bend),L=[],R=[];
+ for(let i=0;i<=N;i++){const t=i/N,[x,y]=bez(a,c,b,t),tx=2*(1-t)*(c[0]-a.x)+2*t*(b.x-c[0]),ty=2*(1-t)*(c[1]-a.y)+2*t*(b.y-c[1]),len=Math.hypot(tx,ty)||1,w=(w0+(w1-w0)*Math.pow(t,.7))/2;L.push([x-ty/len*w,y+tx/len*w]);R.push([x+ty/len*w,y-tx/len*w])}
+ ctx.beginPath();ctx.moveTo(L[0][0],L[0][1]);for(const p of L)ctx.lineTo(p[0],p[1]);for(let i=R.length-1;i>=0;i--)ctx.lineTo(R[i][0],R[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();return c}
+
+// ---------- spider: hub -> section -> leaf, in crawl order ----------
+const order=leaves.slice().sort((a,b)=>a.idx-b.idx);
+const sp={x:W/2,y:H/2,ang:0,step:0,k:0,path:null,trail:[],pause:0};
+function planNext(){if(sp.step>=order.length){sp.path=null;return}
+ const leaf=order[sp.step],sec=byId[sid[leaf.section]];
+ sp.path=[{x:sp.x,y:sp.y},sec,leaf];sp.k=0;sp.leaf=leaf;sp.sec=sec}
+const Q=new URLSearchParams(location.search),SPEED=+Q.get("speed")||1;
+const logEl=d3.select("#log"),logLines=[];
+function crawled(leaf){leaf.lit=1;leaf.bloom=1;sp.sec.lit=1;links.forEach(l=>{if(l.target===leaf||(l.h&&l.target===sp.sec))l.lit=1});
+ logLines.push(leaf);if(logLines.length>12)logLines.shift();
+ logEl.selectAll("div").data(logLines,d=>d.id).join("div").html(d=>`${d.escalated?'<span style="color:#b69cff">⇪ </span>':''}<span class="r" style="color:${COL[d.route]}">${d.route}</span><span style="color:${KIND[d.kind]}">${d.kind.padEnd(9," ")}</span> <span style="color:var(--dim)">p=${d.p.toFixed(2)}</span> ${esc(d.text)}`);
+ d3.select("#prog").text(`${sp.step+1}/${order.length}`)}
+// ?seek=N pre-crawls N decisions so a still frame shows a lit web (screenshots / video)
+for(let i=0,n=Math.min(+Q.get("seek")||0,order.length);i<n;i++){sp.leaf=order[i];sp.sec=byId[sid[sp.leaf.section]];crawled(sp.leaf);sp.leaf.bloom=0;sp.step++}
+planNext();
+if(+Q.get("seek")){sim.tick(300);const l=order[Math.max(0,sp.step-1)],s=byId[sid[l.section]];sp.x=(s.x+l.x)/2;sp.y=(s.y+l.y)/2;sp.ang=Math.atan2(l.y-s.y,l.x-s.x)}
+
+function drawSpider(x,y,ang,t,moving){ctx.save();ctx.translate(x,y);{const h=ctx.createRadialGradient(0,0,0,0,0,46);h.addColorStop(0,"rgba(5,5,10,.85)");h.addColorStop(.45,rgba("#f0b94a",.10));h.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=h;ctx.beginPath();ctx.arc(0,0,46,0,7);ctx.fill()}ctx.rotate(ang);const sc=2.1/Math.sqrt(T.k);ctx.scale(sc,sc);
+ ctx.lineCap="round";ctx.strokeStyle="#f6e9cc";ctx.shadowColor="#f0b94a";ctx.shadowBlur=10;
+ for(const s of[-1,1])for(let i=0;i<4;i++){const g=moving?Math.sin(t*16+i*1.7+(s>0?Math.PI:0))*.3:0,a1=s*(Math.PI/2+(-.95+i*.62)*.95+g*.45);
+  const kx=Math.cos(a1)*8.5,ky=Math.sin(a1)*8.5,lift=-(3+Math.abs(g)*3),a2=a1+s*(.95-i*.18),fx=kx+Math.cos(a2)*10.5,fy=ky+Math.sin(a2)*10.5;
+  ctx.lineWidth=1.25;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(kx*.6,ky*.6+lift*s*.2,kx,ky);ctx.stroke();
+  ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(kx,ky);ctx.lineTo(fx,fy);ctx.stroke()}
+ ctx.shadowBlur=20;ctx.lineWidth=1.2;ctx.strokeStyle="#f0b94a";
+ const ab=ctx.createRadialGradient(-8,-1.5,0,-8,0,8);ab.addColorStop(0,"#3a2a10");ab.addColorStop(1,"#0d0905");ctx.fillStyle=ab;
+ ctx.beginPath();ctx.ellipse(-8,0,7.5,5.8,0,0,7);ctx.fill();ctx.stroke();
+ ctx.fillStyle="#0d0905";ctx.beginPath();ctx.ellipse(3,0,4.4,3.7,0,0,7);ctx.fill();ctx.stroke();
+ ctx.shadowBlur=0;ctx.fillStyle=rgba("#ff4f9a",.95);ctx.beginPath();ctx.moveTo(-12,0);ctx.lineTo(-8,-2.6);ctx.lineTo(-4.5,0);ctx.lineTo(-8,2.6);ctx.fill();
+ ctx.shadowColor="#ff4f9a";ctx.shadowBlur=8;ctx.fillStyle="#ffd1e6";for(const dy of[-1.6,1.6]){ctx.beginPath();ctx.arc(6.3,dy,.95,0,7);ctx.fill()}
+ ctx.restore()}
+
+// ---------- render loop ----------
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000;
+ let moving=false;
+ if(sp.path){if(sp.pause>0)sp.pause-=dt;else{moving=true;sp.k+=dt*SPEED*(sp.k<1?3.4:4.8);
+  const seg=sp.k<1?0:1,u=d3.easeCubicInOut(Math.min(1,sp.k-seg)),a=sp.path[seg],b=sp.path[seg+1],c=ctrl(a,b,seg?.16:.1),[x,y]=bez(a,c,b,u);
+  const na=Math.atan2(y-sp.y,x-sp.x);if(Math.hypot(y-sp.y,x-sp.x)>.2){let d=na-sp.ang;d=Math.atan2(Math.sin(d),Math.cos(d));sp.ang+=d*Math.min(1,dt*14)}
+  sp.x=x;sp.y=y;sp.trail.push([x,y]);if(sp.trail.length>46)sp.trail.shift();
+  if(sp.k>=2){crawled(sp.leaf);sp.step++;sp.pause=sp.leaf.escalated?.55:.05;planNext()}}}
+ else if(sp.trail.length)sp.trail.shift();
+ leaves.forEach(l=>l.bloom=Math.max(0,l.bloom-dt*1.4));
+
+ ctx.setTransform(DPR,0,0,DPR,0,0);ctx.drawImage(bg,0,0,W,H);
+ ctx.save();ctx.translate(T.x,T.y);ctx.scale(T.k,T.k);
+ // web: spiral threads tying neighbouring section arms together, like a real orb web
+ ctx.lineWidth=.6;
+ for(let r=1;r<=5;r++){ctx.beginPath();secs.forEach((s,i)=>{const f=r/5.6,x=root.x+(s.x-root.x)*f,y=root.y+(s.y-root.y)*f;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.strokeStyle=rgba("#f0b94a",.035+.012*r);ctx.stroke()}
+ ctx.globalCompositeOperation="lighter";
+ // main arms: thick gold ribbons root->section with a travelling pulse
+ links.forEach(l=>{if(!l.h)return;const a=l.source,b=l.target,on=l.lit;
+  arm(a,b,.1,12,1.6,rgba("#f0b94a",on?.16:.05),24);arm(a,b,.1,3.4,.5,rgba("#ffe2a8",on?.5:.12),24);
+  const c=ctrl(a,b,.1);for(let k=0;k<2;k++){const ph=(t*.32+b.n*.07+k*.5)%1,[px,py]=bez(a,c,b,ph),R=10+8*(1-ph);const g=ctx.createRadialGradient(px,py,0,px,py,R);g.addColorStop(0,rgba("#ffe2a8",(on?.55:.2)*(1-ph*.6)));g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.fillRect(px-R,py-R,R*2,R*2)}});
+ // leaf arms: tapered strands in route colour, brighter once crawled
+ links.forEach(l=>{if(l.h||!vis(l.target))return;const b=l.target,dim=hover&&hover!==b?.45:1;
+  arm(l.source,b,.12+l.bend,b.lit?1.9:1.1,.15,rgba(COL[b.route],(b.lit?.38+b.bloom*.5:.06)*dim),10)});
+ // silk trail behind the spider
+ if(sp.trail.length>2){for(let i=1;i<sp.trail.length;i++){const a=i/sp.trail.length;ctx.strokeStyle=`rgba(255,236,200,${a*.55})`;ctx.lineWidth=.4+a*1.2;ctx.beginPath();ctx.moveTo(...sp.trail[i-1]);ctx.lineTo(...sp.trail[i]);ctx.stroke()}}
+ // leaves: soft glow + bright core; bloom flash when crawled
+ leaves.forEach(d=>{if(!vis(d))return;const c=COL[d.route],r=1.3+d.p*2.4,on=d.lit,G=r*(on?4.5+d.bloom*6:2.6);
+  const g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,G);g.addColorStop(0,rgba(c,on?.85:.22));g.addColorStop(.3,rgba(c,on?.22+d.bloom*.3:.05));g.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(d.x,d.y,G,0,7);ctx.fill();
+  ctx.fillStyle=on?"#fff":rgba(c,.55);ctx.beginPath();ctx.arc(d.x,d.y,on?r*.55:r*.38,0,7);ctx.fill()});
+ ctx.globalCompositeOperation="source-over";
+ // cascade: escalated to tier 2 -> solid violet double ring (+ pulse while blooming)
+ leaves.forEach(d=>{if(!vis(d)||!d.lit||!d.escalated)return;const R=7+d.bloom*10;ctx.strokeStyle=rgba("#b69cff",.95);ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(d.x,d.y,R,0,7);ctx.stroke();ctx.strokeStyle=rgba("#b69cff",.35);ctx.beginPath();ctx.arc(d.x,d.y,R+4,0,7);ctx.stroke();
+  if(d.bloom>.05){ctx.font="9px JetBrains Mono, monospace";ctx.fillStyle=rgba("#d9ccff",d.bloom);const l=d.legs;ctx.fillText(`${l[0].model} ${l[0].p.toFixed(2)} → ${l[1].model} ${l[1].p.toFixed(2)}`,d.x+12,d.y-10)}});
+ // vague markers: dashed violet ring
+ leaves.forEach(d=>{if(!vis(d)||!d.lit||!d.vague||!d.vague.length)return;ctx.strokeStyle=rgba("#9a7bff",.9);ctx.lineWidth=.9;ctx.setLineDash([2,2]);ctx.beginPath();ctx.arc(d.x,d.y,5.5+Math.sin(t*4)*1,0,7);ctx.stroke();ctx.setLineDash([])});
+ // section hubs: ring, rotating dashed orbit, callout label
+ ctx.font="10px JetBrains Mono, monospace";
+ const boxes=secs.map(s=>{const R=7+Math.sqrt(s.n)*2.2,out=Math.sign(s.x-root.x)||1,lbl=(s.name.length>24?s.name.slice(0,23)+"…":s.name)+"  "+s.n,w=ctx.measureText(lbl).width+12,ex=s.x+out*(R+16);return{s,R,out,lbl,w,ex,ey:s.y-(s.y<root.y?14:-14),lx:out>0?ex:ex-w}});
+ for(let it=0;it<30;it++)for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const A=boxes[i],B=boxes[j];
+  if(A.lx<B.lx+B.w&&B.lx<A.lx+A.w&&Math.abs(A.ey-B.ey)<19){const d=(19-Math.abs(A.ey-B.ey))/2+.5,sg=A.ey<B.ey?-1:1;A.ey+=sg*d;B.ey-=sg*d}}
+ boxes.forEach(b=>b.s._lab=b);
+ secs.forEach(s=>{const R=7+Math.sqrt(s.n)*2.2,on=s.lit;
+  ctx.strokeStyle=rgba("#f0b94a",on?.95:.35);ctx.lineWidth=1.3;ctx.shadowColor="#f0b94a";ctx.shadowBlur=on?14:0;ctx.beginPath();ctx.arc(s.x,s.y,R,0,7);ctx.stroke();ctx.shadowBlur=0;
+  ctx.lineWidth=.8;ctx.setLineDash([1.5,3]);ctx.beginPath();ctx.arc(s.x,s.y,R+5,t*.5,t*.5+Math.PI*1.3);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=rgba("#f0b94a",on?1:.45);ctx.beginPath();ctx.arc(s.x,s.y,2.3,0,7);ctx.fill();
+  const{out,lbl,w,ex,ey,lx}=s._lab;
+  ctx.strokeStyle=rgba("#f0b94a",on?.6:.22);ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(s.x+out*R*.7,s.y+(ey-s.y)*.2);ctx.lineTo(ex,ey);ctx.stroke();
+  ctx.fillStyle="rgba(6,6,10,.86)";ctx.fillRect(lx,ey-8,w,16);ctx.strokeRect(lx+.5,ey-7.5,w-1,15);
+  ctx.fillStyle=on?"#f3e6c8":"#7d7869";ctx.fillText(lbl,lx+6,ey+3.5)});
+ // root core
+ [[20,1.8,.95],[32,1,.35],[46,.8,.15]].forEach(([r,lw,a],i)=>{ctx.strokeStyle=rgba("#38e1cf",a);ctx.lineWidth=lw;ctx.shadowColor="#38e1cf";ctx.shadowBlur=i?0:22;ctx.beginPath();ctx.arc(root.x,root.y,r+Math.sin(t*2+i)*1.4,0,7);ctx.stroke()});
+ ctx.setLineDash([2,4]);ctx.strokeStyle=rgba("#38e1cf",.4);ctx.beginPath();ctx.arc(root.x,root.y,26,-t*.6,-t*.6+Math.PI);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle="#ff4f9a";ctx.shadowColor="#ff4f9a";ctx.shadowBlur=18;ctx.beginPath();ctx.arc(root.x,root.y,5,0,7);ctx.fill();ctx.shadowBlur=0;
+ if(sp.path||sp.trail.length)drawSpider(sp.x,sp.y,sp.ang,t,moving);
+ if(hover){ctx.strokeStyle="#fff";ctx.lineWidth=1;ctx.beginPath();ctx.arc(hover.x,hover.y,8,0,7);ctx.stroke()}
+ ctx.restore();if(!RENDER)requestAnimationFrame(frame)}
+// ?render=1: deterministic clock for frame-exact video capture; the capturer calls __advance(ms)
+const RENDER=!!+Q.get("render");
+if(RENDER){sim.stop();let vt=performance.now();t0=vt;last=vt;window.__advance=ms=>{vt+=ms;sim.tick();frame(vt);return sp.step};window.__done=()=>!sp.path&&!sp.trail.length;window.__ready=true}
+else requestAnimationFrame(frame);
+
+// tooltip
+const tip=d3.select("#tip");
+cv.addEventListener("mousemove",e=>{const[x,y]=T.invert([e.offsetX,e.offsetY]);const q=d3.quadtree(leaves.filter(vis),d=>d.x,d=>d.y).find(x,y,12/T.k);hover=q||null;
+ if(!q){tip.style("display","none");return}
+ tip.style("display","block").style("left",Math.min(e.offsetX+16,W-450)+"px").style("top",e.offsetY+12+"px")
+ .html(`<div class="k"><span style="color:${COL[q.route]}">→ ${q.route}</span> · <span style="color:${KIND[q.kind]}">${q.kind}</span> · p=${q.p} · <span style="color:var(--dim)">${esc(strip(q.section))}</span></div>${q.vague&&q.vague.length?`<div class="k" style="color:var(--vio)">vague: ${q.vague.join(", ")}</div>`:""}${q.legs?`<div class="k" style="color:#b69cff;margin-top:3px">${q.legs.map(l=>`T${l.tier} ${l.model}: ${l.top} ${l.p} · ${l.ms}ms`).join(" → ")}</div>`:""}<div style="margin-top:4px">${esc(q.text)}</div>`)});
+cv.addEventListener("mouseleave",()=>{hover=null;tip.style("display","none")});
+addEventListener("resize",()=>{size();paintBg();root.fx=W/2;root.fy=H/2;sim.alpha(.3).restart()});
+
+d3.select("#hud").html(`<div class="n">${D.decisions}</div><div class="l">decisions crawled</div><div class="n" style="color:var(--cyan)">${Math.round(100*(D.routes.code||0)/D.decisions)}%</div><div class="l">deterministic · no model call</div><div class="n" style="color:var(--pink)">${D.routes.human||0}</div><div class="l">human gates</div>`+(D.cascade&&D.cascade.tier2?`<div class="n" style="color:#b69cff">${D.cascade.escalated}</div><div class="l">escalated to ${D.cascade.tier2.split("/").pop()}</div>`:""));
+
+// ---------- panels ----------
+const sv=d3.select("#sec"),sw=sv.node().getBoundingClientRect().width,ss=used.slice().sort((a,b)=>b.n-a.n).slice(0,8),mx=d3.max(ss,s=>s.n);
+d3.select("#secn").text(used.length);
+const mix=name=>["code","model","human"].map(r=>D.nodes.filter(n=>n.section===name&&n.route===r).length);
+sv.selectAll("g").data(ss).join("g").attr("transform",(d,i)=>`translate(0,${i*23})`).each(function(d){const g=d3.select(this),bw=sw-150;
+ g.append("title").text(strip(d.name));g.append("text").text(strip(d.name).length>17?strip(d.name).slice(0,16)+"…":strip(d.name)).attr("y",10).attr("fill","#8a8576").attr("font-size",9);
+ g.append("rect").attr("x",116).attr("y",5).attr("height",4).attr("width",bw).attr("fill","#14141c");
+ let x=116;mix(d.name).forEach((v,i)=>{const w=bw*v/mx;g.append("rect").attr("x",x).attr("y",3).attr("height",8).attr("width",0).attr("fill",Object.values(COL)[i]).transition().delay(300+i*150).duration(800).attr("width",w);x+=w});
+ g.append("text").text(d.n).attr("x",sw-24).attr("y",10).attr("fill","#d8d2c2").attr("font-size",9)});
+
+const rv=d3.select("#rad"),rw=rv.node().getBoundingClientRect().width,cx=rw/2,cy=98,R=62,ax=Object.entries(D.coverage),kc=D.kinds,tot=D.decisions||1;
+const raw={trigger:1,steps:.9,pitfalls:(kc.rule||0)/tot*4,examples:.7,verification:(kc.sourced||0)/tot*3,output:.8};
+const vals=ax.map(([k,v])=>!v?.05:Math.max(.3,Math.min(1,raw[k]??.6)));
+const pt=(i,r)=>[cx+r*Math.sin(i*2*Math.PI/ax.length),cy-r*Math.cos(i*2*Math.PI/ax.length)];
+[.25,.5,.75,1].forEach(f=>rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,R*f)).join(" ")).attr("fill","none").attr("stroke","#1d1d29"));
+ax.forEach((_,i)=>rv.append("line").attr("x1",cx).attr("y1",cy).attr("x2",pt(i,R)[0]).attr("y2",pt(i,R)[1]).attr("stroke","#1d1d29"));
+rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,0)).join(" ")).attr("fill","#38e1cf26").attr("stroke","#38e1cf").attr("stroke-width",1.4).style("filter","drop-shadow(0 0 4px #38e1cf)")
+ .transition().duration(1200).attr("points",vals.map((v,i)=>pt(i,R*v)).join(" "));
+vals.forEach((v,i)=>rv.append("circle").attr("r",2.3).attr("fill","#38e1cf").attr("cx",cx).attr("cy",cy).transition().duration(1200).attr("cx",pt(i,R*v)[0]).attr("cy",pt(i,R*v)[1]));
+ax.forEach(([k,v],i)=>{const[x,y]=pt(i,R+15);rv.append("text").text(k).attr("x",x).attr("y",y+3).attr("text-anchor","middle").attr("font-size",9).attr("fill",v?"#8a8576":"#ff4f9a")});
+
+const hm=d3.max(D.word_heat,w=>w[1]);
+d3.select("#heat").html(D.word_heat.map(([w,c])=>{const a=c/hm;return`<span style="background:${rgba("#f0b94a",(.07+a*.78).toFixed(2))};color:${a>.45?"#120d06":"#d8d2c2"}" title="${c}×">${w}</span>`}).join(""));
+
+d3.select("#score").style("color",D.spec_score>=75?"#38e1cf":D.spec_score>=50?"#f0b94a":"#ff4f9a")
+ .transition().duration(1600).tween("t",function(){const i=d3.interpolateRound(0,D.spec_score);return t=>this.textContent=i(t)});
+d3.select("#grade").text("OF 100 · "+(D.spec_score>=75?"SOLID":D.spec_score>=50?"NEEDS WORK":"WEAK"));
+d3.select("#routes").html(Object.entries(COL).map(([k,v])=>{const n=D.routes[k]||0;return`<div style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.1em"><span style="color:${v}">${k.toUpperCase()}</span><span>${n}</span></div><div class="bar"><i style="width:${100*n/tot}%;background:${v};box-shadow:0 0 6px ${v}"></i></div>`}).join("")+
+ `<div style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.1em"><span style="color:var(--vio)">VAGUE</span><span>${D.vague_count}</span></div>`);
+});
+</script></body></html>

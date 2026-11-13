@@ -1,0 +1,16 @@
+schema: spec-driven
+context: |
+  Creator Kit is a first-party Python CLI plus React/TypeScript
+  non-destructive video editor. SQLite holds local projects; FFmpeg renders bounded
+  plans. OpenMontage and HyperFrames are separate pinned upstream checkouts.
+  Default server binding is loopback; explicit RFC1918 IPv4 sharing has NO user
+  authentication or TLS. Never expose publicly. Cloud CLI calls require --allow-cloud.
+  Local media, productions, credentials and runtime inventories are not Git backups.
+  Current specs document observed behavior, not hypothetical completed features.
+rules:
+  proposal:
+    - "Distinguish implemented behavior from planned capabilities and name safety impact."
+  design:
+    - "Identify UI/wire-format and local/cloud boundaries."
+  tasks:
+    - "Include execution verification; mock tests do not prove live inference or visual quality."

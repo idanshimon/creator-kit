@@ -1,0 +1,9 @@
+{
+  "source": "https://github.com/VoltAgent/awesome-design-md",
+  "commit": "fcc70284932276d085f01ef9f83edde90b1258cb",
+  "path": "design-md/",
+  "license": "MIT",
+  "license_file": "integrations/design-md/LICENSE",
+  "fetched": "2026-11-06",
+  "note": "Vendored DESIGN.md token analyses of public brand sites. Brand names and trademarks belong to their owners; use as style reference, not as a claim of affiliation."
+}

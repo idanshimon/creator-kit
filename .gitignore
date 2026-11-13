@@ -1,0 +1,31 @@
+# Credentials and local runtime state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+/local/
+*.db
+*.db-*
+*.sqlite*
+
+# Reproducible upstream checkouts; versions recorded in upstream-lock.json
+/OpenMontage/
+/hyperframes/
+/archify/
+
+# Productions include private source media, narration and renders; separate backup
+/productions/
+
+# Dependencies and generated builds
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.test-build/
+dist/
+coverage/
+*.tsbuildinfo
+.DS_Store
+*.log

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@@TITLE@@ — GSAP motion</title>
+<script>document.documentElement.classList.toggle('render',new URLSearchParams(location.search).has('render'));</script>
+<style>
+:root{color-scheme:dark;--paper:#f6f1e7;--ink:#111512;--muted:#a9b5a7;--accent:#d9fa73;--title-size:@@TITLE_SIZE@@px}
+*{box-sizing:border-box}body{margin:0;background:#0b100e;color:var(--paper);font-family:Arial,Helvetica,sans-serif;overflow:hidden;height:100vh;display:grid;grid-template-rows:1fr auto}.viewport{position:relative;min-height:0;overflow:hidden}.stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform:translate(-50%,-50%) scale(var(--fit,1));transform-origin:center;background:radial-gradient(ellipse at 85% 14%,#25382555,transparent 48%),#111512;overflow:hidden}.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff05 1px,transparent 1px),linear-gradient(90deg,#ffffff05 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,black,transparent)}header{position:absolute;left:76px;right:76px;top:45px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:15px;font-weight:700;letter-spacing:3px}.brand i{display:inline-block;width:12px;height:12px;background:var(--accent);border-radius:3px;margin-right:14px;transform:rotate(-12deg)}.edition{color:var(--muted);font-size:12px;letter-spacing:2px}.hero{position:absolute;left:76px;right:76px;top:124px}.eyebrow{color:var(--accent);font-size:13px;letter-spacing:3px;margin-bottom:22px}.headline{font-size:var(--title-size);line-height:1.04;letter-spacing:-4px;margin:0;max-width:1128px;font-weight:600;overflow-wrap:anywhere}.subtitle{max-width:1080px;font-size:23px;line-height:1.45;letter-spacing:-.3px;color:#b7c1b4;margin:22px 0 0;overflow-wrap:anywhere}.underline{width:150px;height:4px;background:var(--accent);margin-top:24px;transform-origin:left}.diagram{position:absolute;inset:0;width:1280px;height:720px;pointer-events:none}.track{stroke:#344331;stroke-width:2;fill:none}.trace{stroke:var(--accent);stroke-width:3;fill:none}.node{fill:#111512;stroke:#5c7051;stroke-width:2}.spark{fill:var(--accent);filter:drop-shadow(0 0 10px #d9fa7377)}.cards{position:absolute;left:76px;right:76px;top:430px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{height:160px;padding:24px;border:1px solid #ffffff18;border-radius:18px;background:linear-gradient(135deg,#263024aa,#171d17);transform-origin:50% 100%}.number{font-size:12px;color:var(--accent);letter-spacing:2px}.card h2{font-size:27px;margin:18px 0 10px;letter-spacing:-.8px}.card p{font-size:15px;line-height:1.4;color:var(--muted);margin:0}.foot{position:absolute;left:76px;right:76px;bottom:45px;display:flex;justify-content:space-between;color:var(--muted);font-size:12px;letter-spacing:1px}.signature{color:#d4dfca}.progress{height:2px;position:absolute;left:76px;right:76px;bottom:28px;background:#2a3426}.progress-fill{height:100%;background:var(--accent);transform-origin:left;transform:scaleX(0)}.controls{display:flex;align-items:center;gap:16px;padding:15px 24px;border-top:1px solid #ffffff18;background:#0b100e}.controls button{border:1px solid #ffffff30;border-radius:7px;background:#202a1e;color:var(--paper);padding:9px 16px;font:inherit;font-size:13px;cursor:pointer}.controls button:focus-visible,.controls input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.controls input{flex:1;min-width:50px;accent-color:var(--accent)}.time{font:12px monospace;min-width:90px;color:#b6c2af}.render .controls{display:none}@media(max-width:550px){.controls{gap:8px;padding:10px}.controls button{padding:8px}.time{font-size:10px;min-width:75px}}
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" data-composition-id="gsap-motion" data-duration="8" aria-label="GSAP motion composition">
+<div class="grid"></div>
+<header><div class="brand"><i></i>CREATOR KIT</div><div class="edition">MOTION STUDY / GSAP 3.15</div></header>
+<section class="hero"><div class="eyebrow">FROM AN IDEA TO A SEQUENCE</div><h1 class="headline">@@TITLE@@</h1><p class="subtitle">@@SUBTITLE@@</p><div class="underline"></div></section>
+<svg class="diagram" viewBox="0 0 1280 720" aria-hidden="true"><path class="track" d="M258 392 H1022"/><path class="trace" d="M258 392 H1022"/><circle class="node" cx="258" cy="392" r="8"/><circle class="node" cx="640" cy="392" r="8"/><circle class="node" cx="1022" cy="392" r="8"/><circle class="spark" cx="258" cy="392" r="6"/></svg>
+<section class="cards" aria-label="Animation sequence">
+<article class="card"><div class="number">01 / REVEAL</div><h2>Give ideas an entrance.</h2><p>Typography, transforms and deliberate easing.</p></article>
+<article class="card"><div class="number">02 / CHOREOGRAPH</div><h2>Build a connected story.</h2><p>Staggered elements on one labeled timeline.</p></article>
+<article class="card"><div class="number">03 / CAPTURE</div><h2>Own every frame.</h2><p>Offline HTML, explicit time, ready for MP4.</p></article>
+</section>
+<footer class="foot"><span>CODE-AUTHORED · OFFLINE · SEEKABLE</span><span class="signature">ONE TIMELINE. A CLEAR FINAL STATE.</span></footer>
+<div class="progress"><div class="progress-fill"></div></div>
+</main></div>
+<nav class="controls" aria-label="Motion preview controls"><button id="play" type="button">Play</button><button id="reset" type="button">Reset</button><input id="seek" aria-label="Seek animation" type="range" min="0" max="8" step="0.01" value="0"><output class="time" id="time">0.00 / 8.00s</output></nav>
+<!-- GSAP's original proprietary notice is retained in the runtime below. Standard License: https://gsap.com/standard-license/ -->
+<script>@@RUNTIME@@</script>
+<script>
+(()=>{'use strict';
+const DURATION=8,root=document.querySelector('.stage'),viewport=document.querySelector('.viewport');
+const fit=()=>root.style.setProperty('--fit',Math.min(viewport.clientWidth/1280,viewport.clientHeight/720));
+fit();window.addEventListener('resize',fit);
+// Fit authored copy before constructing the timeline; no late layout mutation during capture.
+const hero=document.querySelector('.hero'),headline=document.querySelector('.headline'),subtitle=document.querySelector('.subtitle');
+let headingSize=parseFloat(getComputedStyle(headline).fontSize),subtitleSize=23;
+headline.style.letterSpacing='-.045em';
+for(let pass=0;hero.scrollHeight>245&&pass<40;pass++){
+ headingSize=Math.max(24,headingSize*.96);subtitleSize=Math.max(12,subtitleSize*.96);
+ headline.style.fontSize=headingSize+'px';subtitle.style.fontSize=subtitleSize+'px';
+}
+const tl=gsap.timeline({paused:true});
+const path=document.querySelector('.trace'),length=path.getTotalLength();
+gsap.set('.trace',{strokeDasharray:length,strokeDashoffset:length});
+gsap.set('.card',{opacity:0,y:34,rotation:2});
+gsap.set('.spark',{opacity:0});
+tl.addLabel('reveal',0).fromTo('.headline',{y:24},{y:0,duration:1.2,ease:'power3.out'},0)
+.fromTo('.underline',{scaleX:0},{scaleX:1,duration:1,ease:'power3.out'},.25)
+.fromTo('.subtitle',{opacity:.35,y:12},{opacity:1,y:0,duration:1,ease:'power2.out'},.4)
+.addLabel('connect',1.7).to('.trace',{strokeDashoffset:0,duration:2.6,ease:'none'},1.7)
+.to('.spark',{opacity:1,duration:.15},1.7)
+.to('.spark',{attr:{cx:1022},duration:2.6,ease:'none'},1.7)
+.to('.card',{opacity:1,y:0,rotation:0,duration:.75,stagger:.7,ease:'power3.out'},1.9)
+.to('.node',{stroke:'#d9fa73',duration:.35,stagger:.7},2)
+.addLabel('hold',5).to('.progress-fill',{scaleX:1,duration:DURATION,ease:'none'},0)
+.addLabel('complete',DURATION);
+window.__timelines=window.__timelines||{};window.__timelines[root.dataset.compositionId]=tl;
+let clock=0,playing=false,raf=0,last=0,capturing=document.documentElement.classList.contains('render');
+const play=document.querySelector('#play'),seek=document.querySelector('#seek'),time=document.querySelector('#time');
+function pause(){playing=false;if(raf)cancelAnimationFrame(raf);raf=0;play.textContent='Play';}
+function draw(seconds){if(!Number.isFinite(seconds))throw new TypeError('Time must be finite');clock=Math.max(0,Math.min(DURATION,seconds));tl.seek(clock,true);seek.value=String(clock);time.textContent=clock.toFixed(2)+' / 8.00s';return clock;}
+function frame(now){if(!playing)return;if(last)draw(clock+(now-last)/1000);last=now;if(clock>=DURATION){pause();return;}raf=requestAnimationFrame(frame);}
+function start(){if(playing){pause();return;}if(capturing)return;if(clock>=DURATION)draw(0);playing=true;last=0;play.textContent='Pause';raf=requestAnimationFrame(frame);}
+play.addEventListener('click',start);document.querySelector('#reset').addEventListener('click',()=>{pause();draw(0);});
+seek.addEventListener('input',()=>{pause();draw(Number(seek.value));});
+window.__motion={seek(seconds){pause();return draw(seconds);},reset(){pause();return draw(0);},duration:DURATION,getTime:()=>clock};
+window.__advance=(ms)=>{if(!Number.isFinite(ms)||ms<0)throw new TypeError('Advance must be finite and nonnegative');capturing=true;pause();return draw(clock+ms/1000);};
+window.__done=()=>clock>=DURATION;
+draw(0);window.__ready=true;
+if(!capturing&&matchMedia('(prefers-reduced-motion: reduce)').matches)draw(DURATION);
+})();
+</script>
+</body></html>

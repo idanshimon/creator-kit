@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "description": "Known installed upstream revisions, not a claim of latest upstream releases. Existing vendor checkouts are never reset automatically.",
+  "dependencies": [
+    {
+      "path": "OpenMontage",
+      "repository": "https://github.com/calesthio/OpenMontage.git",
+      "revision": "fecb9a1e3cc23ef84de30b272059457a427f16f8",
+      "license": "AGPL-3.0"
+    },
+    {
+      "path": "hyperframes",
+      "repository": "https://github.com/heygen-com/hyperframes.git",
+      "revision": "aadd5bd6f28bbf7c66bd96b1fda429d16eed5623",
+      "license": "Apache-2.0",
+      "skip_lfs_smudge": true,
+      "cli_version": "0.9.40"
+    },
+    {
+      "path": "archify",
+      "repository": "https://github.com/tt-a1i/archify.git",
+      "revision": "c826e6c3a7abad19c0f3cd1ca57207d54b1ad8de",
+      "version": "2.16.0",
+      "license": "MIT",
+      "distribution": "release-zip",
+      "integrity_manifest": "integrations/archify-lock.json"
+    }
+  ]
+}

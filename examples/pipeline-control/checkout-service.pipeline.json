@@ -1,0 +1,7089 @@
+{
+ "schema_version": 1,
+ "title": "Pipeline Control",
+ "pipeline": "checkout-service",
+ "subtitle": "CI/CD",
+ "data_label": "Synthetic data",
+ "style": "claude",
+ "runner_rate_usd_per_min": 0.008,
+ "rate_note": "per runner minute (assumed GitHub-hosted Linux list price; replace with your rate)",
+ "stages": [
+  {
+   "id": "commit",
+   "name": "Commit"
+  },
+  {
+   "id": "build",
+   "name": "Build"
+  },
+  {
+   "id": "unit",
+   "name": "Unit tests"
+  },
+  {
+   "id": "integ",
+   "name": "Integration"
+  },
+  {
+   "id": "scan",
+   "name": "Security scan"
+  },
+  {
+   "id": "staging",
+   "name": "Staging deploy"
+  },
+  {
+   "id": "canary",
+   "name": "Canary 5%"
+  },
+  {
+   "id": "prod",
+   "name": "Production"
+  }
+ ],
+ "baseline": {
+  "until": "2026-11-03",
+  "label": "the new runner image"
+ },
+ "runs": [
+  {
+   "id": "#4301",
+   "date": "2026-10-24",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.36,
+    "build": 4.11,
+    "unit": 4.87,
+    "integ": 6.38
+   }
+  },
+  {
+   "id": "#4302",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.78,
+    "unit": 6.33,
+    "integ": 7.94,
+    "scan": 3.25,
+    "staging": 4.6,
+    "canary": 5.33,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4303",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.74,
+    "unit": 6.53,
+    "integ": 6.01,
+    "scan": 2.74,
+    "staging": 4.29,
+    "canary": 4.89,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4304",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.41,
+    "unit": 6.17,
+    "integ": 8.43,
+    "scan": 3.14,
+    "staging": 4.09,
+    "canary": 5.24,
+    "prod": 2.29
+   }
+  },
+  {
+   "id": "#4305",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.69,
+    "unit": 5.18,
+    "integ": 8.07,
+    "scan": 3.37,
+    "staging": 3.61,
+    "canary": 6.35,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4306",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.89,
+    "unit": 6.63,
+    "integ": 6.56,
+    "scan": 2.98,
+    "staging": 4.2,
+    "canary": 5.03,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4307",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.02,
+    "unit": 6.36,
+    "integ": 6.83,
+    "scan": 2.84,
+    "staging": 4.34,
+    "canary": 4.6,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4308",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 2.71,
+    "unit": 6.42,
+    "integ": 7.24,
+    "scan": 3.03,
+    "staging": 4.03,
+    "canary": 5.59,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4309",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.98,
+    "unit": 4.68,
+    "integ": 6.15,
+    "scan": 2.48,
+    "staging": 4.09,
+    "canary": 6.13,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4310",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.26,
+    "unit": 5.86,
+    "integ": 8.31,
+    "scan": 2.68,
+    "staging": 4.56,
+    "canary": 6.77,
+    "prod": 1.59
+   }
+  },
+  {
+   "id": "#4311",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 5.64,
+    "unit": 6.33,
+    "integ": 5.24,
+    "scan": 2.33,
+    "staging": 3.59,
+    "canary": 4.29,
+    "prod": 1.8
+   }
+  },
+  {
+   "id": "#4312",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.13,
+    "unit": 5.66,
+    "integ": 6.89,
+    "scan": 3.39,
+    "staging": 3.97,
+    "canary": 5.27,
+    "prod": 2.08
+   }
+  },
+  {
+   "id": "#4313",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.2,
+    "unit": 4.24,
+    "integ": 6.72,
+    "scan": 3.07,
+    "staging": 5.22,
+    "canary": 5.22,
+    "prod": 1.73
+   }
+  },
+  {
+   "id": "#4314",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.57,
+    "unit": 5.48,
+    "integ": 6.47,
+    "scan": 3.03,
+    "staging": 3.81,
+    "canary": 4.58,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4315",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.61,
+    "unit": 6.18,
+    "integ": 6.93,
+    "scan": 2.78,
+    "staging": 4.04,
+    "canary": 6.49,
+    "prod": 2.29
+   }
+  },
+  {
+   "id": "#4316",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.03,
+    "unit": 7.34,
+    "integ": 7.04,
+    "scan": 3.19,
+    "staging": 3.86,
+    "canary": 5.72,
+    "prod": 2.25
+   }
+  },
+  {
+   "id": "#4317",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 3.88,
+    "unit": 5.27,
+    "integ": 6.79,
+    "scan": 2.62,
+    "staging": 4.53,
+    "canary": 4.34,
+    "prod": 2.4
+   }
+  },
+  {
+   "id": "#4318",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.32,
+    "unit": 5.87,
+    "integ": 6.03,
+    "scan": 3.2,
+    "staging": 3.66,
+    "canary": 4.89,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4319",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.36,
+    "unit": 5.49,
+    "integ": 7.27,
+    "scan": 2.22,
+    "staging": 3.67,
+    "canary": 5.45,
+    "prod": 1.82
+   }
+  },
+  {
+   "id": "#4320",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.08,
+    "unit": 6.25,
+    "integ": 6.43,
+    "scan": 2.74,
+    "staging": 4.11,
+    "canary": 5.08,
+    "prod": 1.92
+   }
+  },
+  {
+   "id": "#4321",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 3.55,
+    "unit": 7.38,
+    "integ": 6.53,
+    "scan": 3.02,
+    "staging": 4.87,
+    "canary": 5.81,
+    "prod": 1.63
+   }
+  },
+  {
+   "id": "#4322",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.47,
+    "unit": 5.16,
+    "integ": 6.68,
+    "scan": 3.05,
+    "staging": 4.38,
+    "canary": 5.27,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4323",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.72,
+    "unit": 6.64,
+    "integ": 7.49,
+    "scan": 3.15,
+    "staging": 2.88,
+    "canary": 5.56,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4324",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.0,
+    "unit": 6.02,
+    "integ": 8.58,
+    "scan": 2.35,
+    "staging": 3.35,
+    "canary": 5.13,
+    "prod": 2.13
+   }
+  },
+  {
+   "id": "#4325",
+   "date": "2026-10-24",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.84,
+    "unit": 6.28
+   }
+  },
+  {
+   "id": "#4326",
+   "date": "2026-10-24",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.67,
+    "unit": 4.99,
+    "integ": 7.26,
+    "scan": 3.07,
+    "staging": 4.23,
+    "canary": 4.57,
+    "prod": 2.42
+   }
+  },
+  {
+   "id": "#4327",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.1,
+    "unit": 4.41,
+    "integ": 6.58,
+    "scan": 2.82,
+    "staging": 3.87,
+    "canary": 5.53,
+    "prod": 2.34
+   }
+  },
+  {
+   "id": "#4328",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.48,
+    "unit": 5.48,
+    "integ": 7.38,
+    "scan": 2.24,
+    "staging": 3.88,
+    "canary": 6.02,
+    "prod": 1.67
+   }
+  },
+  {
+   "id": "#4329",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.49,
+    "unit": 5.82,
+    "integ": 6.52,
+    "scan": 2.69,
+    "staging": 3.03,
+    "canary": 5.96,
+    "prod": 1.7
+   }
+  },
+  {
+   "id": "#4330",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 3.78,
+    "unit": 6.45,
+    "integ": 7.6,
+    "scan": 3.28,
+    "staging": 4.4,
+    "canary": 5.41,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4331",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.37,
+    "build": 4.25,
+    "unit": 5.24,
+    "integ": 8.69,
+    "scan": 2.82,
+    "staging": 4.53,
+    "canary": 5.14,
+    "prod": 2.1
+   }
+  },
+  {
+   "id": "#4332",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.38,
+    "unit": 5.16,
+    "integ": 6.37,
+    "scan": 3.59,
+    "staging": 3.32,
+    "canary": 5.04,
+    "prod": 2.48
+   }
+  },
+  {
+   "id": "#4333",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.25,
+    "unit": 5.71,
+    "integ": 7.16,
+    "scan": 2.85,
+    "staging": 4.09,
+    "canary": 5.39,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4334",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.45,
+    "unit": 6.08,
+    "integ": 8.39,
+    "scan": 3.4,
+    "staging": 4.32,
+    "canary": 5.02,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4335",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.35,
+    "unit": 6.7,
+    "integ": 8.39,
+    "scan": 2.66,
+    "staging": 3.9,
+    "canary": 5.53,
+    "prod": 1.54
+   }
+  },
+  {
+   "id": "#4336",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 3.75,
+    "unit": 6.23,
+    "integ": 6.77,
+    "scan": 2.91,
+    "staging": 4.37,
+    "canary": 5.51,
+    "prod": 1.84
+   }
+  },
+  {
+   "id": "#4337",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.94,
+    "unit": 6.43,
+    "integ": 6.12,
+    "scan": 3.59,
+    "staging": 3.7,
+    "canary": 4.94,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4338",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.49,
+    "unit": 6.61,
+    "integ": 6.98,
+    "scan": 3.22,
+    "staging": 3.9,
+    "canary": 4.61,
+    "prod": 2.16
+   }
+  },
+  {
+   "id": "#4339",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.15,
+    "unit": 4.71,
+    "integ": 8.82,
+    "scan": 2.99,
+    "staging": 3.89,
+    "canary": 5.38,
+    "prod": 1.79
+   }
+  },
+  {
+   "id": "#4340",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.27,
+    "unit": 4.99,
+    "integ": 9.44,
+    "scan": 2.84,
+    "staging": 4.5,
+    "canary": 5.54,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4341",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.91,
+    "unit": 5.67,
+    "integ": 7.55,
+    "scan": 2.76,
+    "staging": 3.56,
+    "canary": 5.18,
+    "prod": 1.57
+   }
+  },
+  {
+   "id": "#4342",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.89,
+    "unit": 5.52,
+    "integ": 7.57,
+    "scan": 3.1,
+    "staging": 3.32,
+    "canary": 5.63,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4343",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.31,
+    "unit": 5.44,
+    "integ": 6.17,
+    "scan": 2.76,
+    "staging": 3.81,
+    "canary": 4.81,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4344",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.22,
+    "unit": 6.59,
+    "integ": 6.62,
+    "scan": 2.79,
+    "staging": 4.3,
+    "canary": 4.6,
+    "prod": 2.24
+   }
+  },
+  {
+   "id": "#4345",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.78,
+    "unit": 6.21,
+    "integ": 5.51,
+    "scan": 3.08,
+    "staging": 3.44,
+    "canary": 4.54,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4346",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.8,
+    "unit": 6.59,
+    "integ": 7.56,
+    "scan": 3.09,
+    "staging": 3.87,
+    "canary": 4.96,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4347",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.01,
+    "unit": 5.49,
+    "integ": 6.57,
+    "scan": 3.4,
+    "staging": 4.72,
+    "canary": 4.49,
+    "prod": 1.69
+   }
+  },
+  {
+   "id": "#4348",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.22,
+    "unit": 5.65,
+    "integ": 6.7,
+    "scan": 3.1,
+    "staging": 4.12,
+    "canary": 4.45,
+    "prod": 1.65
+   }
+  },
+  {
+   "id": "#4349",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.5,
+    "unit": 6.08,
+    "integ": 8.11,
+    "scan": 2.84,
+    "staging": 4.26,
+    "canary": 4.81,
+    "prod": 2.13
+   }
+  },
+  {
+   "id": "#4350",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.26,
+    "unit": 6.53,
+    "integ": 7.36,
+    "scan": 3.59,
+    "staging": 4.33,
+    "canary": 5.15,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4351",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.28,
+    "unit": 6.32,
+    "integ": 6.45,
+    "scan": 2.92,
+    "staging": 3.47,
+    "canary": 5.84,
+    "prod": 1.48
+   }
+  },
+  {
+   "id": "#4352",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.74,
+    "unit": 5.7,
+    "integ": 6.76,
+    "scan": 3.37,
+    "staging": 4.77,
+    "canary": 5.55,
+    "prod": 2.05
+   }
+  },
+  {
+   "id": "#4353",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.27,
+    "unit": 5.09,
+    "integ": 4.79,
+    "scan": 2.64,
+    "staging": 3.23,
+    "canary": 4.37,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4354",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.61,
+    "build": 4.44,
+    "unit": 5.31,
+    "integ": 5.79,
+    "scan": 2.42,
+    "staging": 4.09,
+    "canary": 3.6,
+    "prod": 1.88
+   }
+  },
+  {
+   "id": "#4355",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.92,
+    "unit": 6.19,
+    "integ": 7.09,
+    "scan": 2.37,
+    "staging": 3.84,
+    "canary": 5.11,
+    "prod": 2.52
+   }
+  },
+  {
+   "id": "#4356",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.25,
+    "unit": 5.26,
+    "integ": 8.43,
+    "scan": 2.86,
+    "staging": 3.79,
+    "canary": 5.04,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4357",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.43,
+    "unit": 6.99,
+    "integ": 8.32,
+    "scan": 2.88,
+    "staging": 3.44,
+    "canary": 4.61,
+    "prod": 2.1
+   }
+  },
+  {
+   "id": "#4358",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.29,
+    "unit": 6.14,
+    "integ": 6.83,
+    "scan": 2.68,
+    "staging": 4.27,
+    "canary": 3.19,
+    "prod": 2.06
+   }
+  },
+  {
+   "id": "#4359",
+   "date": "2026-10-25",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.0,
+    "unit": 5.86,
+    "integ": 7.73,
+    "scan": 3.05,
+    "staging": 4.44,
+    "canary": 4.93,
+    "prod": 1.37
+   }
+  },
+  {
+   "id": "#4360",
+   "date": "2026-10-26",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.99,
+    "unit": 5.8
+   }
+  },
+  {
+   "id": "#4361",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.33,
+    "unit": 6.95,
+    "integ": 6.42,
+    "scan": 2.56,
+    "staging": 3.97,
+    "canary": 5.26,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4362",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.62,
+    "unit": 6.01,
+    "integ": 6.72,
+    "scan": 2.89,
+    "staging": 4.49,
+    "canary": 4.28,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4363",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 3.53,
+    "unit": 6.23,
+    "integ": 7.42,
+    "scan": 3.54,
+    "staging": 3.66,
+    "canary": 5.25,
+    "prod": 1.74
+   }
+  },
+  {
+   "id": "#4364",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.74,
+    "unit": 5.97,
+    "integ": 7.27,
+    "scan": 2.73,
+    "staging": 3.79,
+    "canary": 6.17,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4365",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.63,
+    "unit": 6.87,
+    "integ": 7.57,
+    "scan": 2.59,
+    "staging": 4.69,
+    "canary": 5.27,
+    "prod": 2.1
+   }
+  },
+  {
+   "id": "#4366",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.36,
+    "build": 3.29,
+    "unit": 5.24,
+    "integ": 8.35,
+    "scan": 2.41,
+    "staging": 4.15,
+    "canary": 5.07,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4367",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.31,
+    "unit": 6.3,
+    "integ": 6.75,
+    "scan": 3.08,
+    "staging": 4.05,
+    "canary": 4.38,
+    "prod": 1.59
+   }
+  },
+  {
+   "id": "#4368",
+   "date": "2026-10-26",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.2,
+    "unit": 6.45,
+    "integ": 6.77,
+    "scan": 3.16
+   }
+  },
+  {
+   "id": "#4369",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.26,
+    "unit": 6.81,
+    "integ": 6.54,
+    "scan": 2.4,
+    "staging": 4.7,
+    "canary": 5.4,
+    "prod": 1.69
+   }
+  },
+  {
+   "id": "#4370",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.49,
+    "unit": 6.33,
+    "integ": 7.4,
+    "scan": 3.19,
+    "staging": 3.85,
+    "canary": 4.9,
+    "prod": 2.52
+   }
+  },
+  {
+   "id": "#4371",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 4.38,
+    "unit": 6.48,
+    "integ": 8.0,
+    "scan": 2.99,
+    "staging": 3.37,
+    "canary": 4.07,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4372",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.7,
+    "unit": 5.41,
+    "integ": 7.19,
+    "scan": 2.63,
+    "staging": 3.72,
+    "canary": 4.91,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4373",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.75,
+    "unit": 6.57,
+    "integ": 6.73,
+    "scan": 2.73,
+    "staging": 5.45,
+    "canary": 4.86,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4374",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.52,
+    "unit": 5.29,
+    "integ": 7.95,
+    "scan": 3.26,
+    "staging": 4.11,
+    "canary": 4.4,
+    "prod": 1.73
+   }
+  },
+  {
+   "id": "#4375",
+   "date": "2026-10-26",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.36,
+    "build": 3.62,
+    "unit": 4.09
+   }
+  },
+  {
+   "id": "#4376",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.06,
+    "unit": 5.63,
+    "integ": 7.3,
+    "scan": 2.95,
+    "staging": 3.89,
+    "canary": 5.8,
+    "prod": 1.72
+   }
+  },
+  {
+   "id": "#4377",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.81,
+    "unit": 6.18,
+    "integ": 7.08,
+    "scan": 2.93,
+    "staging": 4.08,
+    "canary": 4.36,
+    "prod": 2.65
+   }
+  },
+  {
+   "id": "#4378",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.12,
+    "unit": 6.97,
+    "integ": 8.08,
+    "scan": 3.08,
+    "staging": 4.32,
+    "canary": 5.15,
+    "prod": 2.31
+   }
+  },
+  {
+   "id": "#4379",
+   "date": "2026-10-26",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.97,
+    "unit": 5.84,
+    "integ": 8.33
+   }
+  },
+  {
+   "id": "#4380",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.81,
+    "unit": 5.39,
+    "integ": 7.26,
+    "scan": 2.52,
+    "staging": 3.56,
+    "canary": 4.82,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4381",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.22,
+    "unit": 7.33,
+    "integ": 7.39,
+    "scan": 2.77,
+    "staging": 4.08,
+    "canary": 5.43,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4382",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.83,
+    "unit": 5.8,
+    "integ": 7.72,
+    "scan": 2.61,
+    "staging": 3.97,
+    "canary": 4.4,
+    "prod": 1.74
+   }
+  },
+  {
+   "id": "#4383",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.81,
+    "unit": 5.72,
+    "integ": 8.02,
+    "scan": 2.94,
+    "staging": 4.22,
+    "canary": 6.2,
+    "prod": 2.06
+   }
+  },
+  {
+   "id": "#4384",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.69,
+    "build": 3.94,
+    "unit": 5.72,
+    "integ": 6.82,
+    "scan": 3.55,
+    "staging": 4.71,
+    "canary": 5.38,
+    "prod": 1.8
+   }
+  },
+  {
+   "id": "#4385",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.19,
+    "unit": 6.04,
+    "integ": 6.68,
+    "scan": 2.75,
+    "staging": 3.11,
+    "canary": 6.16,
+    "prod": 2.05
+   }
+  },
+  {
+   "id": "#4386",
+   "date": "2026-10-26",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.85,
+    "unit": 5.21,
+    "integ": 5.8
+   }
+  },
+  {
+   "id": "#4387",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.66,
+    "unit": 5.35,
+    "integ": 5.13,
+    "scan": 3.06,
+    "staging": 3.63,
+    "canary": 6.03,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4388",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.54,
+    "unit": 5.91,
+    "integ": 5.97,
+    "scan": 3.37,
+    "staging": 4.89,
+    "canary": 5.83,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4389",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 3.15,
+    "unit": 7.9,
+    "integ": 7.67,
+    "scan": 2.7,
+    "staging": 3.9,
+    "canary": 5.55,
+    "prod": 1.76
+   }
+  },
+  {
+   "id": "#4390",
+   "date": "2026-10-26",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 3.59,
+    "unit": 5.06,
+    "integ": 6.77,
+    "scan": 2.97,
+    "staging": 3.78,
+    "canary": 5.59,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4391",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.36,
+    "unit": 6.5,
+    "integ": 6.18,
+    "scan": 3.09,
+    "staging": 3.91,
+    "canary": 5.18,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4392",
+   "date": "2026-10-27",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.81,
+    "unit": 6.73
+   }
+  },
+  {
+   "id": "#4393",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.45,
+    "unit": 4.9,
+    "integ": 7.71,
+    "scan": 3.42,
+    "staging": 4.19,
+    "canary": 4.43,
+    "prod": 1.82
+   }
+  },
+  {
+   "id": "#4394",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.41,
+    "build": 3.39,
+    "unit": 6.15,
+    "integ": 7.55,
+    "scan": 3.22,
+    "staging": 4.24,
+    "canary": 4.72,
+    "prod": 1.75
+   }
+  },
+  {
+   "id": "#4395",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.63,
+    "build": 3.94,
+    "unit": 4.43,
+    "integ": 6.35,
+    "scan": 2.93,
+    "staging": 4.04,
+    "canary": 4.74,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4396",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.12,
+    "unit": 6.29,
+    "integ": 6.62,
+    "scan": 3.62,
+    "staging": 3.57,
+    "canary": 4.92,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4397",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.62,
+    "unit": 6.28,
+    "integ": 7.13,
+    "scan": 2.83,
+    "staging": 4.02,
+    "canary": 4.94,
+    "prod": 2.43
+   }
+  },
+  {
+   "id": "#4398",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.78,
+    "unit": 6.94,
+    "integ": 6.41,
+    "scan": 3.37,
+    "staging": 3.95,
+    "canary": 5.53,
+    "prod": 1.88
+   }
+  },
+  {
+   "id": "#4399",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.69,
+    "unit": 5.21,
+    "integ": 6.59,
+    "scan": 3.07,
+    "staging": 3.99,
+    "canary": 4.49,
+    "prod": 2.16
+   }
+  },
+  {
+   "id": "#4400",
+   "date": "2026-10-27",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.95,
+    "unit": 5.34,
+    "integ": 9.56
+   }
+  },
+  {
+   "id": "#4401",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 4.05,
+    "unit": 5.19,
+    "integ": 6.17,
+    "scan": 3.44,
+    "staging": 3.21,
+    "canary": 4.7,
+    "prod": 2.27
+   }
+  },
+  {
+   "id": "#4402",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.78,
+    "unit": 4.39,
+    "integ": 8.12,
+    "scan": 3.3,
+    "staging": 3.21,
+    "canary": 4.35,
+    "prod": 2.55
+   }
+  },
+  {
+   "id": "#4403",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.66,
+    "build": 2.64,
+    "unit": 5.25,
+    "integ": 7.84,
+    "scan": 3.02,
+    "staging": 4.57,
+    "canary": 3.92,
+    "prod": 2.38
+   }
+  },
+  {
+   "id": "#4404",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.86,
+    "unit": 6.68,
+    "integ": 7.08,
+    "scan": 3.15,
+    "staging": 3.45,
+    "canary": 4.72,
+    "prod": 1.59
+   }
+  },
+  {
+   "id": "#4405",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.8,
+    "unit": 6.91,
+    "integ": 6.29,
+    "scan": 3.37,
+    "staging": 4.38,
+    "canary": 5.02,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4406",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.6,
+    "unit": 6.08,
+    "integ": 5.94,
+    "scan": 2.81,
+    "staging": 3.82,
+    "canary": 4.58,
+    "prod": 2.3
+   }
+  },
+  {
+   "id": "#4407",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.73,
+    "unit": 5.64,
+    "integ": 5.56,
+    "scan": 2.96,
+    "staging": 3.96,
+    "canary": 5.11,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4408",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.0,
+    "unit": 6.48,
+    "integ": 7.3,
+    "scan": 2.57,
+    "staging": 3.81,
+    "canary": 4.94,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4409",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.09,
+    "unit": 6.04,
+    "integ": 8.15,
+    "scan": 3.02,
+    "staging": 3.49,
+    "canary": 4.74,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4410",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.32,
+    "unit": 5.39,
+    "integ": 8.35,
+    "scan": 2.66,
+    "staging": 4.03,
+    "canary": 3.99,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4411",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.47,
+    "unit": 5.76,
+    "integ": 8.46,
+    "scan": 3.12,
+    "staging": 3.9,
+    "canary": 4.5,
+    "prod": 2.05
+   }
+  },
+  {
+   "id": "#4412",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.09,
+    "unit": 6.7,
+    "integ": 6.78,
+    "scan": 3.32,
+    "staging": 3.3,
+    "canary": 6.2,
+    "prod": 2.22
+   }
+  },
+  {
+   "id": "#4413",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.45,
+    "unit": 6.18,
+    "integ": 7.27,
+    "scan": 3.42,
+    "staging": 3.93,
+    "canary": 6.47,
+    "prod": 1.64
+   }
+  },
+  {
+   "id": "#4414",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.19,
+    "unit": 5.51,
+    "integ": 8.14,
+    "scan": 3.1,
+    "staging": 3.92,
+    "canary": 4.75,
+    "prod": 2.13
+   }
+  },
+  {
+   "id": "#4415",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.65,
+    "build": 4.6,
+    "unit": 5.15,
+    "integ": 6.83,
+    "scan": 2.65,
+    "staging": 4.45,
+    "canary": 5.49,
+    "prod": 2.36
+   }
+  },
+  {
+   "id": "#4416",
+   "date": "2026-10-27",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.48,
+    "unit": 5.34
+   }
+  },
+  {
+   "id": "#4417",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 2.87,
+    "unit": 5.25,
+    "integ": 6.93,
+    "scan": 2.2,
+    "staging": 4.59,
+    "canary": 5.5,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4418",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.81,
+    "unit": 6.23,
+    "integ": 6.9,
+    "scan": 3.01,
+    "staging": 4.94,
+    "canary": 4.89,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4419",
+   "date": "2026-10-27",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.37,
+    "unit": 5.03,
+    "integ": 8.17,
+    "scan": 3.69,
+    "staging": 3.33,
+    "canary": 4.84,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4420",
+   "date": "2026-10-28",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.46,
+    "unit": 5.77
+   }
+  },
+  {
+   "id": "#4421",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.66,
+    "unit": 6.55,
+    "integ": 6.79,
+    "scan": 2.68,
+    "staging": 3.47,
+    "canary": 6.03,
+    "prod": 1.69
+   }
+  },
+  {
+   "id": "#4422",
+   "date": "2026-10-28",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.13,
+    "unit": 7.08,
+    "integ": 6.56,
+    "scan": 3.32
+   }
+  },
+  {
+   "id": "#4423",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.96,
+    "unit": 6.99,
+    "integ": 6.16,
+    "scan": 3.02,
+    "staging": 5.19,
+    "canary": 5.24,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4424",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.03,
+    "unit": 4.97,
+    "integ": 7.87,
+    "scan": 2.62,
+    "staging": 3.94,
+    "canary": 4.49,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4425",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.54,
+    "unit": 6.65,
+    "integ": 6.65,
+    "scan": 3.15,
+    "staging": 4.16,
+    "canary": 4.44,
+    "prod": 1.81
+   }
+  },
+  {
+   "id": "#4426",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.68,
+    "unit": 6.92,
+    "integ": 6.65,
+    "scan": 2.64,
+    "staging": 3.71,
+    "canary": 5.17,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4427",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 2.77,
+    "unit": 7.3,
+    "integ": 6.6,
+    "scan": 3.24,
+    "staging": 4.27,
+    "canary": 5.49,
+    "prod": 1.64
+   }
+  },
+  {
+   "id": "#4428",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.37,
+    "unit": 6.27,
+    "integ": 7.63,
+    "scan": 3.07,
+    "staging": 4.1,
+    "canary": 5.33,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4429",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.98,
+    "unit": 5.73,
+    "integ": 5.54,
+    "scan": 3.33,
+    "staging": 3.46,
+    "canary": 5.19,
+    "prod": 1.87
+   }
+  },
+  {
+   "id": "#4430",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.54,
+    "unit": 6.45,
+    "integ": 7.48,
+    "scan": 3.08,
+    "staging": 4.04,
+    "canary": 6.78,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4431",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.17,
+    "unit": 6.84,
+    "integ": 6.98,
+    "scan": 2.84,
+    "staging": 3.93,
+    "canary": 5.56,
+    "prod": 2.27
+   }
+  },
+  {
+   "id": "#4432",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.41,
+    "unit": 5.91,
+    "integ": 7.22,
+    "scan": 2.82,
+    "staging": 4.08,
+    "canary": 6.0,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4433",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.69,
+    "unit": 4.79,
+    "integ": 7.34,
+    "scan": 3.4,
+    "staging": 4.08,
+    "canary": 4.4,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4434",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.57,
+    "unit": 5.3,
+    "integ": 7.17,
+    "scan": 3.11,
+    "staging": 3.71,
+    "canary": 5.61,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4435",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.93,
+    "unit": 6.89,
+    "integ": 8.89,
+    "scan": 2.41,
+    "staging": 3.67,
+    "canary": 5.44,
+    "prod": 2.06
+   }
+  },
+  {
+   "id": "#4436",
+   "date": "2026-10-28",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.39,
+    "unit": 6.79,
+    "integ": 9.01
+   }
+  },
+  {
+   "id": "#4437",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.86,
+    "unit": 6.25,
+    "integ": 6.09,
+    "scan": 3.08,
+    "staging": 4.74,
+    "canary": 3.85,
+    "prod": 1.81
+   }
+  },
+  {
+   "id": "#4438",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.26,
+    "unit": 5.17,
+    "integ": 7.65,
+    "scan": 3.38,
+    "staging": 4.56,
+    "canary": 5.1,
+    "prod": 2.55
+   }
+  },
+  {
+   "id": "#4439",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.24,
+    "unit": 5.23,
+    "integ": 6.22,
+    "scan": 2.77,
+    "staging": 3.63,
+    "canary": 5.6,
+    "prod": 2.38
+   }
+  },
+  {
+   "id": "#4440",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.86,
+    "unit": 7.03,
+    "integ": 6.72,
+    "scan": 2.94,
+    "staging": 4.75,
+    "canary": 5.79,
+    "prod": 1.53
+   }
+  },
+  {
+   "id": "#4441",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.03,
+    "unit": 6.12,
+    "integ": 7.26,
+    "scan": 3.0,
+    "staging": 3.65,
+    "canary": 5.32,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4442",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.79,
+    "unit": 6.45,
+    "integ": 6.71,
+    "scan": 2.04,
+    "staging": 3.38,
+    "canary": 4.81,
+    "prod": 1.51
+   }
+  },
+  {
+   "id": "#4443",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.52,
+    "unit": 5.25,
+    "integ": 8.12,
+    "scan": 3.05,
+    "staging": 4.51,
+    "canary": 4.64,
+    "prod": 2.54
+   }
+  },
+  {
+   "id": "#4444",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.27,
+    "unit": 6.25,
+    "integ": 6.6,
+    "scan": 2.37,
+    "staging": 4.12,
+    "canary": 4.96,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4445",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 4.52,
+    "unit": 5.78,
+    "integ": 8.08,
+    "scan": 2.58,
+    "staging": 3.95,
+    "canary": 6.48,
+    "prod": 1.78
+   }
+  },
+  {
+   "id": "#4446",
+   "date": "2026-10-28",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.24,
+    "unit": 5.84,
+    "integ": 7.38,
+    "scan": 3.23,
+    "staging": 3.87,
+    "canary": 5.37,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4447",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.98,
+    "unit": 6.16,
+    "integ": 7.04,
+    "scan": 2.65,
+    "staging": 3.76,
+    "canary": 4.17,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4448",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.27,
+    "unit": 6.77,
+    "integ": 7.64,
+    "scan": 3.35,
+    "staging": 4.3,
+    "canary": 4.79,
+    "prod": 1.78
+   }
+  },
+  {
+   "id": "#4449",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 3.71,
+    "unit": 6.38,
+    "integ": 6.01,
+    "scan": 3.16,
+    "staging": 3.03,
+    "canary": 4.63,
+    "prod": 1.95
+   }
+  },
+  {
+   "id": "#4450",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.54,
+    "unit": 4.98,
+    "integ": 7.55,
+    "scan": 2.29,
+    "staging": 3.93,
+    "canary": 5.75,
+    "prod": 1.54
+   }
+  },
+  {
+   "id": "#4451",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.71,
+    "build": 3.66,
+    "unit": 5.48,
+    "integ": 6.94,
+    "scan": 3.39,
+    "staging": 3.93,
+    "canary": 5.17,
+    "prod": 2.56
+   }
+  },
+  {
+   "id": "#4452",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.75,
+    "unit": 6.4,
+    "integ": 7.36,
+    "scan": 2.63,
+    "staging": 2.27,
+    "canary": 5.26,
+    "prod": 2.26
+   }
+  },
+  {
+   "id": "#4453",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.68,
+    "unit": 6.07,
+    "integ": 6.02,
+    "scan": 3.7,
+    "staging": 3.86,
+    "canary": 5.81,
+    "prod": 2.19
+   }
+  },
+  {
+   "id": "#4454",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.03,
+    "unit": 4.48,
+    "integ": 7.95,
+    "scan": 3.29,
+    "staging": 3.86,
+    "canary": 5.58,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4455",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.09,
+    "unit": 6.03,
+    "integ": 7.36,
+    "scan": 2.37,
+    "staging": 3.95,
+    "canary": 4.65,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4456",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.65,
+    "build": 3.63,
+    "unit": 5.9,
+    "integ": 5.91,
+    "scan": 3.63,
+    "staging": 4.44,
+    "canary": 5.52,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4457",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.83,
+    "unit": 6.33,
+    "integ": 6.59,
+    "scan": 2.93,
+    "staging": 4.95,
+    "canary": 3.97,
+    "prod": 2.3
+   }
+  },
+  {
+   "id": "#4458",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.98,
+    "unit": 6.67,
+    "integ": 6.72,
+    "scan": 3.08,
+    "staging": 3.56,
+    "canary": 5.43,
+    "prod": 2.36
+   }
+  },
+  {
+   "id": "#4459",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.76,
+    "unit": 6.8,
+    "integ": 7.19,
+    "scan": 2.86,
+    "staging": 3.45,
+    "canary": 5.03,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4460",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.06,
+    "unit": 6.51,
+    "integ": 8.13,
+    "scan": 3.24,
+    "staging": 3.88,
+    "canary": 5.42,
+    "prod": 2.13
+   }
+  },
+  {
+   "id": "#4461",
+   "date": "2026-10-29",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.8,
+    "unit": 5.53,
+    "integ": 7.24,
+    "scan": 2.45
+   }
+  },
+  {
+   "id": "#4462",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.91,
+    "unit": 5.35,
+    "integ": 8.03,
+    "scan": 2.68,
+    "staging": 3.9,
+    "canary": 5.36,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4463",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.9,
+    "unit": 6.54,
+    "integ": 6.56,
+    "scan": 2.64,
+    "staging": 4.67,
+    "canary": 5.26,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4464",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.08,
+    "unit": 4.91,
+    "integ": 8.21,
+    "scan": 3.23,
+    "staging": 3.3,
+    "canary": 4.77,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4465",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.57,
+    "unit": 5.38,
+    "integ": 6.76,
+    "scan": 2.66,
+    "staging": 4.15,
+    "canary": 4.97,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4466",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.91,
+    "unit": 7.1,
+    "integ": 7.28,
+    "scan": 3.0,
+    "staging": 4.32,
+    "canary": 4.69,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4467",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.28,
+    "unit": 6.55,
+    "integ": 8.91,
+    "scan": 3.0,
+    "staging": 4.1,
+    "canary": 5.2,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4468",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.09,
+    "unit": 6.79,
+    "integ": 7.04,
+    "scan": 2.97,
+    "staging": 4.25,
+    "canary": 6.5,
+    "prod": 2.37
+   }
+  },
+  {
+   "id": "#4469",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.2,
+    "unit": 6.94,
+    "integ": 5.81,
+    "scan": 2.85,
+    "staging": 3.37,
+    "canary": 4.92,
+    "prod": 2.17
+   }
+  },
+  {
+   "id": "#4470",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.46,
+    "unit": 5.41,
+    "integ": 5.82,
+    "scan": 3.39,
+    "staging": 3.79,
+    "canary": 4.18,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4471",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.37,
+    "build": 3.77,
+    "unit": 5.51,
+    "integ": 6.34,
+    "scan": 2.82,
+    "staging": 4.86,
+    "canary": 4.59,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4472",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.5,
+    "unit": 6.64,
+    "integ": 7.39,
+    "scan": 3.32,
+    "staging": 4.67,
+    "canary": 4.94,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4473",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 4.6,
+    "unit": 6.5,
+    "integ": 8.14,
+    "scan": 2.78,
+    "staging": 4.31,
+    "canary": 5.28,
+    "prod": 1.79
+   }
+  },
+  {
+   "id": "#4474",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.63,
+    "build": 4.15,
+    "unit": 6.03,
+    "integ": 8.42,
+    "scan": 2.92,
+    "staging": 4.06,
+    "canary": 5.75,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4475",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.99,
+    "unit": 5.25,
+    "integ": 4.65,
+    "scan": 3.02,
+    "staging": 4.77,
+    "canary": 4.76,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4476",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 5.11,
+    "unit": 5.72,
+    "integ": 5.89,
+    "scan": 3.45,
+    "staging": 3.63,
+    "canary": 4.75,
+    "prod": 2.03
+   }
+  },
+  {
+   "id": "#4477",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.89,
+    "unit": 6.33,
+    "integ": 7.17,
+    "scan": 3.41,
+    "staging": 4.73,
+    "canary": 5.56,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4478",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.22,
+    "unit": 5.2,
+    "integ": 6.26,
+    "scan": 2.35,
+    "staging": 3.11,
+    "canary": 4.8,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4479",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.74,
+    "unit": 5.44,
+    "integ": 7.64,
+    "scan": 3.18,
+    "staging": 4.01,
+    "canary": 5.6,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4480",
+   "date": "2026-10-29",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.43,
+    "unit": 5.99,
+    "integ": 4.85,
+    "scan": 3.55,
+    "staging": 4.51,
+    "canary": 4.66,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4481",
+   "date": "2026-10-30",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.54,
+    "unit": 5.58
+   }
+  },
+  {
+   "id": "#4482",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.6,
+    "build": 3.18,
+    "unit": 6.71,
+    "integ": 7.63,
+    "scan": 3.39,
+    "staging": 3.59,
+    "canary": 5.63,
+    "prod": 1.79
+   }
+  },
+  {
+   "id": "#4483",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.73,
+    "unit": 5.2,
+    "integ": 6.32,
+    "scan": 2.86,
+    "staging": 4.23,
+    "canary": 4.73,
+    "prod": 2.08
+   }
+  },
+  {
+   "id": "#4484",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.37,
+    "build": 4.14,
+    "unit": 6.28,
+    "integ": 8.43,
+    "scan": 2.68,
+    "staging": 3.77,
+    "canary": 4.54,
+    "prod": 2.17
+   }
+  },
+  {
+   "id": "#4485",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.15,
+    "unit": 5.73,
+    "integ": 7.82,
+    "scan": 2.4,
+    "staging": 4.58,
+    "canary": 5.44,
+    "prod": 1.82
+   }
+  },
+  {
+   "id": "#4486",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.71,
+    "unit": 5.15,
+    "integ": 5.52,
+    "scan": 2.93,
+    "staging": 5.1,
+    "canary": 5.65,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4487",
+   "date": "2026-10-30",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.65,
+    "unit": 5.94,
+    "integ": 6.64
+   }
+  },
+  {
+   "id": "#4488",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.31,
+    "build": 3.82,
+    "unit": 5.96,
+    "integ": 6.53,
+    "scan": 2.85,
+    "staging": 3.83,
+    "canary": 5.08,
+    "prod": 2.3
+   }
+  },
+  {
+   "id": "#4489",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.28,
+    "unit": 6.71,
+    "integ": 6.76,
+    "scan": 3.07,
+    "staging": 4.82,
+    "canary": 5.98,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4490",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 3.39,
+    "unit": 4.58,
+    "integ": 7.33,
+    "scan": 2.82,
+    "staging": 3.59,
+    "canary": 5.11,
+    "prod": 1.6
+   }
+  },
+  {
+   "id": "#4491",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.19,
+    "unit": 5.82,
+    "integ": 6.74,
+    "scan": 2.76,
+    "staging": 4.73,
+    "canary": 5.22,
+    "prod": 1.73
+   }
+  },
+  {
+   "id": "#4492",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.97,
+    "unit": 5.55,
+    "integ": 7.26,
+    "scan": 2.8,
+    "staging": 3.05,
+    "canary": 5.59,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4493",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.45,
+    "unit": 5.54,
+    "integ": 6.84,
+    "scan": 2.78,
+    "staging": 4.57,
+    "canary": 5.66,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4494",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.2,
+    "unit": 6.2,
+    "integ": 6.97,
+    "scan": 3.48,
+    "staging": 3.45,
+    "canary": 5.43,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4495",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.13,
+    "unit": 5.31,
+    "integ": 6.45,
+    "scan": 2.98,
+    "staging": 3.05,
+    "canary": 4.35,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4496",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.17,
+    "unit": 5.63,
+    "integ": 7.35,
+    "scan": 3.36,
+    "staging": 4.26,
+    "canary": 5.08,
+    "prod": 2.38
+   }
+  },
+  {
+   "id": "#4497",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.39,
+    "build": 3.5,
+    "unit": 6.27,
+    "integ": 6.51,
+    "scan": 2.63,
+    "staging": 4.64,
+    "canary": 4.97,
+    "prod": 1.95
+   }
+  },
+  {
+   "id": "#4498",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.6,
+    "unit": 4.6,
+    "integ": 6.37,
+    "scan": 3.47,
+    "staging": 3.65,
+    "canary": 5.61,
+    "prod": 2.44
+   }
+  },
+  {
+   "id": "#4499",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.45,
+    "unit": 5.22,
+    "integ": 5.36,
+    "scan": 3.21,
+    "staging": 4.11,
+    "canary": 6.01,
+    "prod": 2.67
+   }
+  },
+  {
+   "id": "#4500",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.27,
+    "unit": 6.63,
+    "integ": 7.11,
+    "scan": 2.77,
+    "staging": 3.99,
+    "canary": 4.77,
+    "prod": 1.63
+   }
+  },
+  {
+   "id": "#4501",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.25,
+    "unit": 7.15,
+    "integ": 6.74,
+    "scan": 3.56,
+    "staging": 3.84,
+    "canary": 4.97,
+    "prod": 1.81
+   }
+  },
+  {
+   "id": "#4502",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.47,
+    "unit": 5.67,
+    "integ": 7.12,
+    "scan": 3.08,
+    "staging": 4.27,
+    "canary": 5.23,
+    "prod": 2.2
+   }
+  },
+  {
+   "id": "#4503",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.17,
+    "unit": 5.29,
+    "integ": 6.49,
+    "scan": 2.48,
+    "staging": 4.94,
+    "canary": 5.02,
+    "prod": 1.88
+   }
+  },
+  {
+   "id": "#4504",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.17,
+    "unit": 5.98,
+    "integ": 6.39,
+    "scan": 3.25,
+    "staging": 3.91,
+    "canary": 5.59,
+    "prod": 1.64
+   }
+  },
+  {
+   "id": "#4505",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.22,
+    "unit": 5.75,
+    "integ": 6.41,
+    "scan": 3.44,
+    "staging": 4.97,
+    "canary": 4.74,
+    "prod": 2.54
+   }
+  },
+  {
+   "id": "#4506",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.25,
+    "unit": 5.57,
+    "integ": 7.94,
+    "scan": 2.75,
+    "staging": 4.49,
+    "canary": 5.04,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4507",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.22,
+    "unit": 5.65,
+    "integ": 5.79,
+    "scan": 3.25,
+    "staging": 4.17,
+    "canary": 5.87,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4508",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.69,
+    "unit": 5.82,
+    "integ": 8.24,
+    "scan": 2.55,
+    "staging": 4.53,
+    "canary": 3.21,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4509",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.72,
+    "unit": 5.52,
+    "integ": 5.57,
+    "scan": 3.11,
+    "staging": 3.81,
+    "canary": 4.84,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4510",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.98,
+    "unit": 5.81,
+    "integ": 7.43,
+    "scan": 2.45,
+    "staging": 3.46,
+    "canary": 4.68,
+    "prod": 2.42
+   }
+  },
+  {
+   "id": "#4511",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.46,
+    "unit": 6.25,
+    "integ": 6.51,
+    "scan": 3.14,
+    "staging": 4.25,
+    "canary": 5.21,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4512",
+   "date": "2026-10-30",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.86,
+    "unit": 6.1,
+    "integ": 6.65,
+    "scan": 2.96,
+    "staging": 3.75,
+    "canary": 4.39,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4513",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.98,
+    "unit": 7.82,
+    "integ": 7.48,
+    "scan": 2.61,
+    "staging": 3.5,
+    "canary": 5.15,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4514",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.31,
+    "unit": 6.22,
+    "integ": 6.25,
+    "scan": 2.74,
+    "staging": 4.53,
+    "canary": 4.65,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4515",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.6,
+    "build": 5.11,
+    "unit": 6.18,
+    "integ": 7.35,
+    "scan": 2.69,
+    "staging": 3.89,
+    "canary": 5.34,
+    "prod": 2.25
+   }
+  },
+  {
+   "id": "#4516",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.65,
+    "unit": 5.67,
+    "integ": 7.34,
+    "scan": 2.73,
+    "staging": 5.46,
+    "canary": 4.77,
+    "prod": 1.66
+   }
+  },
+  {
+   "id": "#4517",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.53,
+    "unit": 5.38,
+    "integ": 7.03,
+    "scan": 3.04,
+    "staging": 3.54,
+    "canary": 5.39,
+    "prod": 2.28
+   }
+  },
+  {
+   "id": "#4518",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.44,
+    "unit": 6.67,
+    "integ": 8.29,
+    "scan": 2.65,
+    "staging": 3.66,
+    "canary": 5.85,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4519",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.04,
+    "unit": 6.7,
+    "integ": 7.53,
+    "scan": 3.45,
+    "staging": 4.0,
+    "canary": 5.24,
+    "prod": 2.22
+   }
+  },
+  {
+   "id": "#4520",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.44,
+    "unit": 6.6,
+    "integ": 6.65,
+    "scan": 2.9,
+    "staging": 4.51,
+    "canary": 5.54,
+    "prod": 2.36
+   }
+  },
+  {
+   "id": "#4521",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.49,
+    "unit": 4.81,
+    "integ": 7.16,
+    "scan": 3.22,
+    "staging": 4.94,
+    "canary": 4.74,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4522",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.08,
+    "unit": 6.13,
+    "integ": 8.18,
+    "scan": 3.22,
+    "staging": 4.18,
+    "canary": 5.3,
+    "prod": 1.48
+   }
+  },
+  {
+   "id": "#4523",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.84,
+    "unit": 5.68,
+    "integ": 7.4,
+    "scan": 2.84,
+    "staging": 4.61,
+    "canary": 4.37,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4524",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.39,
+    "build": 3.7,
+    "unit": 6.84,
+    "integ": 6.92,
+    "scan": 3.16,
+    "staging": 3.68,
+    "canary": 6.23,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4525",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.01,
+    "unit": 5.21,
+    "integ": 6.39,
+    "scan": 2.94,
+    "staging": 4.69,
+    "canary": 4.38,
+    "prod": 1.95
+   }
+  },
+  {
+   "id": "#4526",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.33,
+    "unit": 5.64,
+    "integ": 7.67,
+    "scan": 2.88,
+    "staging": 3.98,
+    "canary": 4.58,
+    "prod": 1.87
+   }
+  },
+  {
+   "id": "#4527",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.92,
+    "unit": 5.77,
+    "integ": 5.48,
+    "scan": 2.8,
+    "staging": 4.12,
+    "canary": 4.52,
+    "prod": 2.39
+   }
+  },
+  {
+   "id": "#4528",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.04,
+    "unit": 5.85,
+    "integ": 7.03,
+    "scan": 3.46,
+    "staging": 4.02,
+    "canary": 4.48,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4529",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.95,
+    "unit": 4.7,
+    "integ": 6.48,
+    "scan": 3.36,
+    "staging": 3.5,
+    "canary": 4.29,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4530",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.81,
+    "unit": 5.49,
+    "integ": 7.7,
+    "scan": 2.52,
+    "staging": 4.58,
+    "canary": 4.99,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4531",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.14,
+    "unit": 6.52,
+    "integ": 6.26,
+    "scan": 2.61,
+    "staging": 3.72,
+    "canary": 5.09,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4532",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.07,
+    "unit": 5.82,
+    "integ": 8.83,
+    "scan": 3.67,
+    "staging": 4.43,
+    "canary": 4.25,
+    "prod": 1.86
+   }
+  },
+  {
+   "id": "#4533",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.93,
+    "unit": 5.61,
+    "integ": 6.69,
+    "scan": 3.44,
+    "staging": 3.5,
+    "canary": 5.98,
+    "prod": 2.17
+   }
+  },
+  {
+   "id": "#4534",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.5,
+    "unit": 6.14,
+    "integ": 7.95,
+    "scan": 3.32,
+    "staging": 3.61,
+    "canary": 4.8,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4535",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.72,
+    "unit": 6.21,
+    "integ": 6.2,
+    "scan": 3.43,
+    "staging": 3.86,
+    "canary": 4.68,
+    "prod": 1.78
+   }
+  },
+  {
+   "id": "#4536",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.55,
+    "unit": 5.63,
+    "integ": 6.8,
+    "scan": 3.14,
+    "staging": 3.71,
+    "canary": 5.77,
+    "prod": 1.32
+   }
+  },
+  {
+   "id": "#4537",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.47,
+    "unit": 6.46,
+    "integ": 7.99,
+    "scan": 2.83,
+    "staging": 3.1,
+    "canary": 4.81,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4538",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.18,
+    "unit": 5.32,
+    "integ": 6.95,
+    "scan": 3.81,
+    "staging": 4.34,
+    "canary": 5.38,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4539",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.1,
+    "unit": 5.65,
+    "integ": 8.06,
+    "scan": 3.36,
+    "staging": 4.21,
+    "canary": 5.11,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4540",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 5.0,
+    "unit": 5.99,
+    "integ": 8.04,
+    "scan": 3.1,
+    "staging": 4.15,
+    "canary": 5.58,
+    "prod": 1.78
+   }
+  },
+  {
+   "id": "#4541",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.66,
+    "unit": 6.15,
+    "integ": 7.17,
+    "scan": 2.75,
+    "staging": 4.6,
+    "canary": 5.36,
+    "prod": 2.19
+   }
+  },
+  {
+   "id": "#4542",
+   "date": "2026-10-31",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 4.61,
+    "unit": 5.17,
+    "integ": 6.77,
+    "scan": 3.47,
+    "staging": 4.42,
+    "canary": 5.2,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4543",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 2.98,
+    "unit": 5.24,
+    "integ": 6.54,
+    "scan": 2.53,
+    "staging": 4.31,
+    "canary": 4.71,
+    "prod": 2.03
+   }
+  },
+  {
+   "id": "#4544",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.94,
+    "unit": 6.38,
+    "integ": 5.48,
+    "scan": 3.23,
+    "staging": 3.42,
+    "canary": 4.43,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4545",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.58,
+    "unit": 4.82,
+    "integ": 6.77,
+    "scan": 2.76,
+    "staging": 4.14,
+    "canary": 5.13,
+    "prod": 2.31
+   }
+  },
+  {
+   "id": "#4546",
+   "date": "2026-11-01",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.44,
+    "unit": 5.74,
+    "integ": 6.7
+   }
+  },
+  {
+   "id": "#4547",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.13,
+    "unit": 4.84,
+    "integ": 6.67,
+    "scan": 3.32,
+    "staging": 4.36,
+    "canary": 6.32,
+    "prod": 2.35
+   }
+  },
+  {
+   "id": "#4548",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.65,
+    "unit": 6.28,
+    "integ": 6.66,
+    "scan": 2.92,
+    "staging": 4.27,
+    "canary": 4.75,
+    "prod": 2.21
+   }
+  },
+  {
+   "id": "#4549",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.51,
+    "unit": 5.33,
+    "integ": 7.13,
+    "scan": 2.38,
+    "staging": 3.39,
+    "canary": 5.06,
+    "prod": 1.7
+   }
+  },
+  {
+   "id": "#4550",
+   "date": "2026-11-01",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.13,
+    "unit": 5.6,
+    "integ": 7.0,
+    "scan": 3.12
+   }
+  },
+  {
+   "id": "#4551",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.37,
+    "build": 5.0,
+    "unit": 5.66,
+    "integ": 7.22,
+    "scan": 2.82,
+    "staging": 4.57,
+    "canary": 4.91,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4552",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.4,
+    "unit": 5.17,
+    "integ": 5.57,
+    "scan": 3.12,
+    "staging": 4.17,
+    "canary": 4.58,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4553",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.07,
+    "unit": 6.29,
+    "integ": 7.06,
+    "scan": 2.68,
+    "staging": 4.44,
+    "canary": 5.71,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4554",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.56,
+    "unit": 6.47,
+    "integ": 8.52,
+    "scan": 3.12,
+    "staging": 3.39,
+    "canary": 5.26,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4555",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.96,
+    "unit": 6.01,
+    "integ": 5.68,
+    "scan": 3.28,
+    "staging": 4.44,
+    "canary": 5.16,
+    "prod": 1.84
+   }
+  },
+  {
+   "id": "#4556",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.51,
+    "unit": 6.2,
+    "integ": 7.95,
+    "scan": 3.37,
+    "staging": 4.26,
+    "canary": 4.26,
+    "prod": 2.24
+   }
+  },
+  {
+   "id": "#4557",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.36,
+    "unit": 5.91,
+    "integ": 6.12,
+    "scan": 2.99,
+    "staging": 4.79,
+    "canary": 3.82,
+    "prod": 1.71
+   }
+  },
+  {
+   "id": "#4558",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 3.37,
+    "unit": 3.99,
+    "integ": 5.99,
+    "scan": 2.91,
+    "staging": 4.54,
+    "canary": 5.19,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4559",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 3.89,
+    "unit": 4.37,
+    "integ": 6.67,
+    "scan": 3.64,
+    "staging": 4.94,
+    "canary": 5.45,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4560",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.48,
+    "unit": 5.29,
+    "integ": 7.97,
+    "scan": 3.26,
+    "staging": 3.84,
+    "canary": 5.72,
+    "prod": 2.27
+   }
+  },
+  {
+   "id": "#4561",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.82,
+    "unit": 5.02,
+    "integ": 6.52,
+    "scan": 3.19,
+    "staging": 4.11,
+    "canary": 4.71,
+    "prod": 1.75
+   }
+  },
+  {
+   "id": "#4562",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 3.9,
+    "unit": 4.6,
+    "integ": 7.3,
+    "scan": 3.36,
+    "staging": 3.93,
+    "canary": 5.59,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4563",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.3,
+    "unit": 6.18,
+    "integ": 6.56,
+    "scan": 3.02,
+    "staging": 3.23,
+    "canary": 4.13,
+    "prod": 1.62
+   }
+  },
+  {
+   "id": "#4564",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.13,
+    "unit": 5.97,
+    "integ": 7.44,
+    "scan": 2.46,
+    "staging": 3.3,
+    "canary": 4.53,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4565",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.95,
+    "unit": 6.83,
+    "integ": 7.56,
+    "scan": 3.11,
+    "staging": 3.88,
+    "canary": 4.98,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4566",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.26,
+    "unit": 6.07,
+    "integ": 9.05,
+    "scan": 3.42,
+    "staging": 3.62,
+    "canary": 4.85,
+    "prod": 1.93
+   }
+  },
+  {
+   "id": "#4567",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.48,
+    "unit": 6.8,
+    "integ": 7.49,
+    "scan": 3.38,
+    "staging": 3.67,
+    "canary": 4.51,
+    "prod": 2.07
+   }
+  },
+  {
+   "id": "#4568",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.9,
+    "unit": 5.15,
+    "integ": 7.22,
+    "scan": 3.28,
+    "staging": 4.38,
+    "canary": 4.98,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4569",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.17,
+    "unit": 5.49,
+    "integ": 6.15,
+    "scan": 3.17,
+    "staging": 4.02,
+    "canary": 5.1,
+    "prod": 2.5
+   }
+  },
+  {
+   "id": "#4570",
+   "date": "2026-11-01",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.81,
+    "unit": 6.12,
+    "integ": 7.85,
+    "scan": 2.59,
+    "staging": 3.49,
+    "canary": 5.01,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4571",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.35,
+    "unit": 6.0,
+    "integ": 5.22,
+    "scan": 3.06,
+    "staging": 3.96,
+    "canary": 5.23,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4572",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.63,
+    "unit": 4.68,
+    "integ": 6.58,
+    "scan": 3.51,
+    "staging": 3.46,
+    "canary": 5.33,
+    "prod": 1.68
+   }
+  },
+  {
+   "id": "#4573",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.17,
+    "unit": 6.92,
+    "integ": 7.28,
+    "scan": 3.63,
+    "staging": 3.04,
+    "canary": 5.17,
+    "prod": 2.19
+   }
+  },
+  {
+   "id": "#4574",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.64,
+    "unit": 5.55,
+    "integ": 7.61,
+    "scan": 3.14,
+    "staging": 5.0,
+    "canary": 5.04,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4575",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.04,
+    "unit": 6.1,
+    "integ": 6.61,
+    "scan": 3.43,
+    "staging": 3.87,
+    "canary": 4.39,
+    "prod": 1.91
+   }
+  },
+  {
+   "id": "#4576",
+   "date": "2026-11-02",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.9,
+    "unit": 5.22
+   }
+  },
+  {
+   "id": "#4577",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.23,
+    "unit": 5.42,
+    "integ": 7.27,
+    "scan": 2.85,
+    "staging": 3.93,
+    "canary": 5.31,
+    "prod": 2.18
+   }
+  },
+  {
+   "id": "#4578",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.24,
+    "unit": 7.23,
+    "integ": 7.01,
+    "scan": 3.22,
+    "staging": 3.63,
+    "canary": 4.86,
+    "prod": 1.66
+   }
+  },
+  {
+   "id": "#4579",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 3.52,
+    "unit": 5.31,
+    "integ": 6.83,
+    "scan": 3.36,
+    "staging": 5.11,
+    "canary": 4.82,
+    "prod": 2.53
+   }
+  },
+  {
+   "id": "#4580",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.14,
+    "unit": 6.9,
+    "integ": 7.0,
+    "scan": 2.96,
+    "staging": 3.51,
+    "canary": 4.92,
+    "prod": 1.95
+   }
+  },
+  {
+   "id": "#4581",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.94,
+    "unit": 6.0,
+    "integ": 7.66,
+    "scan": 2.91,
+    "staging": 4.01,
+    "canary": 4.81,
+    "prod": 2.2
+   }
+  },
+  {
+   "id": "#4582",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.85,
+    "unit": 6.79,
+    "integ": 5.73,
+    "scan": 2.62,
+    "staging": 3.86,
+    "canary": 4.47,
+    "prod": 2.32
+   }
+  },
+  {
+   "id": "#4583",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.22,
+    "unit": 6.8,
+    "integ": 6.28,
+    "scan": 3.08,
+    "staging": 4.17,
+    "canary": 3.99,
+    "prod": 1.54
+   }
+  },
+  {
+   "id": "#4584",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.69,
+    "unit": 5.93,
+    "integ": 6.01,
+    "scan": 3.0,
+    "staging": 3.51,
+    "canary": 4.96,
+    "prod": 1.9
+   }
+  },
+  {
+   "id": "#4585",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 3.63,
+    "unit": 6.7,
+    "integ": 7.2,
+    "scan": 2.7,
+    "staging": 3.97,
+    "canary": 3.85,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4586",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.33,
+    "unit": 6.1,
+    "integ": 6.17,
+    "scan": 2.58,
+    "staging": 4.52,
+    "canary": 5.23,
+    "prod": 2.25
+   }
+  },
+  {
+   "id": "#4587",
+   "date": "2026-11-02",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.5,
+    "unit": 5.9,
+    "integ": 5.18,
+    "scan": 2.87
+   }
+  },
+  {
+   "id": "#4588",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 5.09,
+    "unit": 6.34,
+    "integ": 7.13,
+    "scan": 3.55,
+    "staging": 4.76,
+    "canary": 6.29,
+    "prod": 2.27
+   }
+  },
+  {
+   "id": "#4589",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 5.37,
+    "unit": 5.47,
+    "integ": 6.05,
+    "scan": 3.26,
+    "staging": 3.96,
+    "canary": 4.73,
+    "prod": 1.75
+   }
+  },
+  {
+   "id": "#4590",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.08,
+    "unit": 6.29,
+    "integ": 6.48,
+    "scan": 2.65,
+    "staging": 3.79,
+    "canary": 5.01,
+    "prod": 2.03
+   }
+  },
+  {
+   "id": "#4591",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.21,
+    "unit": 6.28,
+    "integ": 6.04,
+    "scan": 2.25,
+    "staging": 4.36,
+    "canary": 5.09,
+    "prod": 1.59
+   }
+  },
+  {
+   "id": "#4592",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.1,
+    "unit": 6.28,
+    "integ": 7.82,
+    "scan": 2.61,
+    "staging": 3.72,
+    "canary": 4.74,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4593",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 4.69,
+    "unit": 5.12,
+    "integ": 6.21,
+    "scan": 2.91,
+    "staging": 4.23,
+    "canary": 3.9,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4594",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.36,
+    "build": 4.22,
+    "unit": 5.53,
+    "integ": 6.53,
+    "scan": 2.58,
+    "staging": 4.06,
+    "canary": 4.85,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4595",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.7,
+    "unit": 5.55,
+    "integ": 6.89,
+    "scan": 3.23,
+    "staging": 4.01,
+    "canary": 4.57,
+    "prod": 2.33
+   }
+  },
+  {
+   "id": "#4596",
+   "date": "2026-11-02",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.47,
+    "unit": 5.29,
+    "integ": 7.73,
+    "scan": 3.37,
+    "staging": 3.6,
+    "canary": 5.33,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4597",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.61,
+    "unit": 5.56,
+    "integ": 6.29,
+    "scan": 2.6,
+    "staging": 4.14,
+    "canary": 5.31,
+    "prod": 2.15
+   }
+  },
+  {
+   "id": "#4598",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.03,
+    "unit": 7.43,
+    "integ": 6.47,
+    "scan": 2.82,
+    "staging": 4.32,
+    "canary": 5.53,
+    "prod": 2.43
+   }
+  },
+  {
+   "id": "#4599",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.52,
+    "unit": 5.78,
+    "integ": 6.09,
+    "scan": 3.33,
+    "staging": 4.17,
+    "canary": 4.14,
+    "prod": 1.54
+   }
+  },
+  {
+   "id": "#4600",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.65,
+    "unit": 6.0,
+    "integ": 7.66,
+    "scan": 3.58,
+    "staging": 4.52,
+    "canary": 6.1,
+    "prod": 1.93
+   }
+  },
+  {
+   "id": "#4601",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.52,
+    "unit": 6.17,
+    "integ": 6.21,
+    "scan": 3.44,
+    "staging": 4.01,
+    "canary": 4.15,
+    "prod": 1.53
+   }
+  },
+  {
+   "id": "#4602",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 5.31,
+    "unit": 5.19,
+    "integ": 6.49,
+    "scan": 3.16,
+    "staging": 4.57,
+    "canary": 3.96,
+    "prod": 2.41
+   }
+  },
+  {
+   "id": "#4603",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.73,
+    "unit": 6.44,
+    "integ": 6.35,
+    "scan": 2.83,
+    "staging": 3.66,
+    "canary": 5.7,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4604",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 4.02,
+    "unit": 6.46,
+    "integ": 7.58,
+    "scan": 2.98,
+    "staging": 4.24,
+    "canary": 5.3,
+    "prod": 2.28
+   }
+  },
+  {
+   "id": "#4605",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 2.99,
+    "unit": 6.16,
+    "integ": 8.82,
+    "scan": 2.95,
+    "staging": 4.46,
+    "canary": 5.25,
+    "prod": 1.69
+   }
+  },
+  {
+   "id": "#4606",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 4.18,
+    "unit": 6.62,
+    "integ": 7.65,
+    "scan": 2.58,
+    "staging": 3.75,
+    "canary": 5.43,
+    "prod": 2.08
+   }
+  },
+  {
+   "id": "#4607",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.32,
+    "unit": 6.52,
+    "integ": 6.93,
+    "scan": 3.53,
+    "staging": 4.19,
+    "canary": 5.34,
+    "prod": 1.6
+   }
+  },
+  {
+   "id": "#4608",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 4.02,
+    "unit": 5.92,
+    "integ": 6.32,
+    "scan": 2.58,
+    "staging": 4.05,
+    "canary": 3.36,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4609",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.24,
+    "unit": 5.32,
+    "integ": 7.27,
+    "scan": 3.09,
+    "staging": 4.4,
+    "canary": 5.81,
+    "prod": 1.65
+   }
+  },
+  {
+   "id": "#4610",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.64,
+    "build": 3.95,
+    "unit": 6.34,
+    "integ": 6.76,
+    "scan": 2.1,
+    "staging": 3.91,
+    "canary": 5.3,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4611",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.62,
+    "unit": 6.27,
+    "integ": 7.19,
+    "scan": 2.96,
+    "staging": 4.2,
+    "canary": 4.74,
+    "prod": 1.79
+   }
+  },
+  {
+   "id": "#4612",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.6,
+    "build": 4.46,
+    "unit": 6.29,
+    "integ": 8.84,
+    "scan": 3.31,
+    "staging": 4.47,
+    "canary": 3.62,
+    "prod": 1.46
+   }
+  },
+  {
+   "id": "#4613",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 3.91,
+    "unit": 6.42,
+    "integ": 5.5,
+    "scan": 3.03,
+    "staging": 3.65,
+    "canary": 5.1,
+    "prod": 2.19
+   }
+  },
+  {
+   "id": "#4614",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.94,
+    "unit": 3.99,
+    "integ": 7.45,
+    "scan": 2.63,
+    "staging": 4.51,
+    "canary": 4.73,
+    "prod": 1.56
+   }
+  },
+  {
+   "id": "#4615",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.05,
+    "unit": 6.11,
+    "integ": 5.63,
+    "scan": 3.08,
+    "staging": 3.02,
+    "canary": 6.18,
+    "prod": 2.28
+   }
+  },
+  {
+   "id": "#4616",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 3.82,
+    "unit": 5.35,
+    "integ": 8.01,
+    "scan": 3.13,
+    "staging": 3.35,
+    "canary": 4.41,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4617",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.73,
+    "unit": 5.92,
+    "integ": 7.18,
+    "scan": 3.3,
+    "staging": 3.65,
+    "canary": 3.51,
+    "prod": 2.01
+   }
+  },
+  {
+   "id": "#4618",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.02,
+    "unit": 6.88,
+    "integ": 8.39,
+    "scan": 2.55,
+    "staging": 4.49,
+    "canary": 4.85,
+    "prod": 1.44
+   }
+  },
+  {
+   "id": "#4619",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.93,
+    "unit": 6.96,
+    "integ": 7.38,
+    "scan": 2.98,
+    "staging": 3.41,
+    "canary": 5.26,
+    "prod": 2.2
+   }
+  },
+  {
+   "id": "#4620",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.33,
+    "unit": 7.53,
+    "integ": 5.15,
+    "scan": 2.97,
+    "staging": 3.82,
+    "canary": 5.32,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4621",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 2.76,
+    "unit": 5.53,
+    "integ": 7.02,
+    "scan": 2.92,
+    "staging": 4.6,
+    "canary": 5.49,
+    "prod": 1.74
+   }
+  },
+  {
+   "id": "#4622",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.77,
+    "unit": 4.61,
+    "integ": 7.64,
+    "scan": 2.61,
+    "staging": 4.55,
+    "canary": 4.12,
+    "prod": 2.13
+   }
+  },
+  {
+   "id": "#4623",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.78,
+    "unit": 7.14,
+    "integ": 6.4,
+    "scan": 3.34,
+    "staging": 4.36,
+    "canary": 3.92,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4624",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.41,
+    "build": 3.27,
+    "unit": 6.74,
+    "integ": 6.49,
+    "scan": 3.69,
+    "staging": 3.5,
+    "canary": 6.3,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4625",
+   "date": "2026-11-03",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.31,
+    "unit": 5.35
+   }
+  },
+  {
+   "id": "#4626",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.29,
+    "unit": 5.45,
+    "integ": 6.52,
+    "scan": 3.49,
+    "staging": 4.26,
+    "canary": 5.58,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4627",
+   "date": "2026-11-03",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.2,
+    "unit": 5.67,
+    "integ": 5.71
+   }
+  },
+  {
+   "id": "#4628",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.9,
+    "unit": 6.14,
+    "integ": 6.05,
+    "scan": 3.18,
+    "staging": 4.1,
+    "canary": 5.17,
+    "prod": 1.66
+   }
+  },
+  {
+   "id": "#4629",
+   "date": "2026-11-03",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.37,
+    "build": 3.95,
+    "unit": 6.97,
+    "integ": 8.55,
+    "scan": 2.6,
+    "staging": 3.86,
+    "canary": 4.49,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4630",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.35,
+    "build": 3.56,
+    "unit": 5.07,
+    "integ": 20.09,
+    "scan": 2.74,
+    "staging": 3.81,
+    "canary": 5.3,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4631",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.68,
+    "unit": 5.52,
+    "integ": 21.11,
+    "scan": 3.0,
+    "staging": 3.22,
+    "canary": 5.2,
+    "prod": 1.85
+   }
+  },
+  {
+   "id": "#4632",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.92,
+    "unit": 6.42,
+    "integ": 23.6,
+    "scan": 1.96,
+    "staging": 4.75,
+    "canary": 4.3,
+    "prod": 1.92
+   }
+  },
+  {
+   "id": "#4633",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.61,
+    "build": 3.95,
+    "unit": 5.38,
+    "integ": 24.82,
+    "scan": 2.82,
+    "staging": 3.85,
+    "canary": 5.1,
+    "prod": 2.19
+   }
+  },
+  {
+   "id": "#4634",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.41,
+    "unit": 5.46,
+    "integ": 23.17,
+    "scan": 3.04,
+    "staging": 4.57,
+    "canary": 4.11,
+    "prod": 2.16
+   }
+  },
+  {
+   "id": "#4635",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.95,
+    "unit": 6.74,
+    "integ": 22.6,
+    "scan": 3.41,
+    "staging": 3.33,
+    "canary": 5.12,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4636",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.62,
+    "unit": 5.9,
+    "integ": 20.57,
+    "scan": 2.85,
+    "staging": 3.51,
+    "canary": 4.45,
+    "prod": 2.3
+   }
+  },
+  {
+   "id": "#4637",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.54,
+    "unit": 6.35,
+    "integ": 26.72,
+    "scan": 3.68,
+    "staging": 3.29,
+    "canary": 4.91,
+    "prod": 2.23
+   }
+  },
+  {
+   "id": "#4638",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 4.37,
+    "unit": 6.37,
+    "integ": 18.96,
+    "scan": 3.25,
+    "staging": 3.93,
+    "canary": 4.11,
+    "prod": 1.89
+   }
+  },
+  {
+   "id": "#4639",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.65,
+    "unit": 6.67,
+    "integ": 24.85,
+    "scan": 3.16,
+    "staging": 3.76,
+    "canary": 4.19,
+    "prod": 2.35
+   }
+  },
+  {
+   "id": "#4640",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.28,
+    "unit": 6.44,
+    "integ": 25.04,
+    "scan": 3.0,
+    "staging": 3.18,
+    "canary": 4.05,
+    "prod": 1.63
+   }
+  },
+  {
+   "id": "#4641",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.88,
+    "unit": 5.54,
+    "integ": 22.28,
+    "scan": 2.67,
+    "staging": 4.34,
+    "canary": 5.25,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4642",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.65,
+    "unit": 4.74,
+    "integ": 26.63,
+    "scan": 3.27,
+    "staging": 3.05,
+    "canary": 5.68,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4643",
+   "date": "2026-11-04",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.6,
+    "build": 4.2,
+    "unit": 4.22,
+    "integ": 26.11,
+    "scan": 3.49
+   }
+  },
+  {
+   "id": "#4644",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.55,
+    "build": 4.32,
+    "unit": 5.18,
+    "integ": 20.44,
+    "scan": 3.13,
+    "staging": 4.4,
+    "canary": 6.0,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4645",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.7,
+    "unit": 5.82,
+    "integ": 22.55,
+    "scan": 2.92,
+    "staging": 4.53,
+    "canary": 4.7,
+    "prod": 1.93
+   }
+  },
+  {
+   "id": "#4646",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.5,
+    "unit": 7.47,
+    "integ": 24.95,
+    "scan": 2.9,
+    "staging": 3.37,
+    "canary": 4.79,
+    "prod": 2.26
+   }
+  },
+  {
+   "id": "#4647",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 3.79,
+    "unit": 6.28,
+    "integ": 22.55,
+    "scan": 3.27,
+    "staging": 4.04,
+    "canary": 5.55,
+    "prod": 1.95
+   }
+  },
+  {
+   "id": "#4648",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.4,
+    "build": 3.96,
+    "unit": 6.01,
+    "integ": 23.65,
+    "scan": 2.88,
+    "staging": 4.37,
+    "canary": 5.38,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4649",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.15,
+    "unit": 7.1,
+    "integ": 21.21,
+    "scan": 3.19,
+    "staging": 4.29,
+    "canary": 5.82,
+    "prod": 2.25
+   }
+  },
+  {
+   "id": "#4650",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.36,
+    "unit": 5.7,
+    "integ": 23.37,
+    "scan": 2.96,
+    "staging": 4.86,
+    "canary": 5.4,
+    "prod": 1.65
+   }
+  },
+  {
+   "id": "#4651",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 3.5,
+    "unit": 5.46,
+    "integ": 20.84,
+    "scan": 2.65,
+    "staging": 3.72,
+    "canary": 5.1,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4652",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.18,
+    "unit": 6.95,
+    "integ": 27.04,
+    "scan": 2.94,
+    "staging": 3.68,
+    "canary": 5.17,
+    "prod": 1.99
+   }
+  },
+  {
+   "id": "#4653",
+   "date": "2026-11-04",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.92,
+    "unit": 5.54
+   }
+  },
+  {
+   "id": "#4654",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 3.97,
+    "unit": 6.18,
+    "integ": 25.92,
+    "scan": 2.95,
+    "staging": 4.12,
+    "canary": 5.14,
+    "prod": 2.14
+   }
+  },
+  {
+   "id": "#4655",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.68,
+    "unit": 6.43,
+    "integ": 17.83,
+    "scan": 2.96,
+    "staging": 4.32,
+    "canary": 5.02,
+    "prod": 2.12
+   }
+  },
+  {
+   "id": "#4656",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.58,
+    "build": 4.88,
+    "unit": 5.71,
+    "integ": 20.43,
+    "scan": 2.84,
+    "staging": 4.63,
+    "canary": 5.12,
+    "prod": 2.29
+   }
+  },
+  {
+   "id": "#4657",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.59,
+    "build": 3.42,
+    "unit": 6.57,
+    "integ": 22.47,
+    "scan": 2.34,
+    "staging": 4.18,
+    "canary": 5.03,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4658",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.82,
+    "unit": 5.8,
+    "integ": 22.93,
+    "scan": 2.63,
+    "staging": 3.66,
+    "canary": 4.71,
+    "prod": 2.15
+   }
+  },
+  {
+   "id": "#4659",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.41,
+    "build": 4.02,
+    "unit": 6.06,
+    "integ": 24.79,
+    "scan": 3.37,
+    "staging": 4.06,
+    "canary": 4.8,
+    "prod": 2.29
+   }
+  },
+  {
+   "id": "#4660",
+   "date": "2026-11-04",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.65,
+    "build": 3.47,
+    "unit": 4.96,
+    "integ": 23.47,
+    "scan": 3.56,
+    "staging": 4.07,
+    "canary": 4.23,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4661",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.65,
+    "unit": 5.53,
+    "integ": 23.96,
+    "scan": 3.18,
+    "staging": 3.62,
+    "canary": 5.74,
+    "prod": 2.28
+   }
+  },
+  {
+   "id": "#4662",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.55,
+    "unit": 6.45,
+    "integ": 23.1,
+    "scan": 3.18,
+    "staging": 3.91,
+    "canary": 4.86,
+    "prod": 2.36
+   }
+  },
+  {
+   "id": "#4663",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.66,
+    "unit": 4.86,
+    "integ": 26.56,
+    "scan": 3.47,
+    "staging": 4.0,
+    "canary": 4.93,
+    "prod": 2.05
+   }
+  },
+  {
+   "id": "#4664",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.77,
+    "unit": 6.39,
+    "integ": 24.2,
+    "scan": 2.72,
+    "staging": 3.91,
+    "canary": 4.84,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4665",
+   "date": "2026-11-05",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.81,
+    "unit": 6.23,
+    "integ": 24.18,
+    "scan": 3.13
+   }
+  },
+  {
+   "id": "#4666",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 2.89,
+    "unit": 5.44,
+    "integ": 18.95,
+    "scan": 3.62,
+    "staging": 3.69,
+    "canary": 3.99,
+    "prod": 1.92
+   }
+  },
+  {
+   "id": "#4667",
+   "date": "2026-11-05",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.38,
+    "build": 3.8,
+    "unit": 6.17,
+    "integ": 23.54,
+    "scan": 2.63
+   }
+  },
+  {
+   "id": "#4668",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 2.76,
+    "unit": 6.1,
+    "integ": 23.2,
+    "scan": 2.83,
+    "staging": 4.43,
+    "canary": 5.12,
+    "prod": 1.67
+   }
+  },
+  {
+   "id": "#4669",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.0,
+    "unit": 6.16,
+    "integ": 21.15,
+    "scan": 3.59,
+    "staging": 4.1,
+    "canary": 5.05,
+    "prod": 2.27
+   }
+  },
+  {
+   "id": "#4670",
+   "date": "2026-11-05",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 4.62,
+    "unit": 6.62,
+    "integ": 26.3
+   }
+  },
+  {
+   "id": "#4671",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.51,
+    "unit": 6.76,
+    "integ": 24.55,
+    "scan": 3.3,
+    "staging": 3.31,
+    "canary": 5.09,
+    "prod": 1.97
+   }
+  },
+  {
+   "id": "#4672",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.67,
+    "unit": 6.01,
+    "integ": 24.42,
+    "scan": 3.58,
+    "staging": 3.92,
+    "canary": 4.94,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4673",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 4.12,
+    "unit": 6.02,
+    "integ": 24.43,
+    "scan": 3.07,
+    "staging": 3.52,
+    "canary": 5.01,
+    "prod": 1.81
+   }
+  },
+  {
+   "id": "#4674",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.64,
+    "build": 4.13,
+    "unit": 5.55,
+    "integ": 25.77,
+    "scan": 2.95,
+    "staging": 3.8,
+    "canary": 5.16,
+    "prod": 2.1
+   }
+  },
+  {
+   "id": "#4675",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.82,
+    "unit": 6.79,
+    "integ": 19.97,
+    "scan": 2.86,
+    "staging": 4.33,
+    "canary": 6.4,
+    "prod": 1.82
+   }
+  },
+  {
+   "id": "#4676",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 3.36,
+    "unit": 5.85,
+    "integ": 18.31,
+    "scan": 3.55,
+    "staging": 3.94,
+    "canary": 4.8,
+    "prod": 2.0
+   }
+  },
+  {
+   "id": "#4677",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.86,
+    "unit": 5.24,
+    "integ": 27.31,
+    "scan": 3.1,
+    "staging": 3.86,
+    "canary": 5.64,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4678",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 4.6,
+    "unit": 4.89,
+    "integ": 19.18,
+    "scan": 3.46,
+    "staging": 5.04,
+    "canary": 5.23,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4679",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.41,
+    "unit": 6.85,
+    "integ": 22.64,
+    "scan": 3.2,
+    "staging": 3.93,
+    "canary": 4.96,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4680",
+   "date": "2026-11-05",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 4.37,
+    "unit": 6.12
+   }
+  },
+  {
+   "id": "#4681",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.45,
+    "build": 3.08,
+    "unit": 6.42,
+    "integ": 21.66,
+    "scan": 3.08,
+    "staging": 4.22,
+    "canary": 5.3,
+    "prod": 2.48
+   }
+  },
+  {
+   "id": "#4682",
+   "date": "2026-11-05",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.31,
+    "unit": 6.9
+   }
+  },
+  {
+   "id": "#4683",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 3.4,
+    "unit": 5.44,
+    "integ": 16.58,
+    "scan": 3.47,
+    "staging": 3.66,
+    "canary": 5.58,
+    "prod": 2.35
+   }
+  },
+  {
+   "id": "#4684",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.57,
+    "unit": 5.71,
+    "integ": 16.49,
+    "scan": 3.01,
+    "staging": 4.15,
+    "canary": 5.66,
+    "prod": 2.15
+   }
+  },
+  {
+   "id": "#4685",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 4.06,
+    "unit": 5.85,
+    "integ": 23.32,
+    "scan": 3.21,
+    "staging": 3.59,
+    "canary": 4.46,
+    "prod": 2.34
+   }
+  },
+  {
+   "id": "#4686",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.35,
+    "build": 3.76,
+    "unit": 7.17,
+    "integ": 22.43,
+    "scan": 3.02,
+    "staging": 4.07,
+    "canary": 5.07,
+    "prod": 2.04
+   }
+  },
+  {
+   "id": "#4687",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.34,
+    "build": 4.44,
+    "unit": 5.26,
+    "integ": 22.7,
+    "scan": 3.48,
+    "staging": 3.97,
+    "canary": 5.22,
+    "prod": 1.77
+   }
+  },
+  {
+   "id": "#4688",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.7,
+    "unit": 6.04,
+    "integ": 24.26,
+    "scan": 3.32,
+    "staging": 3.9,
+    "canary": 4.94,
+    "prod": 1.83
+   }
+  },
+  {
+   "id": "#4689",
+   "date": "2026-11-05",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 4.37,
+    "unit": 5.67,
+    "integ": 23.35,
+    "scan": 2.82,
+    "staging": 3.3,
+    "canary": 5.42,
+    "prod": 1.82
+   }
+  },
+  {
+   "id": "#4690",
+   "date": "2026-11-06",
+   "status": "failed",
+   "failed_stage": "unit",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.46,
+    "build": 4.16,
+    "unit": 6.3
+   }
+  },
+  {
+   "id": "#4691",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.41,
+    "build": 4.18,
+    "unit": 5.6,
+    "integ": 24.3,
+    "scan": 2.89,
+    "staging": 3.98,
+    "canary": 5.74,
+    "prod": 1.93
+   }
+  },
+  {
+   "id": "#4692",
+   "date": "2026-11-06",
+   "status": "failed",
+   "failed_stage": "integ",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.0,
+    "unit": 5.34,
+    "integ": 26.6
+   }
+  },
+  {
+   "id": "#4693",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.54,
+    "build": 4.55,
+    "unit": 6.8,
+    "integ": 21.6,
+    "scan": 2.81,
+    "staging": 3.69,
+    "canary": 4.94,
+    "prod": 2.32
+   }
+  },
+  {
+   "id": "#4694",
+   "date": "2026-11-06",
+   "status": "failed",
+   "failed_stage": "scan",
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.47,
+    "build": 3.67,
+    "unit": 5.84,
+    "integ": 21.15,
+    "scan": 2.44
+   }
+  },
+  {
+   "id": "#4695",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.5,
+    "build": 3.97,
+    "unit": 6.3,
+    "integ": 20.51,
+    "scan": 3.57,
+    "staging": 3.35,
+    "canary": 5.22,
+    "prod": 2.09
+   }
+  },
+  {
+   "id": "#4696",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 4.39,
+    "unit": 5.87,
+    "integ": 20.75,
+    "scan": 3.53,
+    "staging": 4.17,
+    "canary": 5.1,
+    "prod": 2.51
+   }
+  },
+  {
+   "id": "#4697",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.49,
+    "build": 4.16,
+    "unit": 6.52,
+    "integ": 24.78,
+    "scan": 2.8,
+    "staging": 4.0,
+    "canary": 3.73,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4698",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.64,
+    "unit": 4.63,
+    "integ": 24.29,
+    "scan": 2.46,
+    "staging": 4.53,
+    "canary": 5.61,
+    "prod": 1.88
+   }
+  },
+  {
+   "id": "#4699",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 3.43,
+    "unit": 5.64,
+    "integ": 25.8,
+    "scan": 2.35,
+    "staging": 4.8,
+    "canary": 4.87,
+    "prod": 2.31
+   }
+  },
+  {
+   "id": "#4700",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.66,
+    "build": 4.09,
+    "unit": 6.95,
+    "integ": 21.7,
+    "scan": 3.23,
+    "staging": 4.26,
+    "canary": 5.96,
+    "prod": 2.39
+   }
+  },
+  {
+   "id": "#4701",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 3.05,
+    "unit": 6.23,
+    "integ": 22.16,
+    "scan": 2.77,
+    "staging": 4.07,
+    "canary": 3.88,
+    "prod": 1.66
+   }
+  },
+  {
+   "id": "#4702",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 3.53,
+    "unit": 6.05,
+    "integ": 25.2,
+    "scan": 3.23,
+    "staging": 4.31,
+    "canary": 4.41,
+    "prod": 2.5
+   }
+  },
+  {
+   "id": "#4703",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.41,
+    "build": 4.23,
+    "unit": 5.94,
+    "integ": 22.86,
+    "scan": 3.2,
+    "staging": 3.89,
+    "canary": 4.88,
+    "prod": 2.2
+   }
+  },
+  {
+   "id": "#4704",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.42,
+    "build": 4.65,
+    "unit": 4.95,
+    "integ": 21.07,
+    "scan": 3.44,
+    "staging": 4.28,
+    "canary": 5.73,
+    "prod": 2.02
+   }
+  },
+  {
+   "id": "#4705",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.51,
+    "build": 4.46,
+    "unit": 5.43,
+    "integ": 22.83,
+    "scan": 3.35,
+    "staging": 4.74,
+    "canary": 5.01,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4706",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.57,
+    "build": 3.96,
+    "unit": 7.37,
+    "integ": 20.87,
+    "scan": 3.31,
+    "staging": 5.39,
+    "canary": 4.92,
+    "prod": 1.96
+   }
+  },
+  {
+   "id": "#4707",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": false,
+   "stage_minutes": {
+    "commit": 0.53,
+    "build": 4.04,
+    "unit": 5.92,
+    "integ": 19.61,
+    "scan": 3.12,
+    "staging": 4.1,
+    "canary": 5.17,
+    "prod": 2.11
+   }
+  },
+  {
+   "id": "#4708",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.2,
+    "unit": 6.33,
+    "integ": 23.49,
+    "scan": 2.83,
+    "staging": 4.14,
+    "canary": 5.49,
+    "prod": 2.15
+   }
+  },
+  {
+   "id": "#4709",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.19,
+    "unit": 5.85,
+    "integ": 20.17,
+    "scan": 2.74,
+    "staging": 3.41,
+    "canary": 4.69,
+    "prod": 2.15
+   }
+  },
+  {
+   "id": "#4710",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.52,
+    "build": 3.97,
+    "unit": 6.01,
+    "integ": 23.15,
+    "scan": 3.39,
+    "staging": 3.68,
+    "canary": 5.78,
+    "prod": 2.28
+   }
+  },
+  {
+   "id": "#4711",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.44,
+    "build": 3.93,
+    "unit": 5.56,
+    "integ": 25.5,
+    "scan": 2.93,
+    "staging": 4.02,
+    "canary": 4.68,
+    "prod": 2.7
+   }
+  },
+  {
+   "id": "#4712",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.13,
+    "unit": 6.14,
+    "integ": 24.03,
+    "scan": 3.24,
+    "staging": 4.84,
+    "canary": 5.41,
+    "prod": 1.98
+   }
+  },
+  {
+   "id": "#4713",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.91,
+    "unit": 5.21,
+    "integ": 23.78,
+    "scan": 3.46,
+    "staging": 4.53,
+    "canary": 4.81,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4714",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.48,
+    "build": 3.85,
+    "unit": 5.29,
+    "integ": 22.83,
+    "scan": 2.77,
+    "staging": 3.58,
+    "canary": 5.13,
+    "prod": 1.94
+   }
+  },
+  {
+   "id": "#4715",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.43,
+    "build": 4.11,
+    "unit": 6.86,
+    "integ": 22.42,
+    "scan": 2.71,
+    "staging": 2.91,
+    "canary": 4.59,
+    "prod": 1.93
+   }
+  },
+  {
+   "id": "#4716",
+   "date": "2026-11-06",
+   "status": "passed",
+   "failed_stage": null,
+   "first_try": true,
+   "stage_minutes": {
+    "commit": 0.56,
+    "build": 4.0,
+    "unit": 6.73,
+    "integ": 21.55,
+    "scan": 2.98,
+    "staging": 3.47,
+    "canary": 5.56,
+    "prod": 1.43
+   }
+  }
+ ],
+ "live": {
+  "stage_state": {
+   "integ": "slow",
+   "scan": "failed"
+  },
+  "runs": [
+   {
+    "id": "#4821",
+    "stage": "build",
+    "progress": 0.55,
+    "state": "running",
+    "message": "fix: retry header parsing"
+   },
+   {
+    "id": "#4820",
+    "stage": "unit",
+    "progress": 0.3,
+    "state": "running",
+    "message": "feat: saved carts"
+   },
+   {
+    "id": "#4819",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "chore: bump eslint"
+   },
+   {
+    "id": "#4818",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "feat: gift cards"
+   },
+   {
+    "id": "#4817",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "fix: tax rounding"
+   },
+   {
+    "id": "#4816",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "refactor: cart service"
+   },
+   {
+    "id": "#4814",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "docs: api examples"
+   },
+   {
+    "id": "#4813",
+    "stage": "unit",
+    "state": "waiting",
+    "message": "fix: currency format"
+   },
+   {
+    "id": "#4815",
+    "stage": "integ",
+    "progress": 0.55,
+    "state": "running",
+    "message": "feat: promo codes"
+   },
+   {
+    "id": "#4812",
+    "stage": "scan",
+    "state": "failed",
+    "message": "chore: update lodash"
+   },
+   {
+    "id": "#4811",
+    "stage": "staging",
+    "progress": 0.6,
+    "state": "running",
+    "message": "feat: wishlist"
+   },
+   {
+    "id": "#4810",
+    "stage": "canary",
+    "progress": 0.35,
+    "state": "running",
+    "message": "fix: null session"
+   },
+   {
+    "id": "#4809",
+    "stage": "prod",
+    "state": "done",
+    "message": "feat: address book"
+   }
+  ]
+ },
+ "agent": {
+  "stage": "scan",
+  "finding": "Run #4812 is blocked at Security scan: lodash 4.17.20 has a known prototype-pollution advisory. Integration has been slow since the new runner image, so runs queue behind it.",
+  "action": "Open a PR pinning lodash to 4.17.21 and re-run #4812. Pre-warm the test database on the new runner image.",
+  "evidence": [
+   "Scan report: 1 high finding in lodash 4.17.20"
+  ]
+ }
+}
