@@ -5,7 +5,7 @@ Supports:
               requires `--allow-cloud`, gates on >=20 KiB RIFF WAV payload)
   - `f5`     (Idan's offline F5-TTS voice clone at `~/projects/ai/local-voice/say.py`,
               with volumedetect peak verification)
-  - `kokoro` (Offline HyperFrames Kokoro voice via `npx hyperframes tts`)
+  - `kokoro` (Offline HyperFrames Kokoro voice via the pinned HyperFrames CLI `tts`)
   - `qwen3`  (Local Qwen3-TTS via MLX: stock voices + instruct, or clone with --ref/--ref-text)
   - `chatterbox` (Local Chatterbox Multilingual V3 via MLX: built-in voice or clone; 23 languages incl. Hebrew)
               Models: integrations/voice-models.json; weights auto-download to local/models/hf.
@@ -251,15 +251,24 @@ def synthesize_f5_line(text: str, out_wav: Path, *, ref_wav: str | None = None,
 
 def synthesize_kokoro_line(text: str, voice: str, out_wav: Path, *, root: Path) -> int:
     hf_dir = root / "hyperframes"
-    npx = shutil.which("npx")
-    if not npx or not hf_dir.is_dir():
-        raise RuntimeError("HyperFrames npx not available for local Kokoro synthesis")
+    if not hf_dir.is_dir():
+        raise RuntimeError("HyperFrames not installed; run scripts/bootstrap.sh for local Kokoro synthesis")
+    # Prefer the pinned, locally built CLI. Bare `npx hyperframes` can resolve a different
+    # cached version from the npm registry than the one recorded in upstream-lock.json.
+    local_cli = hf_dir / "packages" / "cli" / "dist" / "cli.js"
+    node, npx = shutil.which("node"), shutil.which("npx")
+    if local_cli.is_file() and node:
+        base_cmd = [node, str(local_cli)]
+    elif npx:
+        base_cmd = [npx, "hyperframes"]
+    else:
+        raise RuntimeError("Neither node nor npx found for local Kokoro synthesis")
     env = dict(os.environ)
     om_py = root / "OpenMontage" / ".venv" / "bin" / "python"
     if om_py.is_file():
         env.setdefault("HYPERFRAMES_PYTHON", str(om_py))
     proc = subprocess.run(
-        [npx, "hyperframes", "tts", text, "--voice", voice, "--output", str(out_wav)],
+        [*base_cmd, "tts", text, "--voice", voice, "--output", str(out_wav)],
         cwd=str(hf_dir), env=env, capture_output=True, text=True, timeout=180
     )
     if proc.returncode != 0 or not out_wav.is_file() or out_wav.stat().st_size < 4096:

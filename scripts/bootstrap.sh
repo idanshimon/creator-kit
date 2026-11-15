@@ -21,7 +21,8 @@ case "${1:-}" in
 esac
 
 ok()   { printf '  \033[32mok\033[0m    %s\n' "$*"; }
-miss() { printf '  \033[31mmissing\033[0m %s\n' "$*"; }
+MISSING=0
+miss() { MISSING=$((MISSING+1)); printf '  \033[31mmissing\033[0m %s\n' "$*"; }
 step() { printf '\n==> %s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
@@ -103,6 +104,46 @@ else
   ok "studio-ui built -> studio-ui/dist"
 fi
 
+# ---------------------------------------------------------------- GSAP runtime (motion titles)
+step "GSAP runtime (motion titles; independent of the HyperFrames build)"
+if "$PY" creator.py motion doctor >/dev/null 2>&1; then ok "gsap runtime verified"
+elif [ "$MODE" = "check" ]; then miss "gsap runtime (run scripts/bootstrap.sh --minimal)"
+else
+  # npm pack honours the user's registry/mirror config (corporate feeds); curl is the fallback.
+  # Either way the tarball must match the sha512 pinned in integrations/gsap-lock.json.
+  GV="$("$PY" -c 'import json;print(json.load(open("integrations/gsap-lock.json"))["version"])')"
+  GTMP="$(mktemp -d)"; TGZ="$GTMP/gsap-$GV.tgz"
+  (cd "$GTMP" && $NPM pack "gsap@$GV" --silent >/dev/null 2>&1) \
+    || curl -fsSL --retry 3 --max-time 180 "$("$PY" -c 'import json;print(json.load(open("integrations/gsap-lock.json"))["npm_tarball"])')" -o "$TGZ"
+  "$PY" - "$TGZ" <<'EOF'
+import base64, hashlib, io, json, pathlib, sys, tarfile
+lock = json.load(open("integrations/gsap-lock.json"))
+data = pathlib.Path(sys.argv[1]).read_bytes()
+algo, want = lock["npm_integrity"].split("-", 1)
+if base64.b64encode(hashlib.new(algo, data).digest()).decode() != want:
+    raise SystemExit("gsap tarball integrity mismatch; refusing to install")
+dest = pathlib.Path("local/gsap"); dest.mkdir(parents=True, exist_ok=True)
+with tarfile.open(fileobj=io.BytesIO(data)) as tar:
+    safe = [m for m in tar.getmembers() if m.name.startswith("package/") and ".." not in m.name and (m.isfile() or m.isdir())]
+    kw = {'filter': 'data'} if hasattr(tarfile, 'data_filter') else {}
+    tar.extractall(dest, members=safe, **kw)
+EOF
+  "$PY" creator.py motion doctor >/dev/null && ok "gsap $("$PY" -c 'import json;print(json.load(open("integrations/gsap-lock.json"))["version"])') installed to local/gsap (npm sha512 + runtime sha256 verified)" \
+    || { echo "  FAIL  gsap runtime did not verify"; exit 1; }
+fi
+
+# ---------------------------------------------------------------- Archify
+step "Archify (interactive architecture diagrams)"
+if [ -d archify ]; then ok "archify installed"
+elif [ "$MODE" = "check" ]; then miss "archify"
+else
+  URL="$("$PY" -c 'import json;print(json.load(open("integrations/archify-lock.json"))["url"])')"
+  ZIP="$(mktemp -d)/archify.zip"
+  curl -fsSL --max-time 180 "$URL" -o "$ZIP"
+  "$PY" creator.py diagram install --archive "$ZIP" >/dev/null   # verifies the pinned sha256
+  ok "archify installed from checksum-pinned release"
+fi
+
 if [ "$MODE" = "minimal" ]; then
   step "Done (minimal). Start the editor: $PY creator.py studio  ->  http://127.0.0.1:4318"
   exit 0
@@ -124,28 +165,27 @@ if [ "$MODE" != "check" ]; then
   OpenMontage/.venv/bin/python -m pip install --quiet --upgrade pip
   OpenMontage/.venv/bin/python -m pip install --quiet -r OpenMontage/requirements.txt
   OpenMontage/.venv/bin/python -m pip install --quiet kokoro-onnx soundfile
+  # A partial wheel download can leave cffi without its compiled backend; prove the imports.
+  OpenMontage/.venv/bin/python -c 'import soundfile, kokoro_onnx' 2>/dev/null \
+    || OpenMontage/.venv/bin/python -m pip install --quiet --force-reinstall --no-cache-dir cffi soundfile
+  OpenMontage/.venv/bin/python -c 'import soundfile, kokoro_onnx' \
+    || { echo "  FAIL  voice runtime imports (soundfile/kokoro_onnx) broken in OpenMontage/.venv"; exit 1; }
   [ -f OpenMontage/.env ] || cp OpenMontage/.env.example OpenMontage/.env
   ok "OpenMontage venv ready"
-elif [ -x OpenMontage/.venv/bin/python ]; then ok "OpenMontage venv"; else miss "OpenMontage/.venv"; fi
-
-# ---------------------------------------------------------------- Archify
-step "Archify (interactive architecture diagrams)"
-if [ -d archify ]; then ok "archify installed"
-elif [ "$MODE" = "check" ]; then miss "archify"
-else
-  URL="$("$PY" -c 'import json;print(json.load(open("integrations/archify-lock.json"))["url"])')"
-  ZIP="$(mktemp -d)/archify.zip"
-  curl -fsSL --max-time 180 "$URL" -o "$ZIP"
-  "$PY" creator.py diagram install --archive "$ZIP" >/dev/null   # verifies the pinned sha256
-  ok "archify installed from checksum-pinned release"
-fi
+elif [ -x OpenMontage/.venv/bin/python ] && OpenMontage/.venv/bin/python -c 'import soundfile, kokoro_onnx' 2>/dev/null; then ok "OpenMontage venv (voice imports ok)"; else miss "OpenMontage/.venv with working soundfile + kokoro_onnx"; fi
 
 # ---------------------------------------------------------------- verify
 step "Verify"
-"$PY" creator.py motion doctor >/dev/null && ok "motion doctor (GSAP runtime matches lock)" || echo "  warn    motion doctor failed"
-"$PY" creator.py diagram doctor >/dev/null && ok "diagram doctor (Archify integrity)" || echo "  warn    diagram doctor failed"
+"$PY" creator.py motion doctor >/dev/null 2>&1 && ok "motion doctor (GSAP runtime matches lock)" || miss "motion doctor: GSAP runtime"
+"$PY" creator.py diagram doctor >/dev/null 2>&1 && ok "diagram doctor (Archify integrity)" || miss "diagram doctor: Archify"
 env -u PYTHONPATH -u PYTHONHOME "$PY" -m unittest discover -s tests -q >/dev/null 2>&1 \
   && ok "unit tests pass" || echo "  warn    unit tests failed: run  $PY -m unittest discover -s tests -v"
+
+if [ "$MISSING" -gt 0 ]; then
+  printf '\n==> Setup INCOMPLETE: %s item(s) missing above.\n' "$MISSING"
+  [ "$MODE" = "check" ] && echo "    Run scripts/bootstrap.sh to install them."
+  exit 1
+fi
 
 cat <<EOF
 

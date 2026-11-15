@@ -26,7 +26,7 @@ def child_environment():
 def verify_install(root=ROOT):
     vendor = Path(root)/'archify'
     if not vendor.is_dir():
-        raise RuntimeError('Archify missing. Run creator.py diagram install --archive <pinned archify.zip>; see docs/DIAGRAMS.md')
+        raise RuntimeError('Archify missing. Run scripts/bootstrap.sh (or --minimal); it downloads the pinned release and verifies its sha256. Manual: creator.py diagram install --archive <archify.zip>')
     lock = json.loads(LOCK.read_text())
     if vendor.is_symlink():
         raise RuntimeError('Archify integrity failure: vendor is a symlink')

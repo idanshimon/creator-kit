@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@@TITLE@@ — kinetic title</title>
+<style>
+:root{color-scheme:dark;--a:#ff3cac;--b:#7b5cff;--c:#00f5d4;--d:#ffd166;--title-size:calc(@@TITLE_SIZE@@px * 2.4)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#05030f;overflow:hidden;font-family:"Inter","Segoe UI",Helvetica,Arial,sans-serif}
+.viewport{position:fixed;inset:0;display:grid;place-items:center}
+.stage{position:relative;width:1280px;height:720px;transform:scale(var(--fit,1));overflow:hidden;
+ background:radial-gradient(1200px 700px at 50% 120%,#1b0f46 0%,#05030f 60%)}
+.grid{position:absolute;inset:-40%;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);
+ background-size:64px 64px;transform:perspective(600px) rotateX(62deg) translateY(var(--gy,0px));transform-origin:50% 100%;opacity:.55}
+.blob{position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.25}
+.b1{background:var(--a);left:-120px;top:-140px}.b2{background:var(--c);right:-140px;bottom:-160px}.b3{background:var(--b);left:40%;top:30%}
+svg.fx{position:absolute;inset:0}
+.ring{fill:none;stroke-width:3;transform-origin:640px 290px}
+.title{position:absolute;left:0;right:0;top:200px;text-align:center;font-weight:900;font-size:var(--title-size);letter-spacing:-.04em;line-height:1;
+ perspective:900px;white-space:nowrap}
+.ch{display:inline-block;filter:drop-shadow(0 0 28px #7b5cff88);transform-origin:50% 80%;background:linear-gradient(100deg,#fff 30%,var(--c) 45%,var(--a) 55%,#fff 70%);
+ background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;background-position:var(--sweep,100%) 0}
+.ghost{position:absolute;left:0;right:0;top:200px;text-align:center;font-weight:900;font-size:var(--title-size);letter-spacing:-.04em;line-height:1;white-space:nowrap;opacity:0;mix-blend-mode:screen}
+.g1{color:var(--a)}.g2{color:var(--c)}
+.chips{position:absolute;left:0;right:0;top:420px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px;padding:0 120px}
+.chip{font-weight:800;font-size:31px;color:#e9ecff;padding:10px 18px;border-radius:999px;background:#ffffff10;border:2px solid #ffffff26;backdrop-filter:blur(6px)}
+.chip:nth-child(4n+1){border-color:var(--a)}.chip:nth-child(4n+2){border-color:var(--c)}.chip:nth-child(4n+3){border-color:var(--d)}.chip:nth-child(4n){border-color:var(--b)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;mix-blend-mode:overlay}
+.sweep{position:absolute;top:0;bottom:0;width:240px;left:-300px;background:linear-gradient(90deg,transparent,#ffffff2e,transparent);transform:skewX(-18deg)}
+.tag{position:absolute;bottom:40px;left:0;right:0;text-align:center;font:700 17px/1 "Inter",sans-serif;letter-spacing:.32em;color:#c3cbf5;opacity:0}
+.bar{position:absolute;left:0;bottom:0;height:7px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--a),var(--b),var(--c))}
+</style></head>
+<body><div class="viewport"><div class="stage" data-composition-id="gsap-kinetic">
+<div class="grid"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<svg class="fx" viewBox="0 0 1280 720" aria-hidden="true">
+ <circle class="ring r1" cx="640" cy="290" r="205" stroke="#00f5d4" stroke-dasharray="26 18" opacity="0"/>
+ <circle class="ring r2" cx="640" cy="290" r="262" stroke="#ff3cac" stroke-dasharray="3 12" opacity="0"/>
+ <g class="particles"></g>
+</svg>
+<div class="ghost g1" aria-hidden="true">@@TITLE@@</div><div class="ghost g2" aria-hidden="true">@@TITLE@@</div>
+<h1 class="title" data-text="@@TITLE@@">@@TITLE@@</h1>
+<div class="chips" data-text="@@SUBTITLE@@"></div>
+<div class="sweep"></div><div class="flash"></div>
+<div class="tag">MADE WITH CREATOR KIT · GSAP · FRAME-EXACT</div>
+<div class="bar"></div>
+</div></div>
+<!-- GSAP's original proprietary notice is retained in the runtime below. Standard License: https://gsap.com/standard-license/ -->
+<script>@@RUNTIME@@</script>
+<script>
+(()=>{'use strict';
+const DURATION=8,stage=document.querySelector('.stage');
+const fit=()=>stage.style.setProperty('--fit',Math.min(innerWidth/1280,innerHeight/720));fit();addEventListener('resize',fit);
+// Split title into letters (text comes from escaped HTML; textContent keeps it inert).
+const title=document.querySelector('.title'),text=title.textContent;title.textContent='';
+const inner=document.createElement('span');inner.style.display='inline-block';title.appendChild(inner);
+for(const c of text){const s=document.createElement('span');s.className='ch';s.textContent=c===' '?'\u00a0':c;inner.appendChild(s);}
+// Shrink to fit the stage before building the timeline; no layout change during capture.
+let size=parseFloat(getComputedStyle(title).fontSize);
+for(let i=0;inner.getBoundingClientRect().width/(parseFloat(getComputedStyle(stage).getPropertyValue('--fit'))||1)>1120&&i<40;i++){size*=.95;for(const el of document.querySelectorAll('.title,.ghost'))el.style.fontSize=size+'px';}
+const chips=document.querySelector('.chips');
+for(const w of chips.dataset.text.split(/\s*[·|,•]\s*|\s+[-–—>→]+\s+/).filter(Boolean).slice(0,8)){const d=document.createElement('span');d.className='chip';d.textContent=w;chips.appendChild(d);}
+// Seeded particles: same seed, same frames, every render.
+let seed=1337;const rnd=()=>((seed=(seed*16807)%2147483647)-1)/2147483646;
+const g=document.querySelector('.particles'),cols=['#ff3cac','#00f5d4','#ffd166','#7b5cff','#ffffff'],P=[];
+for(let i=0;i<90;i++){const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+ c.setAttribute('cx',640);c.setAttribute('cy',270);c.setAttribute('r',(1.5+rnd()*3.5).toFixed(2));c.setAttribute('fill',cols[i%5]);c.setAttribute('opacity',0);g.appendChild(c);
+ const a=rnd()*Math.PI*2,d=180+rnd()*460;P.push({c,x:640+Math.cos(a)*d,y:270+Math.sin(a)*d*.62});}
+const tl=gsap.timeline({paused:true}),ch=document.querySelectorAll('.ch');
+gsap.set(ch,{opacity:0,y:90,rotateX:-95,scale:.6});gsap.set('.chip',{opacity:0,y:40,scale:.7});
+tl.to('.blob',{opacity:.55,duration:1.6,stagger:.2,ease:'power2.out'},0)
+ .fromTo('.grid',{'--gy':'0px'},{'--gy':'192px',duration:DURATION,ease:'none'},0)
+ .to(ch,{opacity:1,y:0,rotateX:0,scale:1,duration:.9,stagger:{each:.045,from:'center'},ease:'back.out(2.2)'},.05)
+ .to('.flash',{opacity:.55,duration:.06},1.25).to('.flash',{opacity:0,duration:.5},1.31)
+ .to('.ghost',{opacity:.85,duration:.05},1.25)
+ .to('.g1',{x:-5,y:1,duration:.08,yoyo:true,repeat:5},1.25).to('.g2',{x:5,y:-1,duration:.08,yoyo:true,repeat:5},1.25)
+ .to('.ghost',{opacity:0,x:0,y:0,duration:.2},1.8)
+ .to(P.map(p=>p.c),{opacity:1,duration:.05},1.25)
+ .add(()=>{},1.25);
+P.forEach((p,i)=>tl.to(p.c,{attr:{cx:p.x,cy:p.y},opacity:0,duration:1.4+(i%7)*.12,ease:'expo.out'},1.25));
+tl.to('.r1',{opacity:.8,duration:.6},1.4).to('.r2',{opacity:.6,duration:.6},1.6)
+ .fromTo('.r1',{rotation:0},{rotation:140,duration:6.6,ease:'none'},1.4)
+ .fromTo('.r2',{rotation:0},{rotation:-90,duration:6.4,ease:'none'},1.6)
+ .fromTo('.title',{'--sweep':'100%'},{'--sweep':'0%',duration:1.6,ease:'power1.inOut'},2.0)
+ .to('.sweep',{left:1400,duration:1.1,ease:'power2.inOut'},2.2)
+ .to('.chip',{opacity:1,y:0,scale:1,duration:.55,stagger:.14,ease:'back.out(2.6)'},2.6)
+ .to('.tag',{opacity:1,duration:.8},4.4)
+ .to(ch,{y:-8,duration:.35,stagger:{each:.04,from:'start'},yoyo:true,repeat:1,ease:'sine.inOut'},5.2)
+ .to('.bar',{scaleX:1,duration:DURATION,ease:'none'},0)
+ .addLabel('complete',DURATION);
+let clock=0;const draw=s=>{clock=Math.max(0,Math.min(DURATION,s));tl.seek(clock,true);return clock;};
+window.__motion={seek:draw,reset:()=>draw(0),duration:DURATION,getTime:()=>clock};
+window.__advance=ms=>{if(!Number.isFinite(ms)||ms<0)throw new TypeError('Advance must be finite and nonnegative');return draw(clock+ms/1000);};
+window.__done=()=>clock>=DURATION;
+draw(0);window.__ready=true;
+if(!/[?&]render=1/.test(location.search)){let last=0;const loop=t=>{if(last)draw((clock+(t-last)/1000)%DURATION);last=t;requestAnimationFrame(loop);};requestAnimationFrame(loop);}
+})();
+</script></body></html>

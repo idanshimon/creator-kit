@@ -26,16 +26,22 @@ def doctor(*, root=None):
             raise ValueError('GSAP runtime checksum mismatch; restore the pinned dependency, do not edit the lock blindly')
         return {'version': version, 'runtime': str(runtime.resolve()), 'runtime_sha256': digest,
                 'integrity_verified': True, 'license_url': lock['license_url']}
-    raise ValueError('Pinned GSAP runtime not found; restore the HyperFrames dependencies first; no automatic download')
+    raise ValueError('Pinned GSAP runtime not found. Run scripts/bootstrap.sh (or --minimal); it fetches gsap '
+                     f'{lock["version"]} from npm and verifies its sha512 before use')
 
 
-def create(output, title, subtitle='One timeline. Every frame in its place.', *, root=None):
+TEMPLATES = {'classic': 'template.html', 'kinetic': 'kinetic.html'}
+
+
+def create(output, title, subtitle='One timeline. Every frame in its place.', *, root=None, template='classic'):
     """Create a new directory containing a standalone HTML, manifest and license."""
     for label, value, limit in [('title', title, 120), ('subtitle', subtitle, 240)]:
         if not isinstance(value, str) or len(value) > limit or any(ord(c) < 32 or ord(c) == 127 for c in value):
             raise ValueError(f'{label} must be a single-line string of at most {limit} characters')
         if label == 'title' and not value.strip():
             raise ValueError('title must not be blank')
+    if template not in TEMPLATES:
+        raise ValueError(f'template must be one of {sorted(TEMPLATES)}')
     destination = Path(output).expanduser()
     if destination.exists() or destination.is_symlink():
         raise FileExistsError(f'Refusing to overwrite {destination}')
@@ -43,7 +49,7 @@ def create(output, title, subtitle='One timeline. Every frame in its place.', *,
     runtime = Path(dependency['runtime']).read_text()
     # HTML's parser terminates script elements even when the text is inside JS strings.
     runtime = re.sub(r'</script', r'<\\/script', runtime, flags=re.IGNORECASE)
-    template = (ROOT / 'templates/motion/gsap/template.html').read_text()
+    template = (ROOT / 'templates/motion/gsap' / TEMPLATES[template]).read_text()
     replacements = {
         'RUNTIME': runtime,
         'TITLE': html.escape(title.strip()),
@@ -56,7 +62,7 @@ def create(output, title, subtitle='One timeline. Every frame in its place.', *,
     destination.mkdir()  # atomic conflict check; do not reuse a directory
     paths = []
     result = {'html': str((destination / 'index.html').resolve()), 'duration_seconds': 8,
-              'composition_id': 'gsap-motion', 'runtime': dependency,
+              'composition_id': 'gsap-motion' if template == 'classic' else 'gsap-kinetic', 'template': template, 'runtime': dependency,
               'capture': 'showcase', 'offline': True, 'audio': False}
     try:
         for name, text in [('index.html', document), ('GSAP-LICENSE.txt', license_text),
