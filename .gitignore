@@ -4,18 +4,18 @@
 !.env.example
 *.pem
 *.key
-/local/
+/local
 *.db
 *.db-*
 *.sqlite*
 
 # Reproducible upstream checkouts; versions recorded in upstream-lock.json
-/OpenMontage/
-/hyperframes/
-/archify/
+/OpenMontage
+/hyperframes
+/archify
 
 # Productions include private source media, narration and renders; separate backup
-/productions/
+/productions
 
 # Dependencies and generated builds
 node_modules/
