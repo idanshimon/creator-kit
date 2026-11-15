@@ -4,6 +4,8 @@ Making things:
 - [Voices and narration](VOICES.md): every `narrate` engine, Azure Speech sign-in, local model registry
 - [GSAP motion](GSAP.md): offline animated compositions and seek-safe capture
 - [Showcase recording](SHOWCASE.md): record any page to frame-exact MP4
+- [Walkthroughs](WALKTHROUGH.md): narrated screenshot tours with arrows, spotlight, cursor, captions
+- [Reels](REEL.md): TikTok / Reels / Shorts / LinkedIn short-form templates
 - [Interactive diagrams](DIAGRAMS.md): Archify install, templates, guided-tour video
 - [Data stories](DATA-STORIES.md): source-backed charts with an Explain panel per figure
 - [Fabric export](FABRIC-EXPORT.md): package a self-contained page for protected static hosting
