@@ -42,11 +42,7 @@ Your agent writes the script, voices it, builds the scenes, renders a frame-exac
 
 Orbital fleet view, a 7-beat agent loop, an approval gate and live detail cards — from one typed JSON file.
 
-```bash
-python3 creator.py mission-control render \
-  --input examples/mission-control/finops-governance.mission.json \
-  --output mc.html --video mc.mp4
-```
+<sub><code>python3 creator.py mission-control render --input examples/mission-control/finops-governance.mission.json --output mc.html --video mc.mp4</code></sub>
 
 </td>
 <td width="50%" valign="top">
@@ -56,11 +52,7 @@ python3 creator.py mission-control render \
 
 Point it at any prompt or `SKILL.md`. A spider crawls every instruction and sorts it into **code / model / human**, then scores the spec.
 
-```bash
-python3 creator.py crawl \
-  --input skills/video-production/SKILL.md \
-  --output crawl --video --speed 9
-```
+<sub><code>python3 creator.py crawl --input skills/video-production/SKILL.md --output crawl --video --speed 9</code></sub>
 
 </td>
 </tr>
@@ -72,11 +64,7 @@ python3 creator.py crawl \
 
 Turns a CI run log into a flow line, "what changed" cards with baselines, and an agent approval card.
 
-```bash
-python3 creator.py pipeline-control render \
-  --input examples/pipeline-control/checkout-service.pipeline.json \
-  --output pc.html --video pc.mp4
-```
+<sub><code>python3 creator.py pipeline-control render --input examples/pipeline-control/checkout-service.pipeline.json --output pc.html --video pc.mp4</code></sub>
 
 </td>
 <td width="50%" valign="top">
@@ -86,11 +74,7 @@ python3 creator.py pipeline-control render \
 
 Reading pages where every number points back to its source. Light and dark themes, no network needed.
 
-```bash
-python3 creator.py data-story render \
-  --input examples/data-story/synthetic-workshop.json \
-  --output story.html
-```
+<sub><code>python3 creator.py data-story render --input examples/data-story/synthetic-workshop.json --output story.html</code></sub>
 
 </td>
 </tr>
