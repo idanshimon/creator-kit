@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="200" viewBox="0 0 1200 200"><style>
+.l{font:700 18px 'Segoe UI',Helvetica,Arial,sans-serif;fill:#e6ebff;text-anchor:middle}
+.e{font:34px sans-serif;text-anchor:middle}
+.n{animation:pop 6s infinite}
+@keyframes pop{0%,100%{transform:scale(1)}8%{transform:scale(1.18)}16%{transform:scale(1)}}
+.flow{stroke-dasharray:10 10;animation:dash .8s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-20}}
+</style><rect width="1200" height="200" rx="20" fill="#0d0a24"/>
+<line class="flow" x1="100" y1="90" x2="1100" y2="90" stroke="#3d3a7a" stroke-width="4"/>
+<circle r="9" fill="#fff"><animateMotion dur="6s" repeatCount="indefinite" path="M100,90 L1100,90"/></circle>
+<g class="n" style="transform-origin:100px 90px;animation-delay:0s"><circle cx="100" cy="90" r="46" fill="#14112f" stroke="#ff3cac" stroke-width="4"/><text x="100" y="102" class="e">✍️</text></g><text x="100" y="170" class="l" style="fill:#ff3cac">Script</text><g class="n" style="transform-origin:300px 90px;animation-delay:1s"><circle cx="300" cy="90" r="46" fill="#14112f" stroke="#ffd166" stroke-width="4"/><text x="300" y="102" class="e">🎙️</text></g><text x="300" y="170" class="l" style="fill:#ffd166">Narrate</text><g class="n" style="transform-origin:500px 90px;animation-delay:2s"><circle cx="500" cy="90" r="46" fill="#14112f" stroke="#7b8cff" stroke-width="4"/><text x="500" y="102" class="e">🎨</text></g><text x="500" y="170" class="l" style="fill:#7b8cff">Scenes</text><g class="n" style="transform-origin:700px 90px;animation-delay:3s"><circle cx="700" cy="90" r="46" fill="#14112f" stroke="#00f5d4" stroke-width="4"/><text x="700" y="102" class="e">🎞️</text></g><text x="700" y="170" class="l" style="fill:#00f5d4">Render</text><g class="n" style="transform-origin:900px 90px;animation-delay:4s"><circle cx="900" cy="90" r="46" fill="#14112f" stroke="#ff8a5c" stroke-width="4"/><text x="900" y="102" class="e">🔍</text></g><text x="900" y="170" class="l" style="fill:#ff8a5c">Verify</text><g class="n" style="transform-origin:1100px 90px;animation-delay:5s"><circle cx="1100" cy="90" r="46" fill="#14112f" stroke="#b4ff5c" stroke-width="4"/><text x="1100" y="102" class="e">🚀</text></g><text x="1100" y="170" class="l" style="fill:#b4ff5c">Ship</text></svg>
