@@ -135,3 +135,16 @@ def test_unreached_stage_is_not_zero():
     data = pc.derive(pc.validate_spec(spec))
     st = next(s for s in data["stages"] if s["id"] == "never")
     assert st["latest"] is None and st["base"] is None
+
+
+class RecordingCameraTests(unittest.TestCase):
+    def test_camera_frames_sections_on_virtual_clock(self):
+        html = pc.render_html(pc.validate_spec(spec()))
+        js = html[html.index("Deterministic showcase hooks"):]
+        # framed shots: top, approval-card reveal, section boundaries via scroll-margin
+        for needle in ("revealY(gate)", "scrollMarginTop", "querySelector('.insights')", "SHOT_TOTAL = 16",
+                       "behavior: 'instant'", "rec-end"):
+            self.assertIn(needle, js, needle)
+        # no centre-cropping or browser smooth scrolling in the recorded path
+        self.assertNotIn("block: 'center'", js)
+        self.assertNotIn("'smooth'", js)

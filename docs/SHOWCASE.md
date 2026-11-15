@@ -16,6 +16,9 @@ sourced / vague / info) and routed to `code` (checkable rule), `model` (judgment
 
 Viewer URL flags: `?seek=N` (pre-crawl N decisions, for stills), `?speed=X`, `?render=1`
 (deterministic clock for recording). Viewer loads d3 + font from CDN: needs network to render.
+Layout (tuned for 1920×1080): section labels wrap without truncation and stay inside the canvas;
+panel text is ≥12–13px with AA-ish contrast; the crawl log only shows complete entries (oldest
+dropped whole); word-heat chips that would overflow are dropped; the radar sizes to its panel.
 
 **Model scoring (`--scorer azure --allow-cloud`)**: each instruction gets one 5-letter question
 (rule / judgment / approval / vague / source) on the highest-version `gpt-*-mini` deployment in

@@ -288,6 +288,32 @@ def validate_spec(spec: dict) -> dict:
     }
 
 
+def build_choreography(norm: dict) -> list[dict]:
+    """Recorded showcase phases, derived from spec data only.
+
+    Every phase names ONE subject: the item that is selected (map highlight +
+    inspector) is the same item the loop card describes (``loop_subject``).
+    ``in_loop`` is true only for the spec's ``active_entity`` — the one item the
+    agent loop is actually running on; other items get an honest "not in a loop
+    run" loop card instead of borrowing the active item's beat state.
+    """
+    ents = norm["entities"]
+    active = norm.get("active_entity")
+    first = norm.get("selected_entity") or active or (ents[0]["id"] if ents else None)
+
+    def phase(scope, sid, approve=False):
+        return {"scope": scope, "select": sid, "loop_subject": sid,
+                "in_loop": bool(sid and sid == active), "approve": approve}
+
+    phases = [phase("all", first)]
+    for s in norm["sectors"]:
+        inside = sorted((e for e in ents if e["sector"] == s["id"]), key=lambda e: -e["score"])
+        phases.append(phase(s["id"], inside[0]["id"] if inside else first))
+    if active:
+        phases.append(phase("all", active, approve=True))
+    return phases
+
+
 _HTML_TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en" data-theme="__DEFAULT_THEME__">
 <head>
@@ -627,6 +653,7 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
 
       <div class="card">
         <div class="card-h"><span>LOOP · <em id="beat-count-lbl" style="font-style:normal">SEVEN</em> BEATS</span><span id="agent-model-lbl"></span></div>
+        <div id="loop-subject" style="font-size:13px;font-weight:700;color:var(--mc-ink);margin-bottom:4px"></div>
         <div id="loop-status-line" style="font-size:12px;color:var(--mc-muted);margin-bottom:8px"></div>
         <div class="beat-list" id="beat-list"></div>
       </div>
@@ -974,10 +1001,23 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
     }
 
     // Loop beats
-    document.getElementById('loop-status-line').textContent = SPEC.agent.status_line;
+    // The loop card always describes the SELECTED item (same subject as inspector + map highlight).
+    const loopSubj = SPEC.entities.find(e => e.id === selectedId) || null;
+    const inLoop = !!(loopSubj && activeId && loopSubj.id === activeId);
+    const activeEnt = SPEC.entities.find(e => e.id === activeId);
+    const subjEl = document.getElementById('loop-subject');
+    subjEl.textContent = loopSubj ? `${loopSubj.id} · ${loopSubj.label}` : 'No item selected';
+    subjEl.dataset.subject = loopSubj ? loopSubj.id : '';
+    let statusTxt;
+    if (!loopSubj) statusTxt = SPEC.agent.status_line;
+    else if (inLoop && gateOutcome) { const B = SPEC.agent.beats, g = SPEC.agent.gate_beat;
+      statusTxt = `${loopSubj.id} ${gateOutcome} at Beat ${g} (${B[g - 1] || ''})` + (gateOutcome === 'approved' ? `; loop ran through Beat ${B.length} (${B[B.length - 1]}).` : '.'); }
+    else if (inLoop || !activeId) statusTxt = SPEC.agent.status_line;
+    else statusTxt = `${loopSubj.id} is watched but has no loop run in progress` + (activeEnt ? ` (the loop is running on ${activeEnt.id} · ${activeEnt.label})` : '') + '.';
+    document.getElementById('loop-status-line').textContent = statusTxt;
     const beatList = document.getElementById('beat-list');
     beatList.innerHTML = '';
-    const activeBeat = gateOutcome === 'approved' ? SPEC.agent.beats.length : SPEC.agent.active_beat;
+    const activeBeat = !(inLoop || !activeId) ? 0 : (gateOutcome === 'approved' ? SPEC.agent.beats.length : SPEC.agent.active_beat);
     SPEC.agent.beats.forEach((b, idx) => {
       const bnum = idx + 1;
       let st = 'idle';
@@ -1138,11 +1178,22 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
 
     // Concentric stage rings
     Object.entries(STAGE_RING).forEach(([st, frac]) => {
-      ctx.strokeStyle = rgba(STAGE_COL[st], theme === 'light' ? 0.26 : 0.14);
-      ctx.lineWidth = 1;
-      ctx.setLineDash([2, 6]);
+      ctx.strokeStyle = rgba(STAGE_COL[st], theme === 'light' ? 0.45 : 0.34);
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([3, 5]);
       ctx.beginPath(); ctx.arc(cx, cy, frac * M, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
+      // Ring name, upright at 12 o'clock with a background halo (stage + item count from spec)
+      const n = SPEC.entities.filter(e => e.stage === st).length;
+      const rl = `${st.toUpperCase()} · ${n}`;
+      ctx.font = `700 ${12 / Math.max(1, view.k)}px ui-monospace, Menlo, monospace`;
+      ctx.textAlign = 'center';
+      ctx.lineJoin = 'round'; ctx.lineWidth = 4 / Math.max(1, view.k); ctx.strokeStyle = rgba(P.bg, 0.92);
+      // on the first sector divider: dots live inside sectors, so the divider is the clearest spot
+      const da = (SPEC.sectors.length ? sectorAngle[SPEC.sectors[0].id] + Math.PI / SPEC.sectors.length : -Math.PI / 2);
+      const rx = cx + Math.cos(da) * frac * M, ry = cy + Math.sin(da) * frac * M + 4;
+      ctx.strokeText(rl, rx, ry);
+      ctx.fillStyle = STAGE_COL[st]; ctx.fillText(rl, rx, ry);
     });
 
     // Tapered arms from center to entities
@@ -1216,6 +1267,15 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
         ctx.strokeStyle = P.outline; ctx.lineWidth = 1.4 / view.k; ctx.stroke();
       }
       if (n.row.stage === 'critical' && inS) attentionRing(n.x, n.y, n.r / Math.pow(view.k, 0.4), c, tSec);
+      if (inS) {  // item id beside each in-scope dot so the ring is readable without clicking
+        ctx.font = `600 ${10.5 / Math.max(1, view.k)}px ui-monospace, Menlo, monospace`;
+        ctx.textAlign = 'left';
+        const lx = n.x + n.r + 5 / view.k, ly = n.y + 4 / view.k;
+        ctx.lineJoin = 'round'; ctx.lineWidth = 3 / view.k; ctx.strokeStyle = rgba(P.bg, 0.9);
+        ctx.strokeText(n.row.id, lx, ly);
+        ctx.fillStyle = n === sel ? P.ink : P.muted; ctx.fillText(n.row.id, lx, ly);
+        ctx.textAlign = 'center';
+      }
     });
 
     // Selected entity watcher satellite ring
@@ -1380,14 +1440,8 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
   // Deterministic Showcase Contract (window.__ready, window.__advance(ms), window.__done())
   const DWELL_MS = __DWELL_MS__;
   // Choreography phases: 0 = Overview + initial selection, 1..K = each sector scope + top entity in that sector, K+1 = return to active entity & approve
-  const phases = [{scope: 'all', select: selectedId}];
-  SPEC.sectors.forEach(s => {
-    const topInSec = SPEC.entities.filter(e => e.sector === s.id).sort((a, b) => b.score - a.score)[0];
-    phases.push({scope: s.id, select: topInSec ? topInSec.id : selectedId});
-  });
-  if (activeId) {
-    phases.push({scope: 'all', select: activeId, approve: true});
-  }
+  // Built in Python (build_choreography): each phase's loop_subject === select.
+  const phases = SPEC.choreography || [{scope: 'all', select: selectedId, loop_subject: selectedId}];
   let currentPhaseIdx = -1;
   let showcaseDone = false;
 
@@ -1396,6 +1450,7 @@ html { scrollbar-color: var(--mc-scroll-thumb) var(--mc-surface); }
     const p = phases[idx];
     scope = p.scope;
     selectedId = p.select;
+    if (p.loop_subject !== p.select) console.warn('mission-control: loop subject differs from selection', p);
     if (p.approve) {
       halted = false;
       gateOutcome = 'approved';
@@ -1623,7 +1678,7 @@ def render_html(spec: dict, dwell_ms: float = 2200.0, style: dict | None = None,
         .replace("__TITLE__", _esc_html(norm["title"]))
         .replace("__BADGE__", _esc_html(norm["badge"]))
         .replace("__BANNER__", _esc_html(norm["banner"]))
-        .replace("__SPEC_JSON__", json.dumps(norm).replace("</", "<\\/"))
+        .replace("__SPEC_JSON__", json.dumps(dict(norm, choreography=build_choreography(norm))).replace("</", "<\\/"))
         .replace("__DWELL_MS__", str(max(250, int(round(float(dwell_ms))))))
     )
     if style:

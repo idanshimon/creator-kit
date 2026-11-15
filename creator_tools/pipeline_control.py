@@ -349,7 +349,8 @@ html, body { margin: 0; background: var(--mc-surface); color: var(--mc-ink); fon
 button { font: inherit; cursor: pointer; padding: 6px 12px; border-radius: var(--mc-radius); border: 1px solid var(--mc-border); background: var(--mc-raised); color: var(--mc-ink); }
 button:focus-visible, a:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--mc-accent); outline-offset: 2px; }
 main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; padding: 16px 20px 28px; align-items: start; }
-.card { background: var(--mc-panel); border: 1px solid var(--mc-border); border-radius: calc(var(--mc-radius) + 2px); padding: 16px 18px; }
+html.rec:not(.rec-end)::after { content: ''; position: fixed; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--mc-surface)); }
+.card { scroll-margin-top: 16px; background: var(--mc-panel); border: 1px solid var(--mc-border); border-radius: calc(var(--mc-radius) + 2px); padding: 16px 18px; }
 h1 { font-size: 20px; margin: 0 0 2px; }
 .q { color: var(--mc-muted); margin: 0 0 12px; }
 .vizwrap { overflow-x: auto; }
@@ -375,7 +376,7 @@ aside h2 { font-size: 13px; margin: 0 0 8px; color: var(--mc-muted); font-weight
 .beats span.now { color: var(--mc-human); border-color: var(--mc-human); font-weight: 700; }
 .finding { font-size: 13.5px; margin: 0 0 12px; }
 .ev { margin: 0 0 14px; padding-left: 18px; font-size: 12.5px; color: var(--mc-muted); }
-.gate { border: 1px solid var(--mc-human); border-radius: var(--mc-radius); padding: 12px; background: color-mix(in srgb, var(--mc-human) 7%, var(--mc-panel)); }
+.gate { scroll-margin-top: 16px;  border: 1px solid var(--mc-human); border-radius: var(--mc-radius); padding: 12px; background: color-mix(in srgb, var(--mc-human) 7%, var(--mc-panel)); }
 .gate .lbl { font-weight: 700; color: var(--mc-human); font-size: 13px; margin-bottom: 6px; }
 .gate p { margin: 0 0 10px; font-size: 13.5px; }
 .gate .row { display: flex; gap: 8px; }
@@ -839,15 +840,55 @@ addEventListener('hashchange', route);
 addEventListener('resize', () => { const v = (location.hash || '#flow').slice(1).split('/')[0]; if (VIEWS[v]) VIEWS[v](); });
 route();
 
-// Deterministic showcase hooks: scroll from the flow line through each finding.
-let shown = 0;
+// Deterministic showcase hooks: a framed camera driven only by the __advance clock.
+// Each beat lands on a section boundary (element top minus its scroll-margin), so the
+// station row and cards are never cut mid-way; moves ease between holds with no
+// browser smooth-scroll (which would not follow the virtual clock).
 window.__ready = true;
-window.__advance = ms => { window.__driven = true; reduceT(ms); };
+window.__advance = ms => {
+  if (!window.__driven) document.documentElement.classList.add('rec');
+  window.__driven = true; reduceT(ms);
+};
+const SHOT_TOTAL = 16, SHOT_MOVE = 0.7;
+let SHOT_HOLD = 2, SHOT_LEN = 2.7;
+function shotY(el) {
+  if (!el) return 0;
+  const m = parseFloat(getComputedStyle(el).scrollMarginTop) || 12;
+  const max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+  return Math.round(Math.min(max, Math.max(0, el.getBoundingClientRect().top + scrollY - m)));
+}
+// Approval beat: the smallest scroll that shows the whole gate card, so the flow line
+// (and its station row) stays framed from the top instead of being sliced off.
+function revealY(el) {
+  if (!el) return 0;
+  const r = el.getBoundingClientRect(), max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+  return Math.round(Math.min(max, Math.max(0, r.bottom + scrollY + 24 - innerHeight)));
+}
+function shotList() {
+  const gate = document.querySelector('.gate');
+  const ys = [0];
+  const push = y => { if (Math.abs(y - ys[ys.length - 1]) > 40) ys.push(y); };
+  if (gate) push(revealY(gate));
+  push(shotY(document.querySelector('.insights')));
+  document.querySelectorAll('.fig').forEach(f => push(shotY(f)));
+  SHOT_HOLD = Math.max(1.2, (SHOT_TOTAL - (ys.length - 1) * SHOT_MOVE) / ys.length);
+  SHOT_LEN = SHOT_HOLD + SHOT_MOVE;
+  return ys;
+}
+const ease = u => u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+function cameraY(t, ys) {
+  const i = Math.floor(t / SHOT_LEN), local = t - i * SHOT_LEN;
+  if (i >= ys.length - 1) return ys[ys.length - 1];
+  if (local <= SHOT_HOLD) return ys[i];
+  return Math.round(ys[i] + (ys[i + 1] - ys[i]) * ease((local - SHOT_HOLD) / SHOT_MOVE));
+}
 function reduceT(ms) {
   animT += ms / 1000; place(animT);
-  const idx = Math.floor(animT / 2.5);
-  if (idx !== shown) { shown = idx; const t = idx === 0 ? document.body : document.querySelectorAll('.fig')[idx - 1]; if (t) t.scrollIntoView({block: 'center'}); }
-  window.__isDone = idx > D.figures.length;
+  const ys = shotList();
+  window.scrollTo({top: cameraY(animT, ys), left: 0, behavior: 'instant'});
+  // Drop the bottom fade once the page end is in frame so the last card stays crisp.
+  document.documentElement.classList.toggle('rec-end', scrollY >= document.documentElement.scrollHeight - innerHeight - 2);
+  window.__isDone = animT >= (ys.length - 1) * SHOT_LEN + SHOT_HOLD;
 }
 window.__done = () => !!window.__isDone;
 """

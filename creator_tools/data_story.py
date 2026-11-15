@@ -187,7 +187,7 @@ def _chart(figure, fact):
 CSS = """
 :root{color-scheme:light;--bg:#f4f3ef;--surface:#fff;--text:#172e37;--muted:#50656c;--line:#c9d5d5;--accent:#006b62;--wash:#e6f3ef}
 :root[data-theme=dark]{color-scheme:dark;--bg:#111d24;--surface:#192b33;--text:#e3eeee;--muted:#afc6c9;--line:#3a525b;--accent:#6ee0c3;--wash:#203c3e}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:2rem}body{margin:0;overflow-wrap:anywhere;background:var(--bg);color:var(--text);font:17px/1.65 system-ui,-apple-system,sans-serif}a{color:var(--accent);overflow-wrap:anywhere}button,summary,a{touch-action:manipulation}button{font:inherit;color:var(--text);border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:.5rem .85rem;cursor:pointer}a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.shell{max-width:1320px;margin:auto;padding:2rem 3rem;display:grid;grid-template-columns:235px minmax(0,1fr);gap:3.5rem}aside{align-self:start;position:sticky;top:2rem}aside p,.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:750}nav a{display:block;text-decoration:none;padding:.75rem;border-left:3px solid var(--line);font-size:.9rem}nav a[aria-current=true]{border-color:var(--accent);background:var(--wash);font-weight:700}main,section,figure{min-width:0}header{padding:1rem 0 2.5rem;border-bottom:1px solid var(--line)}h1{font-size:clamp(2rem,4vw,3.8rem);letter-spacing:-.04em;line-height:1.13;margin:.7rem 0 1.5rem}h2{font-size:1.9rem;letter-spacing:-.03em;line-height:1.2}h3{font-size:1rem;margin:1.3rem 0 .4rem}p{overflow-wrap:anywhere}.intro{font-size:1.2rem;color:var(--muted);max-width:65ch}section{padding:2rem 0 3rem;scroll-margin-top:2rem}figure{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:1.4rem 0;padding:1.6rem}figcaption{font-size:.8rem;color:var(--muted)}.metrics{display:flex;flex-wrap:wrap;gap:2rem}.metric strong{display:block;font-size:2.2rem;line-height:1.3;letter-spacing:-.03em}.metric span{color:var(--muted);font-size:.85rem}.badge{display:inline-block;font-size:.75rem;font-weight:650;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}.interpretation{border-left:3px solid var(--accent);padding-left:1rem}svg{display:block;width:100%;height:auto;margin:1.5rem 0;color:var(--accent)}svg polyline{fill:none;stroke:currentColor;stroke-width:3}svg circle{fill:currentColor}svg .axis{fill:none;stroke:var(--line);stroke-width:1}svg text{fill:var(--muted);font:12px system-ui}details{border-top:1px solid var(--line);margin-top:1.4rem;padding-top:1rem}summary{cursor:pointer;font-weight:700;color:var(--accent)}.evidence{font-size:.9rem;overflow-wrap:anywhere}dl{margin:.5rem 0}dt{font-weight:700;margin-top:.7rem}dd{margin:0;color:var(--muted)}code,pre{font: .85rem/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}pre{padding:1rem;background:var(--wash);border-radius:8px}.point{border-bottom:1px solid var(--line);padding:.65rem 0}.point p{margin:.2rem 0}.note{font-size:.8rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.8rem}@media(max-width:760px){svg text{font-size:34px}.shell{display:block;padding:1.2rem}aside{position:static;margin-bottom:2rem}nav{margin:1rem 0}nav a{padding:.5rem .75rem}header{padding-top:0}figure{padding:1rem}h2{font-size:1.6rem}.metrics{gap:1rem}.metric strong{font-size:1.8rem}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{aside,button{display:none}.shell{display:block}details{display:block}body{background:white;color:black}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:2rem}body{margin:0;overflow-wrap:anywhere;background:var(--bg);color:var(--text);font:17px/1.65 system-ui,-apple-system,sans-serif}a{color:var(--accent);overflow-wrap:anywhere}button,summary,a{touch-action:manipulation}button{font:inherit;color:var(--text);border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:.5rem .85rem;cursor:pointer}a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.shell{max-width:1320px;margin:auto;padding:2rem 3rem;display:grid;grid-template-columns:235px minmax(0,1fr);gap:3.5rem}aside{align-self:start;position:sticky;top:2rem}aside p,.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:750}nav a{display:block;text-decoration:none;padding:.75rem;border-left:3px solid var(--line);font-size:.9rem}nav a[aria-current=true]{border-color:var(--accent);background:var(--wash);font-weight:700}main,section,figure{min-width:0}header{padding:1rem 0 2.5rem;border-bottom:1px solid var(--line)}h1{font-size:clamp(2rem,4vw,3.8rem);letter-spacing:-.04em;line-height:1.13;margin:.7rem 0 1.5rem}h2{font-size:1.9rem;letter-spacing:-.03em;line-height:1.2}h3{font-size:1rem;margin:1.3rem 0 .4rem}p{overflow-wrap:anywhere}.intro{font-size:1.2rem;color:var(--muted);max-width:65ch}section{padding:2rem 0 3rem;scroll-margin-top:2rem}figure{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:1.4rem 0;padding:1.6rem}figcaption{font-size:.8rem;color:var(--muted)}.metrics{display:flex;flex-wrap:wrap;gap:2rem}.metric strong{display:block;font-size:2.2rem;line-height:1.3;letter-spacing:-.03em}.metric span{color:var(--muted);font-size:.85rem}.badge{display:inline-block;font-size:.75rem;font-weight:650;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}.interpretation{border-left:3px solid var(--accent);padding-left:1rem}svg{display:block;width:100%;height:auto;margin:1.5rem 0;color:var(--accent)}svg polyline{fill:none;stroke:currentColor;stroke-width:3}svg circle{fill:currentColor}svg .axis{fill:none;stroke:var(--line);stroke-width:1}svg text{fill:var(--muted);font:12px system-ui}details{border-top:1px solid var(--line);margin-top:1.4rem;padding-top:1rem}summary{cursor:pointer;font-weight:700;color:var(--accent)}.evidence{font-size:.9rem;overflow-wrap:anywhere}dl{margin:.5rem 0}dt{font-weight:700;margin-top:.7rem}dd{margin:0;color:var(--muted)}code,pre{font: .85rem/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}pre{padding:1rem;background:var(--wash);border-radius:8px}.point{border-bottom:1px solid var(--line);padding:.65rem 0}.point p{margin:.2rem 0}.note{font-size:.8rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.8rem}@media(max-width:760px){svg text{font-size:34px}.shell{display:block;padding:1.2rem}aside{position:static;margin-bottom:2rem}nav{margin:1rem 0}nav a{padding:.5rem .75rem}header{padding-top:0}figure{padding:1rem}h2{font-size:1.6rem}.metrics{gap:1rem}.metric strong{font-size:1.8rem}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}.tour,.tour body{scroll-behavior:auto}.tour .tour-bar{position:fixed;left:0;top:0;height:5px;width:100%;background:var(--accent);transform-origin:0 0;transform:scaleX(0);z-index:9}.tour svg circle{transform-box:fill-box}@media print{aside,button{display:none}.shell{display:block}details{display:block}body{background:white;color:black}}
 """
 
 JS = """
@@ -197,6 +197,55 @@ const links=[...document.querySelectorAll('nav a')];
 function mark(id){links.forEach(a=>a.setAttribute('aria-current',String(a.hash==='#'+id)));}
 links.forEach(a=>a.addEventListener('click',()=>mark(a.hash.slice(1))));
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting)mark(entry.target.id);}}, {rootMargin:'-10% 0px -55% 0px'});document.querySelectorAll('section').forEach(section=>observer.observe(section));}
+"""
+
+# Opt-in deterministic tour (?render=1) implementing the showcase contract:
+# window.__ready, window.__advance(ms) draws exactly one frame, window.__done().
+# Driven only by the __advance clock: no timers, rAF or Date. It animates only
+# numbers already present in the DOM (count-up ends on the exact rendered text).
+TOUR_JS = r"""
+if(new URLSearchParams(location.search).get('render')==='1'){(function(){
+root.classList.add('tour');
+const secs=[...document.querySelectorAll('main section')], head=document.querySelector('header');
+const bar=document.createElement('div');bar.className='tour-bar';document.body.appendChild(bar);
+const INTRO=2.6, SEG=6.0, ENDHOLD=1.5, TOTAL=INTRO+secs.length*SEG+ENDHOLD;
+const clamp=x=>Math.max(0,Math.min(1,x)), ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const span=(t,a,b)=>clamp((t-a)/(b-a));
+function fmt(v,ref){const d=/e/i.test(ref)?0:(ref.split('.')[1]||'').length;const s=v.toFixed(Math.min(d,6));return Number(s)===0?(0).toFixed(Math.min(d,6)):s;}
+const figs=secs.map(sec=>{
+  const line=sec.querySelector('svg polyline'), len=line?line.getTotalLength():0;
+  if(line){line.style.strokeDasharray=len+' '+len;}
+  const dots=[...sec.querySelectorAll('svg circle')], pts=line?[...line.points]:[];
+  let acc=0;const at=pts.map((p,i)=>{if(i)acc+=Math.hypot(p.x-pts[i-1].x,p.y-pts[i-1].y);return len?acc/len:1;});
+  const nums=[...sec.querySelectorAll('.metric strong')].map(el=>{const n=el.firstChild, raw=n.nodeValue.trim();
+    return {node:n,raw:raw,target:Number(raw)};}).filter(m=>Number.isFinite(m.target));
+  return {sec,line,len,dots,at,nums,parts:[...sec.querySelectorAll('.eyebrow,h2,h2+p,figure,.interpretation')]};
+});
+function top(el){return el.getBoundingClientRect().top+scrollY-24;}
+const stops=[0].concat(secs.map(top)), maxY=()=>document.documentElement.scrollHeight-innerHeight;
+let T=0;
+function draw(){
+  const h=ease(span(T,.2,1.6));head.style.opacity=h;head.style.transform='translateY('+(1-h)*40+'px)';
+  head.style.clipPath='inset(0 '+(1-ease(span(T,.2,2.0)))*100+'% 0 0)';
+  let active=-1, y=0;
+  figs.forEach((f,i)=>{
+    const s=INTRO+i*SEG, k=T-s;
+    if(k>=0){active=i;y=stops[i]+(stops[i+1]-stops[i])*ease(span(k,0,1.1));}
+    f.parts.forEach((el,j)=>{const a=ease(span(k,.5+j*.18,1.3+j*.18));el.style.opacity=a;el.style.transform='translateY('+(1-a)*36+'px)';});
+    if(f.line){const d=ease(span(k,1.4,3.6));f.line.style.strokeDashoffset=f.len*(1-d);
+      f.dots.forEach((c,j)=>{const p=clamp((d-f.at[j]+.08)/.08);c.setAttribute('r',(5*p+(p>0&&p<1?3*Math.sin(p*Math.PI):0)).toFixed(3));});}
+    const c=ease(span(k,1.3,3.3));
+    f.nums.forEach(m=>{m.node.nodeValue=c>=1?m.raw+' ':fmt(m.target*c,m.raw)+' ';});
+  });
+  window.scrollTo(0,Math.min(y,maxY()));
+  links.forEach((a,i)=>a.setAttribute('aria-current',String(i===Math.max(0,active))));
+  bar.style.transform='scaleX('+clamp(T/TOTAL)+')';
+}
+draw();
+window.__advance=ms=>{T+=ms/1000;draw();};
+window.__done=()=>T>=TOTAL;
+window.__ready=true;
+})();}
 """
 
 
@@ -257,7 +306,7 @@ def render_html(document, report):
 %s<footer>Offline snapshot · No source requests, backend or live refresh. Source links open only when followed. Review the full extract before sharing.</footer>
 </main></div><script>%s</script></body></html>''' % (
         _escape(document['title']), CSS, ''.join(rail), _escape(document['title']),
-        _escape(document['introduction']), ''.join(sections), JS)
+        _escape(document['introduction']), ''.join(sections), JS + TOUR_JS)
 
 
 def _unique_keys(pairs):
@@ -269,7 +318,7 @@ def _unique_keys(pairs):
     return result
 
 
-def run(action, input_path, output_path=None):
+def run(action, input_path, output_path=None, video_output=None, log=print):
     document = json.loads(Path(input_path).expanduser().read_text(encoding='utf-8'),
                           object_pairs_hook=_unique_keys)
     report = validate(document)
@@ -288,4 +337,9 @@ def run(action, input_path, output_path=None):
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('xb') as handle:
         handle.write(content)
-    return {**report, 'output': str(output), 'offline': True}
+    result = {**report, 'output': str(output), 'offline': True}
+    if video_output:
+        from creator_tools import showcase
+        # ?render=1 opts into the deterministic tour; the HTML itself is unchanged.
+        result['video'] = showcase.record(str(output) + '?render=1', video_output, log=log)
+    return result

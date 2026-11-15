@@ -2,38 +2,38 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05050a;--ln:#1d1d29;--tx:#d8d2c2;--dim:#5f5c6b;--gold:#f0b94a;--cyan:#38e1cf;--pink:#ff4f9a;--vio:#9a7bff}
+:root{--bg:#05050a;--ln:#1d1d29;--tx:#d8d2c2;--dim:#9893a6;--gold:#f0b94a;--cyan:#38e1cf;--pink:#ff4f9a;--vio:#9a7bff}
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:#05050a;color:var(--tx);font:11px "JetBrains Mono",ui-monospace,Menlo,monospace;display:grid;grid-template-rows:38px 1fr 236px;overflow:hidden}
+body{margin:0;background:#05050a;color:var(--tx);font:13px "JetBrains Mono",ui-monospace,Menlo,monospace;display:grid;grid-template-rows:46px 1fr 300px;overflow:hidden}
 header{display:flex;gap:22px;align-items:center;padding:0 16px;border-bottom:1px solid var(--ln);background:#05050a;z-index:2}
 header b{color:var(--gold);letter-spacing:.08em}header .m{color:var(--dim)}header .m i{color:var(--tx);font-style:normal}
-.tabs{margin-left:auto;display:flex;gap:4px}.tab{color:var(--dim);cursor:pointer;padding:5px 12px;border:1px solid #2a2a36;border-radius:2px;text-transform:uppercase;font-size:10px;letter-spacing:.14em}
+.tabs{margin-left:auto;display:flex;gap:4px}.tab{color:var(--dim);cursor:pointer;padding:5px 12px;border:1px solid #2a2a36;border-radius:2px;text-transform:uppercase;font-size:12px;letter-spacing:.14em}
 .tab:hover{color:var(--tx)}.tab.on{color:#000;background:var(--gold)}
 #g{position:relative;overflow:hidden}canvas{display:block}
 #tip{position:absolute;max-width:440px;background:#07070dee;border:1px solid #f0b94a55;border-left:2px solid var(--gold);padding:10px 12px;pointer-events:none;display:none;line-height:1.5;box-shadow:0 0 30px #000}
-#tip .k{font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+#tip .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 #hud{position:absolute;left:16px;top:14px;line-height:1.5;pointer-events:none}
-#hud .n{font-size:24px;font-weight:300}#hud .l{font-size:9px;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
-#legend{position:absolute;right:16px;top:14px;line-height:1.9;text-align:right;pointer-events:none;letter-spacing:.1em}
+#hud .n{font-size:28px;font-weight:300}#hud .l{font-size:12px;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+#legend{position:absolute;right:16px;top:14px;line-height:1.9;font-size:13px;text-align:right;pointer-events:none;letter-spacing:.1em}
 #legend span{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:7px;box-shadow:0 0 8px currentColor}
-.row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr .8fr;gap:1px;background:var(--ln);border-top:1px solid var(--ln);z-index:2}
-.p{background:#08080e;padding:10px 12px;overflow:hidden}
-.p h4{margin:0 0 8px;font-size:9px;font-weight:400;letter-spacing:.2em;color:var(--dim);display:flex;justify-content:space-between}
+.row{display:grid;grid-template-columns:1.45fr 1.1fr 1.15fr .9fr .75fr;gap:1px;background:var(--ln);border-top:1px solid var(--ln);z-index:2}
+.p{background:#08080e;padding:12px 16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.p h4{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.18em;color:#a8a3b6;flex:none;display:flex;justify-content:space-between}
 .p h4 em{font-style:normal;color:var(--gold)}
-#log{font-size:10.5px;line-height:1.6;height:192px;overflow:hidden}
-#log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.4}#log div:last-child{opacity:1}
-#log .r{display:inline-block;width:46px}
-.big{font-size:64px;font-weight:300;text-align:center;line-height:1;margin-top:10px;text-shadow:0 0 24px #f0b94a44}
-.sub{text-align:center;color:var(--dim);font-size:9px;letter-spacing:.16em;margin:4px 0 10px}
-.bar{height:3px;background:#1a1a24;margin:3px 0 7px}.bar i{display:block;height:100%}
-#heat span{display:inline-block;margin:2px;padding:2px 5px;border-radius:1px;font-size:10px}
+#log{font-size:13px;line-height:19px;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}#log div:first-child{margin-top:auto}
+#log div{flex:none;white-space:normal;overflow-wrap:anywhere;opacity:.62;padding:2px 0;border-top:1px solid #15151f}#log div:last-child{opacity:1}
+#log .r{display:inline-block;width:56px;font-weight:600}
+.big{font-size:76px;font-weight:300;text-align:center;line-height:1;margin-top:10px;text-shadow:0 0 24px #f0b94a44}
+.sub{text-align:center;color:#a8a3b6;font-size:12px;letter-spacing:.16em;margin:4px 0 10px}
+.bar{height:5px;background:#1a1a24;margin:3px 0 7px}.bar i{display:block;height:100%}
+#heat{flex:1;min-height:0;overflow:hidden;align-content:flex-start}#heat span{display:inline-block;margin:3px;padding:3px 7px;border-radius:2px;font-size:13px}
 </style></head><body>
 <header><b>◉ PROMPT-CRAWLER</b><span class="m" id="meta"></span><div class="tabs" id="tabs"></div></header>
 <div id="g"><canvas id="c"></canvas><div id="hud"></div><div id="legend"></div><div id="tip"></div></div>
 <div class="row">
  <div class="p"><h4>CRAWL LOG<em id="prog"></em></h4><div id="log"></div></div>
- <div class="p"><h4>SECTIONS · ROUTE MIX<em id="secn"></em></h4><svg id="sec" width="100%" height="192"></svg></div>
- <div class="p"><h4>COVERAGE RADAR</h4><svg id="rad" width="100%" height="192"></svg></div>
+ <div class="p"><h4>SECTIONS · ROUTE MIX<em id="secn"></em></h4><svg id="sec" width="100%" style="flex:1;min-height:0"></svg></div>
+ <div class="p"><h4>COVERAGE RADAR</h4><svg id="rad" width="100%" style="flex:1;min-height:0"></svg></div>
  <div class="p"><h4>WORD HEAT</h4><div id="heat"></div></div>
  <div class="p"><h4>SPEC SCORE</h4><div class="big" id="score">0</div><div class="sub" id="grade">OF 100</div><div id="routes"></div></div>
 </div>
@@ -58,14 +58,15 @@ const root={id:"root",hub:2,fx:W/2,fy:H/2,x:W/2,y:H/2};
 const leaves=D.nodes.map(n=>({...n,id:"n"+n.id,idx:n.id,lit:0,bloom:0}));
 const nodes=[root,...secs,...leaves];
 const links=[...secs.map(s=>({source:"root",target:s.id,h:1,lit:0})),...leaves.map(n=>({source:sid[n.section],target:n.id,lit:0,bend:(Math.random()-.5)*.5}))];
-secs.forEach((s,i)=>{const a=i/secs.length*Math.PI*2;s.x=W/2+Math.cos(a)*M()*.34;s.y=H/2+Math.sin(a)*M()*.34});
+secs.forEach((s,i)=>{const a=i/secs.length*Math.PI*2;s.x=W/2+Math.cos(a)*M()*.31;s.y=H/2+Math.sin(a)*M()*.31});
 leaves.forEach(l=>{const s=secs.find(s=>s.raw===l.section);l.x=s.x+(Math.random()-.5)*40;l.y=s.y+(Math.random()-.5)*40});
 const sim=d3.forceSimulation(nodes)
- .force("link",d3.forceLink(links).id(d=>d.id).distance(d=>d.h?M()*.34:22+Math.random()*34).strength(d=>d.h?.9:.5))
+ .force("link",d3.forceLink(links).id(d=>d.id).distance(d=>d.h?M()*.31:22+Math.random()*34).strength(d=>d.h?.9:.5))
  .force("charge",d3.forceManyBody().strength(d=>d.hub?-1200:-24).distanceMax(420))
- .force("radial",d3.forceRadial(d=>d.hub==1?M()*.34:0,W/2,H/2).strength(d=>d.hub==1?.3:0))
+ .force("radial",d3.forceRadial(d=>d.hub==1?M()*.31:0,W/2,H/2).strength(d=>d.hub==1?.3:0))
  .force("x",d3.forceX(W/2).strength(d=>d.hub?0:.012)).force("y",d3.forceY(H/2).strength(d=>d.hub?0:.02))
  .force("col",d3.forceCollide(d=>d.hub==1?34:d.hub?50:4.5)).alphaDecay(.018);
+const bounds=()=>leaves.forEach(d=>{d.x=Math.max(24,Math.min(W-24,d.x));d.y=Math.max(22,Math.min(H-18,d.y))});sim.on("tick.bounds",bounds);
 const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 
 // background nebula + stars, painted once
@@ -99,11 +100,12 @@ const logEl=d3.select("#log"),logLines=[];
 function crawled(leaf){leaf.lit=1;leaf.bloom=1;sp.sec.lit=1;links.forEach(l=>{if(l.target===leaf||(l.h&&l.target===sp.sec))l.lit=1});
  logLines.push(leaf);if(logLines.length>12)logLines.shift();
  logEl.selectAll("div").data(logLines,d=>d.id).join("div").html(d=>`${d.escalated?'<span style="color:#b69cff">⇪ </span>':''}<span class="r" style="color:${COL[d.route]}">${d.route}</span><span style="color:${KIND[d.kind]}">${d.kind.padEnd(9," ")}</span> <span style="color:var(--dim)">p=${d.p.toFixed(2)}</span> ${esc(d.text)}`);
+ {const el=logEl.node();while(el.children.length>1&&el.scrollHeight>el.clientHeight+1){el.removeChild(el.firstChild);logLines.shift()}}
  d3.select("#prog").text(`${sp.step+1}/${order.length}`)}
 // ?seek=N pre-crawls N decisions so a still frame shows a lit web (screenshots / video)
 for(let i=0,n=Math.min(+Q.get("seek")||0,order.length);i<n;i++){sp.leaf=order[i];sp.sec=byId[sid[sp.leaf.section]];crawled(sp.leaf);sp.leaf.bloom=0;sp.step++}
 planNext();
-if(+Q.get("seek")){sim.tick(300);const l=order[Math.max(0,sp.step-1)],s=byId[sid[l.section]];sp.x=(s.x+l.x)/2;sp.y=(s.y+l.y)/2;sp.ang=Math.atan2(l.y-s.y,l.x-s.x)}
+if(+Q.get("seek")){sim.tick(300);bounds();const l=order[Math.max(0,sp.step-1)],s=byId[sid[l.section]];sp.x=(s.x+l.x)/2;sp.y=(s.y+l.y)/2;sp.ang=Math.atan2(l.y-s.y,l.x-s.x)}
 
 function drawSpider(x,y,ang,t,moving){ctx.save();ctx.translate(x,y);{const h=ctx.createRadialGradient(0,0,0,0,0,46);h.addColorStop(0,"rgba(5,5,10,.85)");h.addColorStop(.45,rgba("#f0b94a",.10));h.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=h;ctx.beginPath();ctx.arc(0,0,46,0,7);ctx.fill()}ctx.rotate(ang);const sc=2.1/Math.sqrt(T.k);ctx.scale(sc,sc);
  ctx.lineCap="round";ctx.strokeStyle="#f6e9cc";ctx.shadowColor="#f0b94a";ctx.shadowBlur=10;
@@ -154,23 +156,26 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
  ctx.globalCompositeOperation="source-over";
  // cascade: escalated to tier 2 -> solid violet double ring (+ pulse while blooming)
  leaves.forEach(d=>{if(!vis(d)||!d.lit||!d.escalated)return;const R=7+d.bloom*10;ctx.strokeStyle=rgba("#b69cff",.95);ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(d.x,d.y,R,0,7);ctx.stroke();ctx.strokeStyle=rgba("#b69cff",.35);ctx.beginPath();ctx.arc(d.x,d.y,R+4,0,7);ctx.stroke();
-  if(d.bloom>.05){ctx.font="9px JetBrains Mono, monospace";ctx.fillStyle=rgba("#d9ccff",d.bloom);const l=d.legs;ctx.fillText(`${l[0].model} ${l[0].p.toFixed(2)} → ${l[1].model} ${l[1].p.toFixed(2)}`,d.x+12,d.y-10)}});
+  if(d.bloom>.05){ctx.font="12px JetBrains Mono, monospace";ctx.fillStyle=rgba("#d9ccff",d.bloom);const l=d.legs;ctx.fillText(`${l[0].model} ${l[0].p.toFixed(2)} → ${l[1].model} ${l[1].p.toFixed(2)}`,d.x+12,d.y-10)}});
  // vague markers: dashed violet ring
  leaves.forEach(d=>{if(!vis(d)||!d.lit||!d.vague||!d.vague.length)return;ctx.strokeStyle=rgba("#9a7bff",.9);ctx.lineWidth=.9;ctx.setLineDash([2,2]);ctx.beginPath();ctx.arc(d.x,d.y,5.5+Math.sin(t*4)*1,0,7);ctx.stroke();ctx.setLineDash([])});
  // section hubs: ring, rotating dashed orbit, callout label
- ctx.font="10px JetBrains Mono, monospace";
- const boxes=secs.map(s=>{const R=7+Math.sqrt(s.n)*2.2,out=Math.sign(s.x-root.x)||1,lbl=(s.name.length>24?s.name.slice(0,23)+"…":s.name)+"  "+s.n,w=ctx.measureText(lbl).width+12,ex=s.x+out*(R+16);return{s,R,out,lbl,w,ex,ey:s.y-(s.y<root.y?14:-14),lx:out>0?ex:ex-w}});
- for(let it=0;it<30;it++)for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const A=boxes[i],B=boxes[j];
-  if(A.lx<B.lx+B.w&&B.lx<A.lx+A.w&&Math.abs(A.ey-B.ey)<19){const d=(19-Math.abs(A.ey-B.ey))/2+.5,sg=A.ey<B.ey?-1:1;A.ey+=sg*d;B.ey-=sg*d}}
+ ctx.font="13px JetBrains Mono, monospace";const LH=16,MAXW=210;
+ const wrap=(txt)=>{const L=[""];for(const w of txt.split(/\s+/)){const c=L[L.length-1]?L[L.length-1]+" "+w:w;if(ctx.measureText(c).width<=MAXW||!L[L.length-1])L[L.length-1]=c;else L.push(w)}return L};
+ const boxes=secs.map(s=>{const R=7+Math.sqrt(s.n)*2.2,out=Math.sign(s.x-root.x)||1,lines=wrap(s.name),nw=ctx.measureText(" "+s.n).width,w=Math.max(...lines.map((l,i)=>ctx.measureText(l).width+(i==lines.length-1?nw:0)))+16,h=lines.length*LH+8,ex=s.x+out*(R+18);return{s,R,out,lines,w,h,ex,ey:s.y-(s.y<root.y?16:-16),lx:out>0?ex:ex-w}});
+ for(let it=0;it<40;it++)for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const A=boxes[i],B=boxes[j],need=(A.h+B.h)/2+4;
+  if(A.lx<B.lx+B.w&&B.lx<A.lx+A.w&&Math.abs(A.ey-B.ey)<need){const d=(need-Math.abs(A.ey-B.ey))/2+.5,sg=A.ey<B.ey?-1:1;A.ey+=sg*d;B.ey-=sg*d}}
+ // keep labels inside the canvas (in world coords)
+ boxes.forEach(b=>{const x0=(8-T.x)/T.k,x1=(W-8-T.x)/T.k,y0=(8-T.y)/T.k,y1=(H-8-T.y)/T.k;b.lx=Math.max(x0,Math.min(x1-b.w,b.lx));b.ey=Math.max(y0+b.h/2,Math.min(y1-b.h/2,b.ey))});
  boxes.forEach(b=>b.s._lab=b);
  secs.forEach(s=>{const R=7+Math.sqrt(s.n)*2.2,on=s.lit;
   ctx.strokeStyle=rgba("#f0b94a",on?.95:.35);ctx.lineWidth=1.3;ctx.shadowColor="#f0b94a";ctx.shadowBlur=on?14:0;ctx.beginPath();ctx.arc(s.x,s.y,R,0,7);ctx.stroke();ctx.shadowBlur=0;
   ctx.lineWidth=.8;ctx.setLineDash([1.5,3]);ctx.beginPath();ctx.arc(s.x,s.y,R+5,t*.5,t*.5+Math.PI*1.3);ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle=rgba("#f0b94a",on?1:.45);ctx.beginPath();ctx.arc(s.x,s.y,2.3,0,7);ctx.fill();
-  const{out,lbl,w,ex,ey,lx}=s._lab;
-  ctx.strokeStyle=rgba("#f0b94a",on?.6:.22);ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(s.x+out*R*.7,s.y+(ey-s.y)*.2);ctx.lineTo(ex,ey);ctx.stroke();
-  ctx.fillStyle="rgba(6,6,10,.86)";ctx.fillRect(lx,ey-8,w,16);ctx.strokeRect(lx+.5,ey-7.5,w-1,15);
-  ctx.fillStyle=on?"#f3e6c8":"#7d7869";ctx.fillText(lbl,lx+6,ey+3.5)});
+  const{out,lines,w,h,ex,ey,lx}=s._lab,ax=out>0?lx:lx+w;
+  ctx.strokeStyle=rgba("#f0b94a",on?.7:.4);ctx.lineWidth=.9;ctx.beginPath();ctx.moveTo(s.x+out*R*.7,s.y+(ey-s.y)*.2);ctx.lineTo(ax,ey);ctx.stroke();
+  ctx.fillStyle="rgba(6,6,12,.9)";ctx.fillRect(lx,ey-h/2,w,h);ctx.strokeRect(lx+.5,ey-h/2+.5,w-1,h-1);
+  lines.forEach((l,i)=>{const y=ey-h/2+4+LH*i+12;ctx.fillStyle=on?"#f6ead0":"#bdb6a2";ctx.fillText(l,lx+8,y);if(i==lines.length-1){ctx.fillStyle=on?"#f0b94a":"#a89366";ctx.fillText(" "+s.n,lx+8+ctx.measureText(l).width,y)}})});
  // root core
  [[20,1.8,.95],[32,1,.35],[46,.8,.15]].forEach(([r,lw,a],i)=>{ctx.strokeStyle=rgba("#38e1cf",a);ctx.lineWidth=lw;ctx.shadowColor="#38e1cf";ctx.shadowBlur=i?0:22;ctx.beginPath();ctx.arc(root.x,root.y,r+Math.sin(t*2+i)*1.4,0,7);ctx.stroke()});
  ctx.setLineDash([2,4]);ctx.strokeStyle=rgba("#38e1cf",.4);ctx.beginPath();ctx.arc(root.x,root.y,26,-t*.6,-t*.6+Math.PI);ctx.stroke();ctx.setLineDash([]);
@@ -180,7 +185,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
  ctx.restore();if(!RENDER)requestAnimationFrame(frame)}
 // ?render=1: deterministic clock for frame-exact video capture; the capturer calls __advance(ms)
 const RENDER=!!+Q.get("render");
-if(RENDER){sim.stop();let vt=performance.now();t0=vt;last=vt;window.__advance=ms=>{vt+=ms;sim.tick();frame(vt);return sp.step};window.__done=()=>!sp.path&&!sp.trail.length;window.__ready=true}
+if(RENDER){sim.stop();let vt=performance.now();t0=vt;last=vt;window.__advance=ms=>{vt+=ms;sim.tick();bounds();frame(vt);return sp.step};window.__done=()=>!sp.path&&!sp.trail.length;window.__ready=true}
 else requestAnimationFrame(frame);
 
 // tooltip
@@ -195,33 +200,35 @@ addEventListener("resize",()=>{size();paintBg();root.fx=W/2;root.fy=H/2;sim.alph
 d3.select("#hud").html(`<div class="n">${D.decisions}</div><div class="l">decisions crawled</div><div class="n" style="color:var(--cyan)">${Math.round(100*(D.routes.code||0)/D.decisions)}%</div><div class="l">deterministic · no model call</div><div class="n" style="color:var(--pink)">${D.routes.human||0}</div><div class="l">human gates</div>`+(D.cascade&&D.cascade.tier2?`<div class="n" style="color:#b69cff">${D.cascade.escalated}</div><div class="l">escalated to ${D.cascade.tier2.split("/").pop()}</div>`:""));
 
 // ---------- panels ----------
-const sv=d3.select("#sec"),sw=sv.node().getBoundingClientRect().width,ss=used.slice().sort((a,b)=>b.n-a.n).slice(0,8),mx=d3.max(ss,s=>s.n);
-d3.select("#secn").text(used.length);
+const sv=d3.select("#sec"),sbox=sv.node().getBoundingClientRect(),sw=sbox.width,RH=34,ss=used.slice().sort((a,b)=>b.n-a.n).slice(0,Math.max(1,Math.floor(sbox.height/RH))),mx=d3.max(ss,s=>s.n);
+d3.select("#secn").text(ss.length<used.length?`TOP ${ss.length} OF ${used.length}`:used.length);
 const mix=name=>["code","model","human"].map(r=>D.nodes.filter(n=>n.section===name&&n.route===r).length);
-sv.selectAll("g").data(ss).join("g").attr("transform",(d,i)=>`translate(0,${i*23})`).each(function(d){const g=d3.select(this),bw=sw-150;
- g.append("title").text(strip(d.name));g.append("text").text(strip(d.name).length>17?strip(d.name).slice(0,16)+"…":strip(d.name)).attr("y",10).attr("fill","#8a8576").attr("font-size",9);
- g.append("rect").attr("x",116).attr("y",5).attr("height",4).attr("width",bw).attr("fill","#14141c");
- let x=116;mix(d.name).forEach((v,i)=>{const w=bw*v/mx;g.append("rect").attr("x",x).attr("y",3).attr("height",8).attr("width",0).attr("fill",Object.values(COL)[i]).transition().delay(300+i*150).duration(800).attr("width",w);x+=w});
- g.append("text").text(d.n).attr("x",sw-24).attr("y",10).attr("fill","#d8d2c2").attr("font-size",9)});
+const LW=Math.min(200,sw*.5),cpl=Math.floor((LW-8)/7.3),wrap2=t=>{const L=[""];for(const w of t.split(/\s+/)){const c=L[L.length-1]?L[L.length-1]+" "+w:w;if(c.length<=cpl||!L[L.length-1])L[L.length-1]=c;else L.push(w)}if(L.length>2){L[1]=L.slice(1).join(" ");L.length=2;if(L[1].length>cpl)L[1]=L[1].slice(0,cpl-1).trimEnd()+"…"}return L};
+sv.selectAll("g").data(ss).join("g").attr("transform",(d,i)=>`translate(0,${i*RH})`).each(function(d){const g=d3.select(this),bw=sw-LW-40,L=wrap2(strip(d.name)),y0=L.length>1?11:17;
+ g.append("title").text(strip(d.name));L.forEach((l,i)=>g.append("text").text(l).attr("y",y0+i*14).attr("fill","#c9c2ae").attr("font-size",12));
+ g.append("rect").attr("x",LW).attr("y",11).attr("height",6).attr("width",bw).attr("fill","#1a1a24");
+ let x=LW;mix(d.name).forEach((v,i)=>{const w=bw*v/mx;g.append("rect").attr("x",x).attr("y",5).attr("height",12).attr("width",0).attr("fill",Object.values(COL)[i]).attr("y",8).transition().delay(300+i*150).duration(800).attr("width",w);x+=w});
+ g.append("text").text(d.n).attr("x",sw).attr("text-anchor","end").attr("y",18).attr("fill","#ece6d6").attr("font-size",13)});
 
-const rv=d3.select("#rad"),rw=rv.node().getBoundingClientRect().width,cx=rw/2,cy=98,R=62,ax=Object.entries(D.coverage),kc=D.kinds,tot=D.decisions||1;
+const rv=d3.select("#rad"),rb=rv.node().getBoundingClientRect(),rw=rb.width,rh=rb.height,cx=rw/2,cy=rh/2,LBW=d3.max(Object.keys(D.coverage),k=>k.length)*7.2,R=Math.max(48,Math.min((rw/2-LBW-14)/.87,rh/2-20)),ax=Object.entries(D.coverage),kc=D.kinds,tot=D.decisions||1;
 const raw={trigger:1,steps:.9,pitfalls:(kc.rule||0)/tot*4,examples:.7,verification:(kc.sourced||0)/tot*3,output:.8};
 const vals=ax.map(([k,v])=>!v?.05:Math.max(.3,Math.min(1,raw[k]??.6)));
 const pt=(i,r)=>[cx+r*Math.sin(i*2*Math.PI/ax.length),cy-r*Math.cos(i*2*Math.PI/ax.length)];
-[.25,.5,.75,1].forEach(f=>rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,R*f)).join(" ")).attr("fill","none").attr("stroke","#1d1d29"));
-ax.forEach((_,i)=>rv.append("line").attr("x1",cx).attr("y1",cy).attr("x2",pt(i,R)[0]).attr("y2",pt(i,R)[1]).attr("stroke","#1d1d29"));
-rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,0)).join(" ")).attr("fill","#38e1cf26").attr("stroke","#38e1cf").attr("stroke-width",1.4).style("filter","drop-shadow(0 0 4px #38e1cf)")
+[.25,.5,.75,1].forEach(f=>rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,R*f)).join(" ")).attr("fill","none").attr("stroke","#2c2c3c"));
+ax.forEach((_,i)=>rv.append("line").attr("x1",cx).attr("y1",cy).attr("x2",pt(i,R)[0]).attr("y2",pt(i,R)[1]).attr("stroke","#2c2c3c"));
+rv.append("polygon").attr("points",ax.map((_,i)=>pt(i,0)).join(" ")).attr("fill","#38e1cf2e").attr("stroke","#38e1cf").attr("stroke-width",1.8).style("filter","drop-shadow(0 0 5px #38e1cf)")
  .transition().duration(1200).attr("points",vals.map((v,i)=>pt(i,R*v)).join(" "));
-vals.forEach((v,i)=>rv.append("circle").attr("r",2.3).attr("fill","#38e1cf").attr("cx",cx).attr("cy",cy).transition().duration(1200).attr("cx",pt(i,R*v)[0]).attr("cy",pt(i,R*v)[1]));
-ax.forEach(([k,v],i)=>{const[x,y]=pt(i,R+15);rv.append("text").text(k).attr("x",x).attr("y",y+3).attr("text-anchor","middle").attr("font-size",9).attr("fill",v?"#8a8576":"#ff4f9a")});
+vals.forEach((v,i)=>rv.append("circle").attr("r",3.2).attr("fill","#38e1cf").attr("cx",cx).attr("cy",cy).transition().duration(1200).attr("cx",pt(i,R*v)[0]).attr("cy",pt(i,R*v)[1]));
+ax.forEach(([k,v],i)=>{const[x,y]=pt(i,R+9),sx=Math.sin(i*2*Math.PI/ax.length);rv.append("text").text(k).attr("x",x).attr("y",y+4).attr("text-anchor",Math.abs(sx)<.2?"middle":sx>0?"start":"end").attr("font-size",12).attr("fill",v?"#c9c2ae":"#ff6fae")});
 
 const hm=d3.max(D.word_heat,w=>w[1]);
 d3.select("#heat").html(D.word_heat.map(([w,c])=>{const a=c/hm;return`<span style="background:${rgba("#f0b94a",(.07+a*.78).toFixed(2))};color:${a>.45?"#120d06":"#d8d2c2"}" title="${c}×">${w}</span>`}).join(""));
+const trimHeat=()=>{const h=document.getElementById("heat"),hb=h.getBoundingClientRect().bottom;[...h.children].forEach(c=>{if(c.getBoundingClientRect().bottom>hb+.5)c.remove()})};trimHeat();document.fonts&&document.fonts.ready.then(trimHeat);
 
 d3.select("#score").style("color",D.spec_score>=75?"#38e1cf":D.spec_score>=50?"#f0b94a":"#ff4f9a")
  .transition().duration(1600).tween("t",function(){const i=d3.interpolateRound(0,D.spec_score);return t=>this.textContent=i(t)});
 d3.select("#grade").text("OF 100 · "+(D.spec_score>=75?"SOLID":D.spec_score>=50?"NEEDS WORK":"WEAK"));
-d3.select("#routes").html(Object.entries(COL).map(([k,v])=>{const n=D.routes[k]||0;return`<div style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.1em"><span style="color:${v}">${k.toUpperCase()}</span><span>${n}</span></div><div class="bar"><i style="width:${100*n/tot}%;background:${v};box-shadow:0 0 6px ${v}"></i></div>`}).join("")+
- `<div style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.1em"><span style="color:var(--vio)">VAGUE</span><span>${D.vague_count}</span></div>`);
+d3.select("#routes").html(Object.entries(COL).map(([k,v])=>{const n=D.routes[k]||0;return`<div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;margin-top:2px"><span style="color:${v}">${k.toUpperCase()}</span><span>${n}</span></div><div class="bar"><i style="width:${100*n/tot}%;background:${v};box-shadow:0 0 6px ${v}"></i></div>`}).join("")+
+ `<div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;margin-top:2px"><span style="color:var(--vio)">VAGUE</span><span>${D.vague_count}</span></div>`);
 });
 </script></body></html>

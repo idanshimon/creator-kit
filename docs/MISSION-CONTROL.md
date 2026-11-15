@@ -109,3 +109,7 @@ python3.13 creator.py mission-control serve \
 - `GET /src?p=<path>` returns an allowed source file as sandboxed plain text, so answer links are clickable; anything outside the context dirs/cited files is 404.
 - Data path: questions and the files the agent reads go to GitHub Copilot (your Copilot account) and WorkIQ (M365); nothing else leaves the machine.
 - Proof: `cd studio-ui && node verify-mission-ask.mjs http://127.0.0.1:PORT/ OUTDIR --file page.html --q "..."` asks through the real form, screenshots dark/light/phone and the static-file state.
+
+## Loop card grounding
+
+The **Loop · N beats** card always describes the **selected** item: the inspector, the map highlight and the loop card share one subject (`loop-subject` line). Only `active_entity` shows the spec's beat state and `status_line`. Any other selected item shows "watched but has no loop run in progress (the loop is running on <active>)" with every beat IDLE. Its state is never borrowed from the active item. After approval, the status line is rebuilt from `gate_beat` and `beats`. The recorded choreography comes from `build_choreography(norm)` in Python and is embedded as `SPEC.choreography`. Every phase has `loop_subject == select`, which `tests/test_mission_control.py` checks.

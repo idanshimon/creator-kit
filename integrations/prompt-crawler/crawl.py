@@ -45,7 +45,7 @@ def crawl(path):
     sections[cur] = []
     for line in text.splitlines():
         m = re.match(r"^#{1,4}\s+(.*)", line)
-        if m: cur = m.group(1).strip().lstrip("#").strip()[:40]; sections.setdefault(cur, []); continue
+        if m: cur = m.group(1).strip().lstrip("#").strip()[:96]; sections.setdefault(cur, []); continue
         if line.strip(): sections[cur].append(line.strip())
     nodes, log, words = [], [], collections.Counter()
     for sec, lines in sections.items():

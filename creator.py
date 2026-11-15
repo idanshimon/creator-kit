@@ -49,6 +49,7 @@ def main(argv=None):
     motion_create.add_argument('--output', required=True, help='New directory; refuses to overwrite')
     motion_create.add_argument('--title', required=True, help='Single-line headline, maximum 120 characters')
     motion_create.add_argument('--subtitle', default='One timeline. Every frame in its place.', help='Single-line subtitle, maximum 240 characters')
+    motion_create.add_argument('--template', choices=['classic', 'kinetic'], default='classic', help='classic: calm editorial card; kinetic: 3D letter flip, glitch, particle burst, word chips')
     diagram = sub.add_parser('diagram', help='Pinned local Archify diagrams; standalone HTML, not video')
     diagram_sub = diagram.add_subparsers(dest='diagram_action', required=True)
     di = diagram_sub.add_parser('install', help='Install the checksum-pinned local release ZIP; never overwrite')
@@ -87,6 +88,7 @@ def main(argv=None):
         ds.add_argument('--input', required=True, help='Evidence data-story JSON')
         if action == 'render':
             ds.add_argument('--output', required=True, help='New standalone .html path; never overwrite')
+            ds.add_argument('--video', help='Optional new .mp4 path; records the deterministic ?render=1 tour via showcase')
     studio = sub.add_parser('studio', help='Start the local non-destructive browser editor')
     studio.add_argument('--port', type=int, default=4318)
     studio.add_argument('--host',default='127.0.0.1',help='Specific private LAN IPv4 to share with trusted devices; no login. Default loopback.')
@@ -241,12 +243,13 @@ def main(argv=None):
             return 0
         if args.command == 'data-story':
             from creator_tools import data_story
-            result = data_story.run(args.data_story_action, args.input, getattr(args, 'output', None))
+            result = data_story.run(args.data_story_action, args.input, getattr(args, 'output', None),
+                                    video_output=getattr(args, 'video', None), log=lambda m: print(m, file=sys.stderr))
             print(json.dumps(result, indent=2, allow_nan=False))
             return 0
         if args.command == 'motion':
             from creator_tools import motion
-            result = motion.doctor() if args.motion_action == 'doctor' else motion.create(args.output, args.title, args.subtitle)
+            result = motion.doctor() if args.motion_action == 'doctor' else motion.create(args.output, args.title, args.subtitle, template=args.template)
             print(json.dumps(result, indent=2, allow_nan=False))
             return 0
         if args.command == 'diagram':

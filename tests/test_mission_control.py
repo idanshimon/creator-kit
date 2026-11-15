@@ -45,6 +45,24 @@ class MissionControlTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             mission_control.run("render", EXAMPLE, out)
 
+    def test_choreography_loop_subject_matches_selection(self):
+        norm = mission_control.validate_spec(json.loads(EXAMPLE.read_text()))
+        phases = mission_control.build_choreography(norm)
+        ids = {e["id"] for e in norm["entities"]}
+        self.assertGreaterEqual(len(phases), 2)
+        for ph in phases:
+            self.assertIn(ph["select"], ids)
+            self.assertEqual(ph["loop_subject"], ph["select"])
+            self.assertEqual(ph["in_loop"], ph["select"] == norm["active_entity"])
+        # sector phases visit non-active items; they must not claim the active loop state
+        self.assertTrue(any(not ph["in_loop"] for ph in phases))
+        self.assertEqual(phases[-1]["select"], norm["active_entity"])
+        out = self.tmp / "c.html"
+        mission_control.run("render", EXAMPLE, out, dwell_ms=1000)
+        html = out.read_text(encoding="utf-8")
+        self.assertIn('"loop_subject"', html)
+        self.assertIn('id="loop-subject"', html)
+
     def test_rejects_unknown_sector_or_invalid_stage(self):
         bad = json.loads(EXAMPLE.read_text())
         bad["entities"][0]["sector"] = "nonexistent-sector"

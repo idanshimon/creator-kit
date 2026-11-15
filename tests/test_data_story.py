@@ -134,6 +134,17 @@ class DataStoryTests(unittest.TestCase):
         self.assertNotIn('<script src=', html)
         self.assertNotIn('<link ', html)
 
+    def test_tour_contract_is_opt_in_and_clock_driven(self):
+        from creator_tools import data_story
+        doc = story(); html = data_story.render_html(doc, data_story.validate(doc))
+        self.assertIn("get('render')==='1'", html)
+        for hook in ('window.__ready=true', 'window.__advance=', 'window.__done='):
+            self.assertIn(hook, html)
+        tour = data_story.TOUR_JS
+        for banned in ('setTimeout', 'setInterval', 'requestAnimationFrame', 'Date', 'performance.now', 'Math.random'):
+            self.assertNotIn(banned, tour)
+        self.assertNotIn('<script src=', html)
+
     def test_delta_metric_keeps_units_next_to_value(self):
         result = self.cli(story(), 'render')
         self.assertEqual(result.returncode, 0, result.stderr)

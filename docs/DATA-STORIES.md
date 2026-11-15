@@ -11,7 +11,16 @@ python3 creator.py data-story validate --input examples/data-story/synthetic-wor
 python3 creator.py data-story render --input examples/data-story/synthetic-workshop.json --output local/data-story-workshop.html
 ```
 
-Open the resulting file directly in a browser. Choose a **new `.html` path** for every render. Existing files, directories and output symlinks are refused. Validation finishes before any destination directory/file is created. Source links are navigation links, not fetched runtime dependencies; following one deliberately leaves the offline page.
+Open the resulting file directly in a browser.
+
+**Video (frame-exact).** Add `--video OUT.mp4` (new path) to record the page through `creator.py showcase` without `--realtime`:
+
+```bash
+python3.13 creator.py data-story render --input examples/data-story/synthetic-workshop.json \
+  --output productions/ds/story.html --video productions/ds/story.mp4
+```
+
+The recorder loads the page with `?render=1`, which opts into a scripted tour implementing the showcase contract (`window.__ready`, `window.__advance(ms)`, `window.__done()`): title reveal, each figure scrolls and fades in, chart lines/points draw progressively, metric numbers count up to the exact rendered value, and the rail's active item follows. The tour is driven only by the `__advance` clock (no timers, `requestAnimationFrame` or `Date`), so repeat recordings are identical. Count-up frames show transitional values between 0 and the rendered figure; the final frame of every figure shows the exact rendered text. Without `?render=1` the page behaves exactly as before. Length ≈ 2.6 s + 6 s per figure + 1.5 s hold. Choose a **new `.html` path** for every render. Existing files, directories and output symlinks are refused. Validation finishes before any destination directory/file is created. Source links are navigation links, not fetched runtime dependencies; following one deliberately leaves the offline page.
 
 The example is unmistakably **SYNTHETIC**: all workshop numbers, dates and extracts are invented software fixtures, not CMS data, measured operational results or clinical findings. `example.org` URLs identify illustrative source locations, not real source evidence.
 

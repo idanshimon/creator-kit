@@ -81,6 +81,11 @@ mapping into `runs[]`; no importer is shipped yet.
   there, not zero). Flow line, agent evidence and cards use the same method.
 - Text is escaped; the embedded data cannot close its script tag.
 - Output is one offline HTML file; `--video` records it with `showcase` (deterministic hooks).
+- Recording camera (render mode only, driven by `__advance`): ~16s of framed shots — full flow line
+  at the top, the smallest scroll that reveals the whole approval card (skipped when already in view),
+  then each "What changed" boundary (element top minus `scroll-margin-top`), clamped to page end and
+  de-duplicated. Holds are static; moves are 0.7s cubic ease-in-out computed from the virtual clock
+  (no browser smooth scroll). A bottom fade softens the next row while scrolled, removed at page end.
 
 ## Verification
 
