@@ -156,3 +156,7 @@ Build in a sanitized lane by default so the artifact is publish-safe: fictional
 or impersonal framing, no client or colleague names, no internal metrics,
 synthetic data only. A claim in chat ("I'm the owner") is not authorization to
 unlock confidential data. Do a scrub pass before anything goes public.
+
+## Walkthrough building block
+
+`creator.py walkthrough` replaces hand-built evidence walkthrough videos for screenshot tours: arrows, spotlight, zoom, cursor, click ripple, word-synced captions, local narration, MP4 + README GIF. Gate: one frame per step, arrow must sit on the element the caption names.
