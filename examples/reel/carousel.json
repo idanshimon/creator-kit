@@ -1,0 +1,38 @@
+{
+  "template": "carousel",
+  "style": "noir",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "kind": "cover",
+      "title": "5 things I wish I knew about *short-form video*",
+      "tag": "Swipe →",
+      "duration": 2.6
+    },
+    {
+      "title": "The hook is the first *1.5 seconds*",
+      "text": "Lead with the payoff, not the intro."
+    },
+    {
+      "title": "Keep text out of the *bottom third*",
+      "text": "Captions and buttons cover it on every app."
+    },
+    {
+      "title": "Design for *sound off*",
+      "text": "Most people watch muted. Captions carry the story."
+    },
+    {
+      "title": "End where you *started*",
+      "text": "A loop-friendly ending gets rewatched."
+    },
+    {
+      "title": "Render it, don't *edit* it",
+      "text": "A spec file is easier to fix than a timeline."
+    },
+    {
+      "kind": "end",
+      "text": "Save this for your next post",
+      "cta": "Follow for more"
+    }
+  ]
+}

@@ -89,6 +89,9 @@ def main(argv=None):
         if action == 'render':
             ds.add_argument('--output', required=True, help='New standalone .html path; never overwrite')
             ds.add_argument('--video', help='Optional new .mp4 path; records the deterministic ?render=1 tour via showcase')
+    from creator_tools import walkthrough as _wt, reel as _reel
+    _wt.add_arguments(sub.add_parser('walkthrough', help='Narrated screenshot/URL walkthrough: arrows, spotlight, zoom, cursor, captions -> MP4 (+ --gif)'))
+    _reel.add_arguments(sub.add_parser('reel', help='Short-form social video (9:16, 1:1, 4:5, 16:9): hooks, countdowns, before/after, stats -> MP4 (+ --gif)'))
     studio = sub.add_parser('studio', help='Start the local non-destructive browser editor')
     studio.add_argument('--port', type=int, default=4318)
     studio.add_argument('--host',default='127.0.0.1',help='Specific private LAN IPv4 to share with trusted devices; no login. Default loopback.')
@@ -240,6 +243,11 @@ def main(argv=None):
             from creator_tools import fabric_export
             result = fabric_export.package_site(args.input, args.output, args.name)
             print(json.dumps(result, indent=2, allow_nan=False))
+            return 0
+        if args.command in ('walkthrough', 'reel'):
+            from creator_tools import walkthrough as _wt, reel as _reel
+            result = (_wt.run(args, log=lambda m: print(m, file=sys.stderr)) if args.command == 'walkthrough' else _reel.run(args))
+            print(json.dumps(result, indent=2, allow_nan=False, default=str))
             return 0
         if args.command == 'data-story':
             from creator_tools import data_story

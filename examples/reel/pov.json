@@ -1,0 +1,30 @@
+{
+  "template": "pov",
+  "style": "noir",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "text": "your reel renders the same way *every single time*",
+      "duration": 2.6
+    },
+    {
+      "text": "no timeline scrubbing"
+    },
+    {
+      "text": "no export dialog"
+    },
+    {
+      "text": "no cloud upload"
+    },
+    {
+      "text": "just *python3 creator.py reel*",
+      "duration": 2.4
+    },
+    {
+      "kind": "end",
+      "text": "Ship it.",
+      "sub": "One spec in, one MP4 out.",
+      "cta": "Try Creator Kit"
+    }
+  ]
+}

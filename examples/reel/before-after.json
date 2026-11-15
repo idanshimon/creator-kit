@@ -1,0 +1,36 @@
+{
+  "template": "before-after",
+  "style": "noir",
+  "title": "Making a *reel*",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "label": "Before",
+      "text": "Two hours in an editor",
+      "lines": [
+        "Keyframe every caption",
+        "Guess where the UI covers text",
+        "Re-export for each ratio",
+        "Different every render"
+      ]
+    },
+    {
+      "label": "After",
+      "text": "One JSON spec",
+      "lines": [
+        "Captions timed from narration",
+        "*Safe zones* enforced",
+        "9:16, 1:1, 4:5, 16:9",
+        "Frame-exact, every time"
+      ]
+    },
+    {
+      "text": "Same idea. *A fraction of the time.*"
+    },
+    {
+      "kind": "end",
+      "text": "Built with *Creator Kit*",
+      "cta": "Link in bio"
+    }
+  ]
+}

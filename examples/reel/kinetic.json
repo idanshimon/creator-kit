@@ -1,0 +1,32 @@
+{
+  "template": "kinetic",
+  "format": "9:16",
+  "style": "noir",
+  "title": "Creator Kit",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "text": "Stop editing videos *by hand.*",
+      "duration": 2.2
+    },
+    {
+      "text": "Write one small JSON file.",
+      "duration": 1.9
+    },
+    {
+      "text": "Get a *frame-exact* MP4.",
+      "duration": 2.0
+    },
+    {
+      "text": "Captions synced to *every word.*",
+      "mode": "karaoke",
+      "duration": 2.4
+    },
+    {
+      "kind": "end",
+      "text": "Built with *Creator Kit*",
+      "sub": "Local. Deterministic. No uploads.",
+      "cta": "Follow for part 2"
+    }
+  ]
+}

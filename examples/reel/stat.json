@@ -1,0 +1,29 @@
+{
+  "template": "stat",
+  "format": "9:16",
+  "style": "noir",
+  "title": "Creator Kit · render benchmark",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "value": "100%",
+      "label": "Frame-exact",
+      "text": "Every frame is drawn from a clock, not the wall time."
+    },
+    {
+      "value": "8",
+      "label": "Reel templates",
+      "text": "Hooks, lists, quotes, stats, phone demos and more."
+    },
+    {
+      "value": "0",
+      "label": "Network calls",
+      "text": "No CDN, no upload. Renders on your laptop."
+    },
+    {
+      "kind": "end",
+      "text": "Numbers you can *check*.",
+      "cta": "Read the docs"
+    }
+  ]
+}

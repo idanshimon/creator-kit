@@ -1,0 +1,54 @@
+{
+  "template": "phone",
+  "style": "noir",
+  "handle": "@creatorkit",
+  "screen": {
+    "title": "~/creator-kit — zsh",
+    "terminal": [
+      "$ python3 creator.py reel \\",
+      " --spec examples/reel/stat.json \\",
+      " --output productions/stat",
+      "recording stat 1080x1920 11.6s @ 30fps",
+      "  60 frames (2s)",
+      "  180 frames (6s)",
+      "✓ reel.mp4  1080x1920  h264",
+      "✓ poster.png",
+      "✓ preview.gif",
+      "$ open productions/stat/reel.mp4"
+    ]
+  },
+  "beats": [
+    {
+      "text": "One command."
+    },
+    {
+      "text": "Point it at a *spec*.",
+      "zoom": {
+        "x": 0.45,
+        "y": 0.3,
+        "scale": 1.9
+      }
+    },
+    {
+      "text": "It records *frame by frame*.",
+      "zoom": {
+        "x": 0.4,
+        "y": 0.5,
+        "scale": 1.7
+      }
+    },
+    {
+      "text": "Ready to *post*.",
+      "zoom": {
+        "x": 0.4,
+        "y": 0.66,
+        "scale": 1.8
+      }
+    },
+    {
+      "kind": "end",
+      "text": "Built with *Creator Kit*",
+      "cta": "Try it"
+    }
+  ]
+}

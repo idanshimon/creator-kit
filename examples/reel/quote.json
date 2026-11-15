@@ -1,0 +1,18 @@
+{
+  "template": "quote",
+  "format": "4:5",
+  "style": "noir",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "text": "If a video can be described in a file, it can be *reviewed, versioned and re-rendered* like code.",
+      "author": "Creator Kit",
+      "role": "Design principle"
+    },
+    {
+      "kind": "end",
+      "text": "Video as *code*.",
+      "cta": "Follow for more"
+    }
+  ]
+}

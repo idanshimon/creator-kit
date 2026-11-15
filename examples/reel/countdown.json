@@ -1,0 +1,34 @@
+{
+  "template": "countdown",
+  "style": "noir",
+  "kicker": "Top 5",
+  "title": "Things *Creator Kit* renders locally",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "title": "Interactive diagrams",
+      "text": "Click-through architecture, exported to HTML."
+    },
+    {
+      "title": "Data stories",
+      "text": "Scroll-driven charts from a JSON file."
+    },
+    {
+      "title": "Narrated explainers",
+      "text": "Script in, voice-timed video out."
+    },
+    {
+      "title": "Motion graphics",
+      "text": "Frame-exact HTML scenes to MP4."
+    },
+    {
+      "title": "*Social reels*",
+      "text": "Eight templates, safe zones built in."
+    },
+    {
+      "kind": "end",
+      "text": "Which one first?",
+      "cta": "Comment below"
+    }
+  ]
+}

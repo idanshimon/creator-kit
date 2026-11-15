@@ -1,0 +1,43 @@
+{
+  "title": "Pipeline Control tour",
+  "width": 1920,
+  "height": 1080,
+  "steps": [
+    {
+      "image": "pipeline-control.png",
+      "target": {"x": 182, "y": 16, "w": 387, "h": 34},
+      "annotations": ["arrow", "spotlight", "badge", "cursor", "click"],
+      "callout": "Four views, one run log",
+      "narration": "Pipeline Control gives you four views of the same run log. We start on the flow line."
+    },
+    {
+      "image": "pipeline-control.png",
+      "target": {"x": 444, "y": 233, "w": 70, "h": 162},
+      "annotations": ["arrow", "spotlight", "zoom", "badge", "cursor"],
+      "callout": "22.8 min, was 7.1",
+      "narration": "Integration is the bottleneck. It now takes twenty two point eight minutes, and six runs are waiting behind it."
+    },
+    {
+      "image": "pipeline-control.png",
+      "target": {"x": 562, "y": 293, "w": 86, "h": 102},
+      "annotations": ["arrow", "spotlight", "zoom", "badge", "cursor", "click"],
+      "arrow_style": "clean",
+      "callout": "Blocked: lodash advisory",
+      "narration": "The security scan failed on a known lodash advisory, so the agent drafted a fix."
+    },
+    {
+      "image": "pipeline-control.png",
+      "target": {"x": 1112, "y": 541, "w": 83, "h": 35},
+      "annotations": ["arrow", "spotlight", "zoom", "badge", "cursor", "click"],
+      "callout": "A human approves",
+      "narration": "Nothing ships until a person clicks approve. The agent waits at this gate."
+    },
+    {
+      "image": "pipeline-control.png",
+      "target": {"x": 39, "y": 714, "w": 220, "h": 36},
+      "annotations": ["arrow", "spotlight", "badge", "cursor", "click"],
+      "callout": "Every figure has a baseline",
+      "narration": "Finally, what changed compares every figure with its baseline, so you can check the math yourself."
+    }
+  ]
+}
