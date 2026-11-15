@@ -162,3 +162,35 @@ def synthesize_lines(engine: str, lines: list[dict], *, ref_wav: str | None = No
         item["peak_db"] = peak
     return {"model": key, "repo": model["repo"], "revision": model["revision"],
             "license": model["license"], **result}
+
+
+def presets(root: Path = ROOT) -> dict:
+    """Named voices: public registry presets, overlaid by a private file.
+
+    Private presets (your own cloned voice, its reference clip) belong outside this repo:
+    $CREATOR_VOICE_PRESETS, else local/voice-presets.json (git-ignored). Same shape as the
+    registry's "presets" object: {name: {engine, ref, ref_text_file?, voice?, rank?, verdict?}}.
+    """
+    merged = dict(registry(root).get("presets") or {})
+    private = os.environ.get("CREATOR_VOICE_PRESETS") or str(Path(root) / "local" / "voice-presets.json")
+    path = Path(private).expanduser()
+    if path.is_file():
+        data = json.loads(path.read_text())
+        merged.update(data.get("presets", data))
+    return merged
+
+
+def preset(name: str, root: Path = ROOT) -> dict:
+    """Resolve a named voice preset to engine + reference audio (+ transcript)."""
+    table = presets(root)
+    if name not in table:
+        raise ValueError(f"Unknown voice preset {name!r}; presets: {', '.join(sorted(table)) or 'none defined'}")
+    p = table[name]
+    out = {"engine": p["engine"]}
+    if p.get("ref"):
+        out["ref_wav"] = str(Path(p["ref"]).expanduser())
+    if p.get("ref_text_file"):
+        out["ref_text"] = Path(p["ref_text_file"]).expanduser().read_text().strip()
+    if p.get("voice"):
+        out["voice"] = p["voice"]
+    return out

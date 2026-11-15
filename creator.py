@@ -135,6 +135,7 @@ def main(argv=None):
     nr.add_argument('--ref-text', help='Exact transcript of --ref (required for qwen3 cloning)')
     nr.add_argument('--lang', default='en', help='Language code for qwen3/chatterbox (e.g. en, he for chatterbox)')
     nr.add_argument('--instruct', help='qwen3 stock voices: style instruction, e.g. "Calm, warm, measured pace."')
+    nr.add_argument('--preset', help='Named voice (engine + reference) from integrations/voice-models.json presets or your private $CREATOR_VOICE_PRESETS / local/voice-presets.json; overrides --engine/--ref/--ref-text')
     nr.add_argument('--offline', action='store_true', help='qwen3/chatterbox: never download; fail if weights are missing')
     vc = sub.add_parser('voices', help='Local voice models: list stock voices, status, or fetch (bootstrap runtime + weights)')
     vc.add_argument('voices_action', choices=['list', 'fetch'])
@@ -326,6 +327,13 @@ def main(argv=None):
             return 0
         if args.command == 'narrate':
             from creator_tools import narrate
+            if args.preset:  # resolve first, so the cloud-consent check sees the real engine
+                from creator_tools import local_tts
+                pr = local_tts.preset(args.preset)
+                args.engine = pr['engine']
+                args.ref = pr.get('ref_wav', args.ref)
+                args.ref_text = pr.get('ref_text', args.ref_text)
+                args.voice = pr.get('voice', args.voice)
             if args.engine == 'azure' and not args.allow_cloud:
                 raise ValueError('narrate --engine azure sends script text to Azure Speech; add --allow-cloud')
             inv = None

@@ -66,6 +66,25 @@ class LocalTTSRegistryTests(unittest.TestCase):
         self.assertIn("qwen3", narrate.ENGINES)
         self.assertIn("chatterbox", narrate.ENGINES)
 
+    def test_private_presets_overlay(self):
+        import tempfile, json as _j
+        from pathlib import Path as _P
+        with tempfile.TemporaryDirectory() as d:
+            ref = _P(d) / "ref.txt"; ref.write_text("hello there")
+            f = _P(d) / "p.json"
+            f.write_text(_j.dumps({"presets": {"me": {"engine": "qwen3", "ref": "~/x.wav", "ref_text_file": str(ref)}}}))
+            old = os.environ.get("CREATOR_VOICE_PRESETS"); os.environ["CREATOR_VOICE_PRESETS"] = str(f)
+            try:
+                p = local_tts.preset("me")
+                self.assertEqual(p["engine"], "qwen3")
+                self.assertEqual(p["ref_text"], "hello there")
+                self.assertTrue(p["ref_wav"].endswith("x.wav"))
+                with self.assertRaisesRegex(ValueError, "presets"):
+                    local_tts.preset("nobody")
+            finally:
+                if old is None: os.environ.pop("CREATOR_VOICE_PRESETS")
+                else: os.environ["CREATOR_VOICE_PRESETS"] = old
+
 
 if __name__ == "__main__":
     unittest.main()

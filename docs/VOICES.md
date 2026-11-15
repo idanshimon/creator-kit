@@ -74,3 +74,17 @@ A Whisper read-back proves the words, not how natural the voice sounds; listen b
 
 Hebrew is blocked for Chatterbox: built-in and cloned voices, with guidance 0 and 0.5, produced
 unintelligible speech in this MLX port. Qwen3 has no Hebrew. For Hebrew use Azure.
+
+## Named voice presets (`narrate --preset NAME`)
+
+A preset bundles engine + reference clip + transcript under one name, so a script can say
+`--preset me` instead of three flags. Public presets live in `integrations/voice-models.json`
+under `"presets"`. Your own cloned voice belongs in a **private** file that this repo never
+sees: `$CREATOR_VOICE_PRESETS`, or `local/voice-presets.json` (git-ignored). Same shape:
+
+```json
+{"presets": {"me": {"engine": "qwen3", "ref": "~/voice/ref.wav", "ref_text_file": "~/voice/ref.txt", "rank": 1}}}
+```
+
+The preset is resolved before the cloud-consent check, so a preset that uses `azure` still
+needs `--allow-cloud`.
