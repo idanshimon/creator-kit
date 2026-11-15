@@ -29,9 +29,11 @@ Repo docs own the details of each command: `docs/GSAP.md`, `docs/DIAGRAMS.md`, `
 | Need | Command |
 |---|---|
 | Narrated video (scenes, captions, render) | Upstream HyperFrames / OpenMontage (see `SETUP.md`, `references/video-workflow.md`) |
-| Code-authored animated titles/cards | `creator.py motion doctor`, `motion create` |
+| Code-authored animated titles/cards | `creator.py motion doctor`, `motion create [--template classic|kinetic]` |
+| Narrated walkthrough: arrows, spotlight, cursor, captions | `creator.py walkthrough --spec S --output D [--gif]` (docs/WALKTHROUGH.md) |
+| TikTok / Reels / Shorts / LinkedIn short-form | `creator.py reel --spec S --output D [--platform tiktok|reels|shorts] [--format 9:16|1:1|4:5|16:9] [--gif]` (docs/REEL.md) |
 | Interactive architecture diagram | `creator.py diagram install|doctor|validate|render` |
-| Evidence-backed reading page | `creator.py data-story validate|render` |
+| Evidence-backed reading page | `creator.py data-story validate|render [--video out.mp4]` |
 | Static hosting kit for an HTML page | `creator.py fabric package` |
 | Orbital operator cockpit | `creator.py mission-control validate|render|serve` |
 | Pipeline monitoring page | `creator.py pipeline-control render` |
@@ -106,7 +108,17 @@ Pitfalls:
 
 Build them with the kit, not hand-rolled Mermaid/card HTML (it reads as undesigned). Pattern: a thin host page with two same-origin iframes — an Archify `--template story` flow on top and a `data-story` page from real data below. The host passes its theme to both: `?theme=` for Archify; for the data story, click the embed's own `#theme` button on load, then size the iframe to `contentDocument.scrollHeight`.
 
+## Walkthroughs and reels (pick by goal)
+
+- "Show how the product works" → `walkthrough`. Every step needs a target rect (image px) or CSS selector. Grounding gate: sample one frame per step and confirm the arrow lands on the element the caption names. An arrow on the wrong thing is worse than no arrow.
+- "Post it" → `reel`. Templates: kinetic hook, pov, countdown, before-after, carousel, stat, quote, phone. Pick the format from the platform (9:16 TikTok/Reels/Shorts, 4:5 feed, 1:1 carousel, 16:9 LinkedIn/YouTube). Keep `--platform` set so captions avoid the button rail; check with `--safe-zones` once.
+- README / docs preview → add `--gif`; the GIF has captions burned in so it reads without sound.
+- Opening title → `motion create --template kinetic` (loud) or `classic` (editorial).
+
 ## Animated pages → MP4 (showcase, crawl, mission-control)
+
+Every renderer now records frame-exact (page implements `__ready/__advance/__done` under `?render=1`): motion, data-story (`--video`), mission-control, pipeline-control, crawl, walkthrough, reel. If a new page needs `--realtime`, that is a defect: add the contract.
+
 
 - `creator.py showcase --input page.html --output x.mp4` records any page exposing `window.__ready` and `window.__advance(ms)` frame-exactly; otherwise use `--realtime`. Read `docs/SHOWCASE.md`. Capture costs ~0.1–0.2 s/frame at 1080p; run long renders in the background.
 - `creator.py crawl --input SKILL.md --output NEW_DIR --video --speed 9` maps a prompt into a galaxy graph with a crawling spider and records it. The default scorer is keyword heuristics; `--scorer azure --allow-cloud` scores via logprobs on a small chat deployment. Neither scorer's numbers are measured accuracy.

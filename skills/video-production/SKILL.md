@@ -10,6 +10,12 @@ first-party `creator.py` CLI plus two pinned upstream engines (OpenMontage and
 HyperFrames). Covers engine choice, the narrated-explainer chain, narration
 tiers, and the pitfalls and verification gates that recur in real builds.
 
+## Fast paths
+
+- Product walkthrough from screenshots: `creator.py walkthrough` does script → narration → arrows/spotlight/cursor/captions → MP4 (+GIF) in one command. Use HyperFrames only when you need custom scenes.
+- Social cut of the same story: `creator.py reel` (9:16 etc.). Reuse the narration: `--timeline narration/timeline.json --audio narration/narration.wav` for word-synced captions.
+- Setup broken? `scripts/bootstrap.sh --check` exits non-zero and lists what is missing; `scripts/smoke.sh` names the fix per renderer.
+
 ## Layout
 
 | Path | What |

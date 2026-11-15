@@ -2,7 +2,7 @@
 
 <img src="docs/assets/readme/hero.svg" alt="Creator Kit — animated banner" width="100%"/>
 
-<a href="#-quick-start"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2600&pause=700&color=FF3CAC&center=true&vCenter=true&width=900&lines=Explainer+videos+%F0%9F%8E%AC;Narrated+walkthroughs+in+5+voice+engines+%F0%9F%8E%99%EF%B8%8F;GSAP+motion+graphics+%E2%9C%A8;Mission+Control+cockpits+%F0%9F%9B%B0%EF%B8%8F;Prompt+galaxies+%F0%9F%8C%8C;Source-backed+data+stories+%F0%9F%93%8A;All+local.+Zero+API+keys.+%F0%9F%94%92" alt="what it makes"/></a>
+<a href="#-quick-start"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2600&pause=700&color=FF3CAC&center=true&vCenter=true&width=900&lines=Explainer+videos+%F0%9F%8E%AC;Narrated+walkthroughs+in+5+voice+engines+%F0%9F%8E%99%EF%B8%8F;GSAP+motion+graphics+%E2%9C%A8;Mission+Control+cockpits+%F0%9F%9B%B0%EF%B8%8F;Narrated+walkthroughs+with+arrows+%F0%9F%91%89;TikTok+%2F+Reels+%2F+Shorts+%F0%9F%93%B1;Prompt+galaxies+%F0%9F%8C%8C;Source-backed+data+stories+%F0%9F%93%8A;All+local.+Zero+API+keys.+%F0%9F%94%92" alt="what it makes"/></a>
 
 <br/>
 
@@ -29,7 +29,52 @@ Your agent writes the script, voices it, builds the scenes, renders a frame-exac
 
 ---
 
-## 🔥 Made with this kit — every frame below is real output
+## 👉 Narrated walkthroughs — arrows, spotlight, cursor, captions
+
+<div align="center">
+<img src="docs/assets/readme/walkthrough.gif" alt="Narrated walkthrough with animated arrows and captions" width="92%"/>
+</div>
+
+Give it screenshots (or a URL) and a list of steps. It writes the script, **narrates it locally**, draws arrows that land on the exact element,
+dims everything else, zooms in, moves a cursor and burns in captions synced word by word. Out comes an MP4 with voice and a README-ready GIF.
+
+<sub><code>python3 creator.py walkthrough --spec examples/walkthrough/pipeline-control.walkthrough.json --output demo --gif</code></sub>
+
+---
+
+## ⚡ Kinetic motion titles
+
+<div align="center">
+<img src="docs/assets/readme/motion-kinetic.gif" alt="Kinetic GSAP title: 3D letter flip, glitch, particle burst" width="92%"/>
+</div>
+
+3D letter flip-in, RGB glitch, seeded particle burst, orbit rings, light sweep, word chips. One GSAP timeline, seekable, **frame-exact** — same seed, same frames, every render.
+
+<sub><code>python3 creator.py motion create --template kinetic --title "Creator Kit" --subtitle "Script · Voice · Motion" --output title</code></sub>
+
+---
+
+## 📱 Reels, TikToks, Shorts — vertical and ready to post
+
+<div align="center">
+<img src="docs/assets/readme/reel-kinetic.gif" width="18%" alt="kinetic hook reel"/>
+<img src="docs/assets/readme/reel-pov.gif" width="18%" alt="POV reel"/>
+<img src="docs/assets/readme/reel-countdown.gif" width="18%" alt="Top-N countdown reel"/>
+<img src="docs/assets/readme/reel-before-after.gif" width="18%" alt="before/after wipe reel"/>
+<img src="docs/assets/readme/reel-phone.gif" width="18%" alt="phone mockup punch-in reel"/>
+<br/><sub><b>hook</b> · <b>POV</b> · <b>top-N countdown</b> · <b>before / after</b> · <b>phone punch-in</b> — plus quote, stat reveal and carousel</sub>
+</div>
+
+Eight short-form formats people actually post, made calm and premium instead of loud. 9:16, 1:1, 4:5 or 16:9.
+Captions stay out of the TikTok / Reels / Shorts button areas (`--safe-zones` draws them). Word-by-word karaoke captions can sync to your narration.
+
+<sub><code>python3 creator.py reel --spec examples/reel/countdown.json --platform tiktok --output my-reel --gif</code></sub>
+
+---
+
+## 🔥 Dashboards and data, recorded frame-exact
+
+### Every frame below is real output
 
 > Each clip was rendered straight from the files in [`examples/`](examples/) with one `creator.py` command. No hand-editing.
 
@@ -70,11 +115,11 @@ Turns a CI run log into a flow line, "what changed" cards with baselines, and an
 <td width="50%" valign="top">
 
 ### 📊 Evidence data stories
-<img src="docs/assets/readme/data-story.png" alt="Data story page" width="100%"/>
+<img src="docs/assets/readme/data-story.gif" alt="Data story guided tour" width="100%"/>
 
-Reading pages where every number points back to its source. Light and dark themes, no network needed.
+Reading pages where every number points back to its source. Recorded as a guided tour: lines draw, numbers count up to the real value.
 
-<sub><code>python3 creator.py data-story render --input examples/data-story/synthetic-workshop.json --output story.html</code></sub>
+<sub><code>python3 creator.py data-story render --input examples/data-story/synthetic-workshop.json --output story.html --video story.mp4</code></sub>
 
 </td>
 </tr>
@@ -93,6 +138,8 @@ Reading pages where every number points back to its source. Light and dark theme
 | 🧱 | **Hero wall** | Your past work as drifting columns with hover-pause and lightbox |
 | 🎨 | **Brand styles + design QA** | Brand palettes, plus a browser gate for contrast, overflow and "AI-look" tells |
 | ✂️ | **Browser Studio** | Cut, trim, speed, fades, music ducking and captions — non-destructive |
+| 👉 | **Walkthroughs** | Arrows, spotlight, zoom, cursor and synced captions over screenshots, narrated |
+| 📱 | **Social reels** | Hook, POV, countdown, before/after, phone punch-in, quote, stat, carousel |
 | 🔒 | **Safe by default** | Nothing leaves your machine unless you pass `--allow-cloud` |
 
 <details>
@@ -115,7 +162,7 @@ Reading pages where every number points back to its source. Light and dark theme
 ```bash
 git clone <this repo> creator-kit && cd creator-kit
 scripts/bootstrap.sh        # installs pinned tools; safe to re-run
-scripts/smoke.sh            # renders a short narrated MP4 to prove the chain works
+scripts/smoke.sh            # checks every renderer, then renders a narrated MP4
 python3 creator.py studio   # browser editor at http://127.0.0.1:4318
 ```
 
@@ -140,6 +187,8 @@ and tells you what to install. `--minimal` installs only the editor and CLI.
 | Brand palettes + automatic design QA | `creator.py style`, `design-check` | [docs/STYLES.md](docs/STYLES.md) |
 | Cut, trim, speed, fades, music ducking, captions | Browser Studio or `creator.py edit` | [docs/STUDIO.md](docs/STUDIO.md), [MODELS-AND-EDITING.md](MODELS-AND-EDITING.md) |
 | Record any web page to frame-exact MP4 | `creator.py showcase` | [docs/SHOWCASE.md](docs/SHOWCASE.md) |
+| Narrated walkthrough with arrows and captions | `creator.py walkthrough` | [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md) |
+| TikTok / Reels / Shorts / LinkedIn video | `creator.py reel` | [docs/REEL.md](docs/REEL.md) |
 
 Run `python3 creator.py --help` for the full command list.
 

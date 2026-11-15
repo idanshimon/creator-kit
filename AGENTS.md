@@ -24,7 +24,7 @@ Do these in order. Do not skip the proof in step 5.
    voices, ask them for their Speech key and region and write them to `.env` as
    `AZURE_SPEECH_KEY` / `AZURE_SPEECH_REGION`. Never invent, guess or print keys, and
    never commit `.env`. SETUP.md section 4 has the portal steps if they need a resource.
-5. **Prove it.** Run `scripts/smoke.sh`. Setup is done only when it prints `PASS` and
+5. **Prove it.** Run `scripts/smoke.sh`. It first checks every renderer (GSAP, Archify, voice runtime, Chrome, all page renderers) and names the fix for each failure. Setup is done only when it prints `PASS` and
    `productions/smoke-*/smoke.mp4` exists. Tell the user the path so they can watch it.
 6. **Load the skills** (section 3) for the agent you are.
 
@@ -93,7 +93,7 @@ How to load them:
 7. **Verify the real MP4** (section 6), then give the user the file path.
 
 Other outputs follow the same pattern; read the matching doc first:
-motion title → `docs/GSAP.md`; record a page → `docs/SHOWCASE.md`; diagram →
+motion title → `docs/GSAP.md`; narrated walkthrough with arrows → `docs/WALKTHROUGH.md`; TikTok/Reels/Shorts → `docs/REEL.md`; record a page → `docs/SHOWCASE.md`; diagram →
 `docs/DIAGRAMS.md`; data story → `docs/DATA-STORIES.md`; dashboards →
 `docs/MISSION-CONTROL.md` / `docs/PIPELINE-CONTROL.md`; cut and trim existing footage →
 `docs/STUDIO.md` or `creator.py plan/edit` in `MODELS-AND-EDITING.md`.
