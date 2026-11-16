@@ -6,11 +6,15 @@ nothing, so the original viewer stays byte-identical to upstream delivery.
 
 Templates
 ---------
-full       Original Archify UI (toolbar, chapters, PATH/MAP/LENS, passport).
-presenter  Title + guided chapters + diagram + zoom. Clicking a component opens
+full       Original Archify UI (toolbar, PATH/MAP/LENS, passport) + Creator chapters.
+Chapters   Archify 3 no longer draws ``meta.views``; every template that keeps
+           ``chapters`` gets a Creator chapter bar (All, numbered chapters, Play, note)
+           built on ``Archify.focus.setMany``. A diagram without views gets nothing,
+           so ``full`` stays byte-identical to upstream for it.
+presenter  Title + chapter bar + diagram + zoom. Clicking a component opens
            a detail panel (what it does / why / example) instead of the
            semantic passport. Tooling (export, style, radar, lens...) hidden.
-story      Guided chapters + graph only (no toolbar, cards, PATH/MAP/LENS); click
+story      Chapter bar + graph only (no toolbar, cards, PATH/MAP/LENS); click
            opens the detail panel. For embedding the guided walkthrough.
 embed      Graph only, sized to its iframe. Click opens the same detail panel
            as a compact sheet. No toolbar, chapters, cards or nav.
@@ -30,14 +34,14 @@ import json
 import re
 from pathlib import Path
 
-PARTS = ('toolbar', 'header', 'chapters', 'cards', 'nav', 'zoom', 'passport', 'legend', 'grid', 'details')
+PARTS = ('toolbar', 'header', 'chapters', 'cards', 'nav', 'outline', 'zoom', 'passport', 'legend', 'grid', 'details')
 
 TEMPLATES = {
     'full':      {'hide': [], 'details': False},
-    'presenter': {'hide': ['toolbar', 'nav', 'passport'], 'details': True},
-    'story':     {'hide': ['toolbar', 'header', 'cards', 'nav', 'passport', 'legend', 'grid'], 'details': True},
-    'embed':     {'hide': ['toolbar', 'header', 'chapters', 'cards', 'nav', 'passport', 'legend', 'grid'], 'details': True},
-    'minimal':   {'hide': ['toolbar', 'header', 'chapters', 'cards', 'nav', 'zoom', 'passport', 'legend', 'grid'], 'details': False},
+    'presenter': {'hide': ['toolbar', 'nav', 'outline', 'passport'], 'details': True},
+    'story':     {'hide': ['toolbar', 'header', 'cards', 'nav', 'outline', 'passport', 'legend', 'grid'], 'details': True},
+    'embed':     {'hide': ['toolbar', 'header', 'chapters', 'cards', 'nav', 'outline', 'passport', 'legend', 'grid'], 'details': True},
+    'minimal':   {'hide': ['toolbar', 'header', 'chapters', 'cards', 'nav', 'outline', 'zoom', 'passport', 'legend', 'grid'], 'details': False},
 }
 
 DETAIL_FIELDS = ('what', 'why', 'example')
@@ -120,10 +124,12 @@ def model(diagram, details):
 _CSS = {
     'toolbar': '.toolbar{display:none!important}',
     'header': '.header{display:none!important}',
-    'chapters': '#guided-views,.share-chapter-cue{display:none!important}',
+    'chapters': '#cc-chapters{display:none!important}',
     'cards': '.cards{display:none!important}',
     'nav': ('#btn-route-probe,#btn-overview-map,#btn-semantic-lens,#btn-node-finder,#btn-diagram-guide,'
             '#route-probe,#semantic-lens,#overview-map,#node-finder,#diagram-guide{display:none!important}'),
+    # Archify 3 reader rail = rail controls + .cards + node index; hide only the index/controls.
+    'outline': '#node-outline,#reader-rail>.rail-controls,#rail-reveal,#rail-collapse{display:none!important}',
     'zoom': '.diagram-nav{display:none!important}',
     'passport': '#focus-chip{display:none!important}',
     'legend': 'svg [data-cc-legend]{display:none!important}',
@@ -175,7 +181,7 @@ _PRESENTER_CSS = """
 
 _EMBED_CSS = """
 html,body{height:100%;margin:0;overflow:hidden}
-#guided-views{margin:0 0 6px!important;border-radius:0!important}
+#cc-chapters{margin:0 0 6px!important;border-radius:0!important}
 html[data-theme="light"] body{background:#fff!important}
 html[data-theme="dark"] body{background:#0b1220!important}
 .container{max-width:none!important;width:100%!important;height:100%;padding:0!important;margin:0!important;display:flex;flex-direction:column}
@@ -189,20 +195,111 @@ html[data-theme="dark"] body{background:#0b1220!important}
 
 
 def wrapper(diagram, spec, details=None):
-    """Return the bytes to inject before </body>; empty for the untouched full template."""
+    """Return the bytes to inject before </body>; empty for an untouched full template
+    on a diagram without chapters."""
+    m = model(diagram, details or {})
+    chapters = _chapters(m, spec)
     if spec['template'] == 'full' and not spec['hide'] and not spec['details']:
-        return b''
+        return chapters
     css = _BASE_CSS + ''.join(_CSS[p] for p in spec['hide'] if p in _CSS)
     if spec['template'] in ('embed', 'minimal', 'story'):
         css += _EMBED_CSS
     elif spec['details']:
         css += _PRESENTER_CSS
-    data = json.dumps({'spec': spec, 'model': model(diagram, details or {})},
+    data = json.dumps({'spec': spec, 'model': m},
                       ensure_ascii=False).replace('<', '\\u003c')
     script = _SCRIPT.replace('__DATA__', data)
     out = (f'<style id="cc-template-style">{css}</style>\n'
            f'<script id="cc-template">{script}</script>\n')
-    return out.encode('utf-8')
+    return out.encode('utf-8') + chapters
+
+
+def _chapters(m, spec):
+    """Creator chapter bar from meta.views (Archify 3 dropped its own). API: window.CreatorChapters."""
+    views = [v for v in m['views'] if v['focus']]
+    if not views:
+        return b''
+    data = json.dumps({'views': views, 'hidden': 'chapters' in spec['hide']},
+                      ensure_ascii=False).replace('<', '\\u003c')
+    return (f'<style id="cc-chapters-style">{_CHAPTERS_CSS}</style>\n'
+            f'<script id="cc-chapters-script">{_CHAPTERS_SCRIPT.replace("__DATA__", data)}</script>\n').encode('utf-8')
+
+
+_CHAPTERS_CSS = """
+#cc-chapters{margin:0 0 12px;padding:8px 10px;border:1px solid var(--panel-border,#dbe3ea);border-radius:12px;
+  background:var(--panel,#fff);color:var(--text,#18212b);font:inherit;
+  box-shadow:0 1px 2px rgba(15,23,42,.05)}
+#cc-chapters .ccc-row{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+#cc-chapters button{font:inherit;font-size:.8rem;font-weight:500;color:var(--text-muted,#5a6b7a);background:transparent;
+  border:1px solid transparent;border-radius:.5rem;padding:0 .7rem;height:2rem;cursor:pointer;transition:background .15s,color .15s}
+#cc-chapters button:hover{color:var(--text,#18212b);background:var(--toolbar-hover,rgba(0,0,0,.05))}
+#cc-chapters button:focus-visible{outline:2px solid var(--frontend-stroke,#2f81f7);outline-offset:1px}
+#cc-chapters button[aria-current="step"]{color:var(--text,#18212b);font-weight:650;
+  border-color:var(--frontend-stroke,#2f81f7);background:color-mix(in srgb,var(--frontend-stroke,#2f81f7) 10%,transparent)}
+#cc-chapters .ccc-play{margin-left:auto;border-color:var(--panel-border,#dbe3ea)}
+#cc-chapters .ccc-note{margin:6px 4px 2px;color:var(--text-muted,#5a6b7a);font-size:.85rem;line-height:1.45;min-height:1.45em}
+@media (prefers-reduced-motion: reduce){#cc-chapters *{transition:none!important}}
+"""
+
+_CHAPTERS_SCRIPT = r"""
+(function(){
+  var D = __DATA__, V = D.views, cur = -1, timer = null, bar, note, buttons = [], playBtn;
+  var DWELL = 4500;
+  function A(){ return window.Archify || {}; }
+  function mark(){
+    buttons.forEach(function(b, i){ if (i - 1 === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    if (note) note.textContent = cur < 0 ? 'Overview: every component. Pick a chapter or press Play.' : (V[cur].note || '');
+    if (playBtn) { playBtn.textContent = timer ? 'Pause' : 'Play'; playBtn.setAttribute('aria-pressed', timer ? 'true' : 'false'); }
+  }
+  function closeDetail(){ if (window.CreatorTemplate && CreatorTemplate.current && CreatorTemplate.current() && CreatorTemplate.close) CreatorTemplate.close(); }
+  function activate(i){
+    if (i < 0 || i >= V.length) return showAll();
+    closeDetail();
+    var f = A().focus;
+    if (f && f.setMany) { try { f.setMany(V[i].focus, {toggle: false, updateUrl: false}); } catch (_) {} }
+    cur = i; mark(); return i;
+  }
+  function showAll(){
+    closeDetail();
+    var f = A().focus;
+    if (f && f.clear) { try { f.clear({updateUrl: false}); } catch (_) {} }
+    cur = -1; mark(); return -1;
+  }
+  function stop(){ if (timer) { clearInterval(timer); timer = null; mark(); } }
+  function play(){
+    stop();
+    activate(cur + 1 < V.length ? cur + 1 : 0);
+    timer = setInterval(function(){ if (cur + 1 < V.length) activate(cur + 1); else { stop(); showAll(); } }, DWELL);
+    mark();
+  }
+  function build(){
+    bar = document.createElement('nav');
+    bar.id = 'cc-chapters'; bar.setAttribute('aria-label', 'Chapters');
+    var row = document.createElement('div'); row.className = 'ccc-row'; bar.appendChild(row);
+    function btn(label, fn){ var b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.addEventListener('click', function(){ stop(); fn(); }); row.appendChild(b); return b; }
+    buttons.push(btn('All', showAll));
+    V.forEach(function(v, i){ var b = btn(v.label, function(){ activate(i); });
+      b.setAttribute('aria-label', 'Chapter ' + (i + 1) + ' of ' + V.length + ': ' + v.label); buttons.push(b); });
+    playBtn = document.createElement('button'); playBtn.type = 'button'; playBtn.className = 'ccc-play';
+    playBtn.addEventListener('click', function(){ if (timer) stop(); else play(); }); row.appendChild(playBtn);
+    note = document.createElement('p'); note.className = 'ccc-note'; note.setAttribute('aria-live', 'polite'); bar.appendChild(note);
+    var host = document.querySelector('.diagram-container');
+    if (host && host.parentNode) host.parentNode.insertBefore(bar, host); else document.body.insertBefore(bar, document.body.firstChild);
+    document.addEventListener('keydown', function(e){
+      if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+      if (e.key === 'ArrowRight' && e.altKey) { stop(); activate(cur + 1); }
+      if (e.key === 'ArrowLeft' && e.altKey) { stop(); cur > 0 ? activate(cur - 1) : showAll(); }
+    });
+    mark();
+  }
+  window.CreatorChapters = {count: function(){ return V.length; }, views: V, activate: activate,
+    showAll: showAll, play: play, stop: stop, current: function(){ return cur; }};
+  function init(){ build(); document.documentElement.setAttribute('data-cc-chapters', 'ready'); }
+  if (document.readyState === 'complete') setTimeout(init, 0);
+  else window.addEventListener('load', function(){ setTimeout(init, 0); }, {once: true});
+})();
+"""
 
 
 _FONT_LINK = re.compile(rb'<link[^>]+(?:fonts\.googleapis\.com|fonts\.gstatic\.com)[^>]*>\s*', re.I)
@@ -215,7 +312,8 @@ def apply(content: bytes, diagram, spec, details=None) -> bytes:
         return content
     # Wrapper templates are offline artifacts: drop the upstream Google Fonts fetch; the CSS
     # font stacks already fall back to local monospace/system fonts.
-    content = _FONT_IMPORT.sub(b'', _FONT_LINK.sub(b'', content))
+    if spec['template'] != 'full':
+        content = _FONT_IMPORT.sub(b'', _FONT_LINK.sub(b'', content))
     marker = b'</body>'
     if marker in content:
         return content.replace(marker, inject + marker, 1)
@@ -398,7 +496,7 @@ _SCRIPT = r"""
     if ((spec.template === 'embed' || spec.template === 'story') && window.parent !== window && svg0) {
       var report = function(){
         var vb = svg0.viewBox.baseVal; if (!vb || !vb.width) return;
-        var gv = document.getElementById('guided-views'); var extra = (gv && gv.offsetHeight) ? gv.offsetHeight + 6 : 0;
+        var gv = document.getElementById('cc-chapters'); var extra = (gv && gv.offsetHeight) ? gv.offsetHeight + 6 : 0;
         var h = Math.round(innerWidth * vb.height / vb.width) + 2 + extra;
         try { window.parent.postMessage({type: 'creator-diagram-height', height: h}, '*'); } catch (_) {}
       };

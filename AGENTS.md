@@ -138,7 +138,9 @@ and look at the screenshots in light and dark themes.
 7. **Changing a narration line changes its length.** Re-narrate, re-check that scene's
    late reveals, re-render, and update any on-screen text that must match the voice.
 8. **Burned-in captions need FFmpeg with libass**; Homebrew's default ffmpeg lacks it.
-9. **Archify stays on 2.16**; 3.x removed the guided views the story template uses.
+9. **Archify chapters are ours.** Archify 3 does not draw `meta.views`; the kit's chapter bar
+   (`window.CreatorChapters`) does, on `Archify.focus.setMany`. On an Archify bump, run
+   `studio-ui/verify-diagram-templates.mjs` and render one `--video` before trusting it.
 
 ## 8. Testing the kit itself
 

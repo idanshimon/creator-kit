@@ -40,8 +40,8 @@ try {
   {
     const page = await open('full', {width: 1440, height: 900});
     const c = [];
-    assert.equal(await page.locator('#cc-template').count(), 0); c.push('no wrapper injected');
-    for (const s of ['.toolbar', '#guided-views', '.cards', '.diagram-nav']) assert.ok(await visible(page, s), s);
+    assert.equal(await page.locator('#cc-template').count(), 0); c.push('no template wrapper (chapter bar only)');
+    for (const s of ['.toolbar', '#cc-chapters', '.cards', '.diagram-nav']) assert.ok(await visible(page, s), s);
     c.push('toolbar, chapters, cards, nav visible');
     await page.locator('g[data-node-id="bouncer"]').first().click();
     assert.ok(await visible(page, '#focus-chip')); c.push('semantic passport opens on click');
@@ -53,9 +53,20 @@ try {
     const page = await open('presenter', {width: 1440, height: 900});
     const c = [];
     assert.equal(await page.getAttribute('html', 'data-cc-ready'), 'true');
-    for (const s of ['.toolbar', '#btn-route-probe', '#btn-overview-map', '#btn-semantic-lens']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
-    for (const s of ['#guided-views', '.cards', '.header']) assert.ok(await visible(page, s), `visible ${s}`);
+    for (const s of ['.toolbar', '#btn-route-probe', '#btn-overview-map', '#btn-semantic-lens', '#node-outline']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
+    for (const s of ['#cc-chapters', '.cards', '.header']) assert.ok(await visible(page, s), `visible ${s}`);
     c.push('toolbar + PATH/MAP/LENS hidden; header, chapters, cards visible');
+    {
+      const views = await page.evaluate(() => CreatorChapters.views.map(v => v.focus));
+      assert.ok(views.length >= 2, 'diagram has chapters');
+      await page.getByRole('button', {name: 'Chapter 2 of', exact: false}).click();
+      assert.deepEqual(await page.evaluate(() => Archify.focus.active()), views[1]);
+      assert.equal(await page.locator('#cc-chapters [aria-current="step"]').count(), 1);
+      assert.ok((await page.locator('#cc-chapters .ccc-note').innerText()).length > 10, 'chapter note shown');
+      await page.getByRole('button', {name: 'All', exact: true}).click();
+      assert.equal(await page.evaluate(() => (Archify.focus.active() || []).length), 0);
+      c.push(`chapter 2 highlights its ${views[1].length} components and shows its note; All clears`);
+    }
     const ids = await page.evaluate(() => [...new Set([...document.querySelectorAll('svg g[data-node-id]')].map(g => g.dataset.nodeId))]);
     assert.equal(ids.length, Object.keys(details).length);
     const before = await camera(page);
@@ -80,7 +91,7 @@ try {
   for (const vp of [{width: 900, height: 520}, {width: 390, height: 600}]) {
     const page = await open('embed', vp);
     const c = [];
-    for (const s of ['.toolbar', '.header', '#guided-views', '.cards', '#btn-route-probe']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
+    for (const s of ['.toolbar', '.header', '#cc-chapters', '.cards', '#btn-route-probe', '#node-outline']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
     const over = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1 || document.documentElement.scrollHeight > innerHeight + 1);
     assert.equal(over, false, 'no page scroll');
     const boxes = await page.evaluate(() => [...document.querySelectorAll('svg g[data-node-id] rect')].map(r => r.getBoundingClientRect()).filter(b => b.width)
@@ -96,7 +107,7 @@ try {
   // minimal: static, nothing opens.
   {
     const page = await open('minimal', {width: 1200, height: 640});
-    for (const s of ['.toolbar', '.header', '#guided-views', '.cards', '.diagram-nav']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
+    for (const s of ['.toolbar', '.header', '#cc-chapters', '.cards', '.diagram-nav', '#node-outline']) assert.ok(!(await visible(page, s)), `hidden ${s}`);
     await page.locator('g[data-node-id="bouncer"]').first().click();
     assert.equal(await page.locator('#cc-detail').count(), 0);
     assert.ok(!(await visible(page, '#focus-chip')));

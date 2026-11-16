@@ -91,9 +91,9 @@ Keep the timeline paused and registered by composition ID; derive export state f
 
 ## Interactive diagrams (Archify)
 
-Prefer Archify for architecture explainers, walkthroughs and technical presentations: polished graph styling plus guided chapters, selection, tracing, presentation controls and light/dark themes. Use Cytoscape for data-driven graphs, React Flow for editable app flows, Excalidraw for whiteboard sketches.
+Prefer Archify for architecture explainers, walkthroughs and technical presentations: polished graph styling plus chapters (our bar over `meta.views`), selection, tracing, presentation controls and light/dark themes. Use Cytoscape for data-driven graphs, React Flow for editable app flows, Excalidraw for whiteboard sketches.
 
-`creator.py diagram render --input X.json --output X.html` with `--template full|presenter|story|embed|minimal`, `--hide/--show PART`, `--details node-details.json`, `--embed-snippet`. `full` stays byte-identical to Archify output; `presenter`/`embed` add an authored what/why/example detail panel. `--showcase-bridge` (optionally `--chapter-dwell 2500`, `--video out.mp4`) injects `window.__ready/__advance/__done` hooks that step through guided chapters for frame-exact MP4 capture. Verify with `studio-ui/verify-diagram-templates.mjs`; read `docs/DIAGRAMS.md`.
+`creator.py diagram render --input X.json --output X.html` with `--template full|presenter|story|embed|minimal`, `--hide/--show PART`, `--details node-details.json`, `--embed-snippet`. `full` = Archify output + chapter bar; `presenter`/`embed` add an authored what/why/example detail panel. `--showcase-bridge` (optionally `--chapter-dwell 2500`, `--video out.mp4`) injects `window.__ready/__advance/__done` hooks that step through the chapters (`window.CreatorChapters`) for frame-exact MP4 capture. Verify with `studio-ui/verify-diagram-templates.mjs`; read `docs/DIAGRAMS.md`.
 
 Pitfalls:
 - The details sidecar validates against `nodes`, but architecture examples use `components`; an architecture sidecar can be rejected as unknown IDs. Do not claim details were applied — fall back to authored labels/chapters.
@@ -189,7 +189,7 @@ Git does not back up `productions/`, `local/`, credentials or upstream checkouts
 
 ## Updating the vendors
 
-Fetch each vendor, read what changed, update, rebuild, then prove it: HyperFrames `init → check → render` + ffprobe; OpenMontage pytest in its own venv with `env -u PYTHONPATH -u PYTHONHOME` (a leaked PYTHONPATH fakes import errors); kit `pytest tests`. Archive stray untracked files first. Record revisions in `upstream-lock.json` and CHANGELOG. Trial a major Archify release in a scratch copy: 3.x removed guided/story views (breaks `--template story`, presenter chapters, `--showcase-bridge`). An FFmpeg build without libass/freetype has no `drawtext`/`subtitles`; burned captions fail until a full build is installed.
+Fetch each vendor, read what changed, update, rebuild, then prove it: HyperFrames `init → check → render` + ffprobe; OpenMontage pytest in its own venv with `env -u PYTHONPATH -u PYTHONHOME` (a leaked PYTHONPATH fakes import errors); kit `pytest tests`. Archive stray untracked files first. Record revisions in `upstream-lock.json` and CHANGELOG. On an Archify bump: new lock via the release zip, then `verify-diagram-templates.mjs`, `verify-diagrams.mjs` and one `--video` render with frames checked (chapters are ours since 3.x; Archify 3 also needs `meta.output`, which the wrapper sets). An FFmpeg build without libass/freetype has no `drawtext`/`subtitles`; burned captions fail until a full build is installed.
 
 ## Opening artifacts for review
 

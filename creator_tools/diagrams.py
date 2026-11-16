@@ -103,7 +103,11 @@ def reject_remote_brands(value):
 
 
 def _showcase_bridge_script(dwell_ms: float = 2500.0):
-    """Deterministic window.__ready / __advance(ms) / __done() bridge for Archify HTML."""
+    """Deterministic window.__ready / __advance(ms) / __done() bridge for Archify HTML.
+
+    Steps through Creator chapters (``window.CreatorChapters``, built from ``meta.views`` by
+    diagram_templates): overview, each chapter for ``dwell_ms``, overview again, done.
+    """
     dwell = max(250, int(round(float(dwell_ms))))
     return f"""
 <script id="creator-showcase-bridge">
@@ -113,11 +117,6 @@ def _showcase_bridge_script(dwell_ms: float = 2500.0):
     var elapsed = 0;
     var step = -2;
     var done = false;
-    var views = [];
-    try {{
-      var el = document.getElementById('archify-guided-views-data');
-      views = JSON.parse(el ? el.textContent : '[]') || [];
-    }} catch (_) {{ views = []; }}
     window.__ready = false;
     window.__done = function() {{ return done; }};
     window.__advance = function(ms) {{
@@ -125,29 +124,31 @@ def _showcase_bridge_script(dwell_ms: float = 2500.0):
       var target = Math.floor(elapsed / DWELL) - 1;
       if (target === step) return;
       step = target;
-      if (!window.Archify || !Archify.guidedViews) {{
+      var C = window.CreatorChapters;
+      var n = C ? C.count() : 0;
+      if (!n) {{
         if (elapsed >= DWELL) done = true;
         return;
       }}
       if (step < 0) {{
-        Archify.guidedViews.showAll({{ updateUrl: false }});
-      }} else if (step < views.length) {{
-        Archify.guidedViews.activate(views[step].id, {{ updateUrl: false }});
-        if (Archify.guidedViews.settleHandoff) Archify.guidedViews.settleHandoff('showcase');
+        C.showAll();
+      }} else if (step < n) {{
+        C.activate(step);
       }} else {{
-        Archify.guidedViews.showAll({{ updateUrl: false }});
+        C.showAll();
         done = true;
       }}
     }};
     var markReady = function() {{
-      if (window.Archify && Archify.readerLayout && typeof Archify.readerLayout.whenStable === 'function') {{
-        Archify.readerLayout.whenStable().then(function() {{ window.__ready = true; }}).catch(function() {{ window.__ready = true; }});
-      }} else {{
+      var wait = (window.Archify && Archify.readerLayout && typeof Archify.readerLayout.whenStable === 'function')
+        ? Archify.readerLayout.whenStable() : Promise.resolve();
+      wait.catch(function() {{}}).then(function() {{
+        if (window.CreatorChapters && CreatorChapters.stop) CreatorChapters.stop();
         window.__ready = true;
-      }}
+      }});
     }};
-    if (document.readyState === 'complete') setTimeout(markReady, 50);
-    else window.addEventListener('load', function() {{ setTimeout(markReady, 50); }}, {{ once: true }});
+    if (document.readyState === 'complete') setTimeout(markReady, 80);
+    else window.addEventListener('load', function() {{ setTimeout(markReady, 80); }}, {{ once: true }});
   }} catch (_) {{ window.__ready = true; }}
 }})();
 </script>
@@ -169,9 +170,9 @@ def run(action, source=None, output=None, quality='showcase', root=ROOT,
         raise RuntimeError('Archify requires Node.js >=18 on PATH')
     cli = vendor/'bin/archify.mjs'
 
-    def invoke(args):
+    def invoke(args, cwd=None):
         try:
-            result = subprocess.run([node, str(cli), *args], cwd=root,
+            result = subprocess.run([node, str(cli), *args], cwd=cwd or root,
                                     env=child_environment(), capture_output=True,
                                     text=True, timeout=120)
         except subprocess.TimeoutExpired as exc:
@@ -195,10 +196,14 @@ def run(action, source=None, output=None, quality='showcase', root=ROOT,
     # Freeze the vetted input so a concurrent source edit cannot introduce a URL brand.
     with tempfile.TemporaryDirectory(prefix='creator-diagram-') as tmp:
         frozen = Path(tmp)/'input.json'
-        frozen.write_bytes(raw)
+        # Archify 3 requires meta.output as a portable path relative to its working directory;
+        # point it at the private candidate inside this temp dir (the vetted JSON is re-serialized).
+        upstream = dict(diagram)
+        upstream['meta'] = {**(diagram.get('meta') or {}), 'output': 'diagram.html'}
+        frozen.write_text(json.dumps(upstream))
         kind = diagram['diagram_type']
         if action == 'validate':
-            report = json.loads(invoke(['validate', kind, str(frozen), '--quality', quality, '--json']))
+            report = json.loads(invoke(['validate', kind, frozen.name, '--quality', quality, '--json'], cwd=tmp))
             if report.get('ok') is not True:
                 raise RuntimeError('Archify validation failed: '+json.dumps(report))
             return {'ok': True, 'input': str(source), 'quality': quality, 'report': report}
@@ -210,8 +215,8 @@ def run(action, source=None, output=None, quality='showcase', root=ROOT,
         if target.exists() or target.is_symlink():
             raise FileExistsError('Output exists; select a new path')
         candidate = Path(tmp)/'diagram.html'
-        report = json.loads(invoke(['deliver', kind, str(frozen), str(candidate),
-                                   '--quality', quality, '--json']))
+        report = json.loads(invoke(['deliver', kind, frozen.name, candidate.name,
+                                   '--quality', quality, '--json'], cwd=tmp))
         if report.get('ok') is not True or not candidate.is_file():
             raise RuntimeError('Archify delivery failed: '+json.dumps(report))
         content = candidate.read_bytes()

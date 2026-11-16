@@ -86,8 +86,9 @@ ships its own video-authoring skills in `hyperframes/skills/` after the bootstra
 
 Upgrades are deliberate, never automatic. To move a dependency: fetch it, read what
 changed, check out the new revision, rebuild, run `scripts/smoke.sh` and the tests, then
-update `upstream-lock.json` and [CHANGELOG.md](CHANGELOG.md). Archify 3.x removed the
-guided views that `--template story` and `--showcase-bridge` rely on, so it stays on 2.16.
+update `upstream-lock.json` and [CHANGELOG.md](CHANGELOG.md). Archify 3.x no longer draws
+`meta.views`; the kit renders those chapters itself (see [docs/DIAGRAMS.md](docs/DIAGRAMS.md)),
+so check `studio-ui/verify-diagram-templates.mjs` and a `--video` render on every Archify bump.
 
 ## What Git does not hold
 

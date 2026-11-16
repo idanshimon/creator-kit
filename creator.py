@@ -62,12 +62,12 @@ def main(argv=None):
         if action == 'render':
             dc.add_argument('--output', required=True, help='New standalone .html path')
             dc.add_argument('--showcase-bridge', action='store_true',
-                            help='Inject deterministic __ready/__advance/__done hooks to step guided chapters with showcase')
+                            help='Inject deterministic __ready/__advance/__done hooks to step the chapters (meta.views) with showcase')
             dc.add_argument('--chapter-dwell', type=float, default=2500.0,
-                            help='Milliseconds per guided chapter when --showcase-bridge is enabled (default 2500)')
+                            help='Milliseconds per chapter when --showcase-bridge is enabled (default 2500)')
             dc.add_argument('--video', help='Optional new .mp4 path to record the bridged diagram via showcase')
             dc.add_argument('--template', choices=['full', 'presenter', 'story', 'embed', 'minimal'], default='full',
-                            help='full = original Archify UI; presenter = chapters + detail panel; story = guided chapters + graph for embedding; '
+                            help='full = original Archify UI; presenter = chapters + detail panel; story = chapter bar + graph for embedding; '
                                  'embed = graph only for iframes; minimal = static graph')
             dc.add_argument('--hide', action='append', default=[], metavar='PART',
                             help='Hide a part (repeatable): toolbar header chapters cards nav zoom passport details')

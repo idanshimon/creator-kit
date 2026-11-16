@@ -2,14 +2,15 @@
 
 Archify is Creator Kit's **standalone interactive diagram tool**, alongside—not
 inside—the video editor. It renders typed JSON into an explorable HTML file with
-component selection, relationship tracing, guided chapters and presentation controls.
+component selection, relationship tracing, presentation controls, and Creator Kit's own
+chapter bar built from `meta.views`.
 It does not discover architecture from source code, generate narration, create an MP4,
 or add an HTML clip to the Studio timeline.
 
 ## Installed version and recovery
 
-Upstream: https://github.com/tt-a1i/archify (MIT), release **v2.16.0**, source commit
-`c826e6c3a7abad19c0f3cd1ca57207d54b1ad8de`.
+Upstream: https://github.com/tt-a1i/archify (MIT), release **v3.2.0**, source commit
+`208acba8d412335185b2056fedf54b3405df43fb`.
 
 The release archive and every installed file are pinned in
 [`integrations/archify-lock.json`](../integrations/archify-lock.json). The ignored
@@ -20,9 +21,9 @@ On a new machine, explicitly download the pinned release (network required):
 
 ```bash
 curl -fL --max-time 120 \
-  https://github.com/tt-a1i/archify/releases/download/v2.16.0/archify.zip \
-  -o "$TMPDIR/archify-v2.16.0.zip"
-python3.13 creator.py diagram install --archive "$TMPDIR/archify-v2.16.0.zip"
+  https://github.com/tt-a1i/archify/releases/download/v3.2.0/archify.zip \
+  -o "$TMPDIR/archify-v3.2.0.zip"
+python3.13 creator.py diagram install --archive "$TMPDIR/archify-v3.2.0.zip"
 python3.13 creator.py diagram doctor
 ```
 
@@ -60,17 +61,27 @@ HTML as the primary source; edit JSON and render again.
 The first-party example describes this integration and cites its code. Customer-specific
 sources and outputs belong under `productions/<name>/`, not the generic tracked example.
 
+## Chapters (`meta.views`)
+
+Archify 3 accepts `meta.views` (at most five, each `{id, label, focus: [node ids], note}`) but
+no longer draws them. Creator Kit adds its own chapter bar wherever `chapters` is shown: **All**,
+one button per chapter, **Play** (4.5 s per chapter, then back to All) and the chapter's note.
+A chapter calls `Archify.focus.setMany(focus)`, which lights its components and dims the rest
+without moving the camera. Alt+Left/Right step through chapters. Scripts can use
+`window.CreatorChapters` (`count()`, `activate(i)`, `showAll()`, `play()`, `stop()`,
+`current()`, `views`). Unknown focus IDs are dropped; a diagram with no usable chapter gets no bar.
+
 ## Presentation templates
 
-The original Archify viewer stays the default (`--template full`, byte-identical to
-upstream delivery). Other templates layer a wrapper-owned style/script onto the same
+The original Archify viewer stays the default (`--template full`): upstream delivery plus
+only the chapter bar, and byte-identical to upstream when the diagram has no chapters. Other templates layer a wrapper-owned style/script onto the same
 output; the source JSON and the upstream renderer are unchanged.
 
 | Template | What the reader sees |
 |---|---|
-| `full` | Original Archify UI: toolbar (theme, style, present, export), guided chapters, PATH/MAP/LENS, semantic passport, cards. |
-| `presenter` | Title, guided chapters, diagram, zoom and cards. Clicking a component opens a **detail panel** (what it does, why it matters, example, receives from / sends to; ID behind *Technical details*) instead of the semantic passport. Docked on the right at >=1000px, sheet below that. Selection does not move the camera. |
-| `story` | Guided chapters (play, chapter tabs, stops) + graph only, fitted and auto-height for an `<iframe>`; click opens the detail panel. Toolbar, PATH/MAP/LENS, cards hidden. |
+| `full` | Original Archify UI: toolbar (theme, style, present, export), Route/Lens, semantic passport, cards and node index, plus the chapter bar. |
+| `presenter` | Title, chapter bar, diagram, zoom and cards. Clicking a component opens a **detail panel** (what it does, why it matters, example, receives from / sends to; ID behind *Technical details*) instead of the semantic passport. Docked on the right at >=1000px, sheet below that. Selection does not move the camera. |
+| `story` | Chapter bar (All, chapters, Play, note) + graph only, fitted and auto-height for an `<iframe>`; click opens the detail panel. Toolbar, PATH/MAP/LENS, cards hidden. |
 | `embed` | Graph only, fitted to its frame, plus zoom. Click opens the detail panel as a bottom sheet. For `<iframe>` in articles. |
 | `minimal` | Graph only, static. No controls, nothing opens. For screenshots. |
 
@@ -80,7 +91,8 @@ Floor failures). `full` stays byte-identical to upstream. Authoring lessons for 
 (viewBox width, straight edges, `labelAt`, no `sources` via the wrapper): [UI-DECISIONS.md](UI-DECISIONS.md#diagrams-archify).
 
 Fine-tune with repeatable `--hide PART` / `--show PART`; parts are `toolbar header
-chapters cards nav zoom passport details`. Turning `details` on always hides the
+chapters cards nav outline zoom passport legend grid details` (`outline` = Archify 3's
+node index in the reader rail; hidden in every template except `full`). Turning `details` on always hides the
 passport.
 
 Detail text comes from an optional sidecar JSON keyed by node id
@@ -116,7 +128,7 @@ ARCHIFY_UPDATE_CHECK_DISABLED=1 node archify/bin/archify.mjs \
 beside the artifact. Inspect screenshots yourself; its receipt intentionally leaves
 visual review pending. The first-party browser harness uses the existing Studio
 `playwright-core` dependency and installed Chrome (`CHROME_PATH` override), blocks HTTP(S),
-then checks actual node selection, downstream reachability, guided chapters, theme
+then checks actual node selection, downstream reachability, chapter selection, theme
 switching and 390px horizontal containment. It writes evidence under
 `local/verification/archify/`. Mobile containment is not a promise of presentation-sized
 text on a phone; use zoom/presentation mode and inspect at the actual delivery size.
@@ -138,7 +150,8 @@ text on a phone; use zoom/presentation mode and inspect at the actual delivery s
 - To use a diagram in video, pass `--showcase-bridge` (and optionally `--chapter-dwell 2500`
   or `--video productions/<name>/diagram.mp4`) to `creator.py diagram render`. That injects
   a deterministic `window.__ready` / `window.__advance(ms)` / `window.__done()` bridge that
-  steps through `Archify.guidedViews` chapters for frame-exact `showcase` MP4 capture.
+  steps through the chapters (`window.CreatorChapters`: All, each chapter, All) for frame-exact
+  `showcase` MP4 capture.
 
 ## Source review record
 

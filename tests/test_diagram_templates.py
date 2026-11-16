@@ -16,9 +16,35 @@ HTML = b'<html><body><svg></svg></body></html>'
 
 
 class TemplateTests(unittest.TestCase):
-    def test_full_is_byte_identical(self):
+    def test_full_without_chapters_is_byte_identical(self):
         spec = t.resolve('full')
-        self.assertEqual(t.apply(HTML, DIAGRAM, spec), HTML)
+        plain = {**DIAGRAM, 'meta': {}}
+        self.assertEqual(t.apply(HTML, plain, spec), HTML)
+
+    def test_full_with_chapters_adds_only_the_chapter_bar(self):
+        out = t.apply(HTML, DIAGRAM, t.resolve('full'))
+        self.assertIn(b'id="cc-chapters-script"', out)
+        self.assertNotIn(b'id="cc-template"', out)
+        self.assertEqual(out.replace(out[out.index(b'<style id="cc-chapters-style">'):out.index(b'</body>')], b''), HTML)
+
+    def test_chapters_keep_only_known_focus_and_escape(self):
+        out = t.apply(HTML, DIAGRAM, t.resolve('story')).decode()
+        chap = out.split('<script id="cc-chapters-script">', 1)[1]
+        data, _ = json.JSONDecoder().raw_decode(chap.split('var D = ', 1)[1])
+        self.assertEqual(data['views'][0]['focus'], ['a', 'b'])
+        self.assertNotIn('</script>"', out.split('cc-chapters-script')[1].split('</script>')[0])
+
+    def test_hidden_chapters_and_empty_views(self):
+        out = t.apply(HTML, DIAGRAM, t.resolve('embed')).decode()
+        self.assertIn('#cc-chapters{display:none!important}', out)
+        empty = {**DIAGRAM, 'meta': {'views': [{'id': 'x', 'label': 'X', 'focus': ['ghost']}]}}
+        self.assertNotIn('cc-chapters-script', t.apply(HTML, empty, t.resolve('story')).decode())
+
+    def test_showcase_bridge_drives_creator_chapters(self):
+        from creator_tools import diagrams
+        js = diagrams._showcase_bridge_script(1000)
+        self.assertIn('CreatorChapters', js)
+        self.assertNotIn('guidedViews', js)
 
     def test_presenter_hides_tooling_and_replaces_passport(self):
         spec = t.resolve('presenter')

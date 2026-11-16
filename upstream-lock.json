@@ -19,8 +19,8 @@
     {
       "path": "archify",
       "repository": "https://github.com/tt-a1i/archify.git",
-      "revision": "c826e6c3a7abad19c0f3cd1ca57207d54b1ad8de",
-      "version": "2.16.0",
+      "revision": "208acba8d412335185b2056fedf54b3405df43fb",
+      "version": "3.2.0",
       "license": "MIT",
       "distribution": "release-zip",
       "integrity_manifest": "integrations/archify-lock.json"

@@ -27,11 +27,12 @@ try {
   assert.equal(await page.locator('#btn-reach-downstream').getAttribute('aria-pressed'), 'true');
   assert.equal(await page.locator('#focus-reach-downstream-count').textContent(), '2');
   report.checks.push('two downstream nodes from Creator CLI');
-  await page.getByRole('button', {name:'Open chapter 2 of 3:', exact:false}).click();
-  assert.equal(await page.evaluate(() => location.hash), '#view=validate');
-  assert.match(await page.locator('[aria-current="step"]').textContent(), /2\. Validate/);
-  report.checks.push('guided chapter selection');
-  await page.locator('#guided-view-all').click();
+  await page.getByRole('button', {name:'Chapter 2 of 3:', exact:false}).click();
+  assert.equal(await page.evaluate(() => CreatorChapters.current()), 1);
+  assert.deepEqual(await page.evaluate(() => Archify.focus.active()), await page.evaluate(() => CreatorChapters.views[1].focus));
+  assert.match(await page.locator('#cc-chapters [aria-current="step"]').textContent(), /2\. Validate/);
+  report.checks.push('chapter selection highlights its components');
+  await page.getByRole('button', {name:'All', exact:true}).click();
   const before = await page.locator('html').getAttribute('data-theme');
   await page.locator('#btn-theme').click();
   assert.notEqual(await page.locator('html').getAttribute('data-theme'), before);
