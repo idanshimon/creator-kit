@@ -267,6 +267,9 @@ def synthesize_kokoro_line(text: str, voice: str, out_wav: Path, *, root: Path) 
     om_py = root / "OpenMontage" / ".venv" / "bin" / "python"
     if om_py.is_file():
         env.setdefault("HYPERFRAMES_PYTHON", str(om_py))
+        cache = om_py.parents[1] / "share" / "hyperframes-model-files-v1.1"
+        if (cache / "tts/models/kokoro-v1.0.onnx").is_file() and (cache / "tts/voices/voices-v1.0.bin").is_file():
+            env.setdefault("HYPERFRAMES_CACHE_DIR", str(cache.resolve()))
     proc = subprocess.run(
         [*base_cmd, "tts", text, "--voice", voice, "--output", str(out_wav)],
         cwd=str(hf_dir), env=env, capture_output=True, text=True, timeout=180

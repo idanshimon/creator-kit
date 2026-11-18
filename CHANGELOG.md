@@ -1,5 +1,10 @@
 # Changelog
 
+## Studio dependency refresh
+
+- HyperFrames 0.9.46, OpenMontage 2e003e6, GSAP 3.15.1, React 19, and D3 7.9.2. Archify remains 3.2.0.
+- Pin Kokoro 0.6.1 and provision the checksum-verified English model-files-v1.1 cache during full bootstrap.
+
 ## 2026-11-16 — Archify 3.2
 
 - Archify 2.16.0 → 3.2.0 (new lock; redesigned reader, Route/Lens, node index, five more diagram types upstream).

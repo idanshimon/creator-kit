@@ -44,7 +44,7 @@ else miss "node 18+  (macOS: brew install node)"; FAIL=1; fi
 have npm && ok "npm     $(npm --version)" || { miss "npm"; FAIL=1; }
 if have ffmpeg && have ffprobe; then
   ok "ffmpeg  $(ffmpeg -version | head -1 | awk '{print $3}')"
-  ffmpeg -hide_banner -filters 2>/dev/null | grep -qE ' subtitles ' \
+  ffmpeg -hide_banner -filters 2>/dev/null | grep -E ' subtitles ' >/dev/null \
     || echo "        note: this ffmpeg has no libass ('subtitles' filter); burned-in captions will not work"
 else miss "ffmpeg + ffprobe  (macOS: brew install ffmpeg)"; FAIL=1; fi
 if [ "$MODE" != "minimal" ]; then
@@ -164,10 +164,12 @@ if [ "$MODE" != "check" ]; then
   [ -x OpenMontage/.venv/bin/python ] || "$PY" -m venv OpenMontage/.venv
   OpenMontage/.venv/bin/python -m pip install --quiet --upgrade pip
   OpenMontage/.venv/bin/python -m pip install --quiet -r OpenMontage/requirements.txt
-  OpenMontage/.venv/bin/python -m pip install --quiet kokoro-onnx soundfile
+  OpenMontage/.venv/bin/python -m pip install --quiet kokoro-onnx==0.6.1 soundfile==0.14.0
+  "$PY" scripts/install-kokoro-assets.py
+  OpenMontage/.venv/bin/python -m pip check
   # A partial wheel download can leave cffi without its compiled backend; prove the imports.
   OpenMontage/.venv/bin/python -c 'import soundfile, kokoro_onnx' 2>/dev/null \
-    || OpenMontage/.venv/bin/python -m pip install --quiet --force-reinstall --no-cache-dir cffi soundfile
+    || OpenMontage/.venv/bin/python -m pip install --quiet --force-reinstall --no-cache-dir cffi soundfile==0.14.0
   OpenMontage/.venv/bin/python -c 'import soundfile, kokoro_onnx' \
     || { echo "  FAIL  voice runtime imports (soundfile/kokoro_onnx) broken in OpenMontage/.venv"; exit 1; }
   [ -f OpenMontage/.env ] || cp OpenMontage/.env.example OpenMontage/.env
