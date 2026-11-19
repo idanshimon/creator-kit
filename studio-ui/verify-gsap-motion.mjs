@@ -1,7 +1,7 @@
 // Real browser proof; run from studio-ui with the generated HTML path.
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
@@ -23,7 +23,8 @@ const report={checks:[],screenshots:[],errors,networkRequests:requests};
 try{
  await page.goto(pathToFileURL(html).href);
  await page.waitForFunction(()=>window.__ready===true);
- assert.equal(await page.evaluate(()=>gsap.version),'3.15.0');
+ const pin=JSON.parse(await readFile(path.join(root,'integrations/gsap-lock.json'),'utf8'));
+ assert.equal(await page.evaluate(()=>gsap.version),pin.version);
  assert.equal(await page.evaluate(()=>Object.keys(window.__timelines)[0]),'gsap-motion');
  assert.equal(await page.evaluate(()=>window.__timelines['gsap-motion'].paused()),true);
  assert.equal(await page.evaluate(()=>window.__timelines['gsap-motion'].duration()),8);

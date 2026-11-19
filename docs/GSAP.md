@@ -4,7 +4,7 @@ Added and locally exercised **2026-10-20**. GSAP is the animation engine; the ex
 
 ## What is available
 
-- Exact GSAP **3.15.0**, package version and UMD runtime SHA-256 checked against [`integrations/gsap-lock.json`](../integrations/gsap-lock.json).
+- Exact GSAP **3.15.1**, package version and UMD runtime SHA-256 checked against [`integrations/gsap-lock.json`](../integrations/gsap-lock.json).
 - `creator.py motion doctor`: reports the verified local bundle or fails clearly. No download, repair, upstream edit or upgrade is performed.
 - `creator.py motion create`: creates a **new directory** containing standalone `index.html`, `manifest.json` and `GSAP-LICENSE.txt`.
 - An eight-second, silent 1280×720 composition with title motion, SVG line drawing, staggered cards, semantic timeline labels and a readable final hold.
