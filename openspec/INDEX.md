@@ -14,6 +14,7 @@ backfill of the existing implementation, not a claim that a spec preceded that c
 - [Agent showcase](specs/agent-showcase/spec.md): frame-exact page recording, prompt-crawler, consent-gated model scoring and cascade escalation.
 - [Production manifest](specs/production-manifest/spec.md): per-production artifact inventory with checksums, derived videos/cover, and open-decision extraction.
 - [GSAP motion authoring](specs/gsap-motion/spec.md): pinned offline runtime, non-overwriting HTML scaffold and deterministic showcase capture.
+- [Walkthrough overlays](specs/walkthrough-overlays/spec.md): offline `<sdlc-loop>` dial and `<story-rail>` map; host-owned stage, independent inspection, HTML-only (backfilled 2026-11-22).
 
 ## Maintenance
 
