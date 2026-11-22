@@ -4,6 +4,7 @@ Making things:
 - [Voices and narration](VOICES.md): every `narrate` engine, Azure Speech sign-in, local model registry
 - [GSAP motion](GSAP.md): offline animated compositions and seek-safe capture
 - [Showcase recording](SHOWCASE.md): record any page to frame-exact MP4
+- [SDLC stage map](../templates/overlays/sdlc-loop/README.md): standard interactive overlay for SDLC chapters and HTML video players
 - [Walkthroughs](WALKTHROUGH.md): narrated screenshot tours with arrows, spotlight, cursor, captions
 - [Reels](REEL.md): TikTok / Reels / Shorts / LinkedIn short-form templates
 - [Interactive diagrams](DIAGRAMS.md): Archify install, templates, guided-tour video

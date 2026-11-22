@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walkthrough · Remembering a filter</title>
+<script src="sdlc-loop.js"></script>
+<style>
+:root {color-scheme:light dark;font:100%/1.5 system-ui,sans-serif} body {margin:0} main {max-width:48rem;margin:auto;padding:2rem 1rem} h1 {line-height:1.15} small {letter-spacing:.08em;text-transform:uppercase} .scene {position:relative;border-block:1px solid GrayText;padding:1.5rem 1rem 2rem 13rem;min-height:20rem} button {font:inherit;padding:.45rem .8rem} nav {display:flex;gap:.5rem} @media(max-width:38rem){.scene {padding:1rem} sdlc-loop {position:relative;display:block;top:auto;left:auto;margin-bottom:1.5rem}}
+</style></head>
+<body><main><small>Creator Kit / Synthetic walkthrough</small><h1>Remembering a filter</h1>
+<p>Follow a fictional bug report. Use the chapter controls to move the story, or inspect a stage on the map without leaving the chapter.</p>
+<div class="scene"><sdlc-loop></sdlc-loop><article aria-live="polite"><small id="counter"></small><h2 id="title"></h2><p id="copy"></p></article>
+<nav aria-label="Chapters"><button id="prev">Previous</button><button id="next">Next</button></nav></div></main>
+<script>
+const chapters = [
+ [null, 'A filter that disappears', 'In this example, returning to a list clears the reader’s filter. The walkthrough follows the report as far as review.'],
+ ['issue', 'Describe the surprise', 'A reader selects “Open,” visits an item, then returns to a list showing every item.'],
+ ['plan', 'Choose what to remember', 'The proposed change keeps the filter in the list URL so Back restores the same view.'],
+ ['review', 'Ask for a second look', 'The reviewer compares the return path with the original report. This story ends here; it does not establish a merge or resolution.']
+];
+let index = 0;
+function show() {
+ const [stage, title, copy] = chapters[index];
+ document.querySelector('sdlc-loop').setStage(stage);
+ document.querySelector('#counter').textContent = `Chapter ${index + 1} of ${chapters.length}`;
+ document.querySelector('#title').textContent = title;
+ document.querySelector('#copy').textContent = copy;
+ document.querySelector('#prev').disabled = index === 0;
+ document.querySelector('#next').disabled = index === chapters.length - 1;
+}
+document.querySelector('#prev').onclick = () => { index--; show(); };
+document.querySelector('#next').onclick = () => { index++; show(); };
+show();
+</script></body></html>

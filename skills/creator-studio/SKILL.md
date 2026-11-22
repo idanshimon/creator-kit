@@ -11,6 +11,8 @@ Start every session by reading `README.md`, `INDEX.md`, `docs/INDEX.md`, `SETUP.
 
 **Free and offline by default.** Local FFmpeg rendering, local voices (Kokoro, Qwen3, Chatterbox, F5), local Chrome capture. Cloud model calls (Azure OpenAI, Azure Speech, Whisper) are optional and always require `--allow-cloud`. Nothing is uploaded automatically.
 
+For SDLC walkthroughs, use the [standard stage map](../../templates/overlays/sdlc-loop/README.md) in the HTML chapter view or HTML video player. Map only the stages discussed; use `null` for overview. Verify backward navigation and inspect Resolved without changing the current step. Do not promise this interactive layer in the standalone MP4.
+
 ## Reference map
 
 | Read | When |
