@@ -3,3 +3,5 @@
 Use the ring over dense footage. Use the rail in a two-column story when the viewer needs to follow who owns each handoff. Keep the primary scene on the right. On narrow screens the rail becomes an expandable current-stage strip. Both layouts describe narrative focus, not task completion.
 
 Copy `story-rail.js` beside the page and load it with a classic script. Mount `<story-rail heading="Who decides?" theme="light"></story-rail>` in a sticky aside. Assign `rail.stages` an ordered array of `{id,label,category,detail,icon}`. Icon names: signal, draft, gate, choice, record, step. Call `rail.setStage(id, optionalCueText)` from the same scene-selection function used by the diagram or captions. Use `null` for overview. For audio or video, resolve the cue from `media.currentTime` on play, timeupdate and seeked, not a second playback timer. Inspection leaves playback untouched. Keep clinical and software lifecycle labels separate. This offline HTML component is not burned into MP4 exports.
+
+No automated browser test covers `story-rail` yet; only `<sdlc-loop>` is verified by `studio-ui/verify-sdlc-loop.mjs`.
