@@ -24,6 +24,10 @@ Output (`--output` must not exist; nothing is overwritten):
 | `walkthrough.gif` | `--gif`: looping README preview, ≤ `--gif-max-mb` (6 MB), ~800–900 px, captions burned in |
 | `manifest.json` | Paths, ffprobe result, GIF size |
 
+## SDLC walkthroughs
+
+For the HTML companion or video player, use the [standard SDLC stage map](../templates/overlays/sdlc-loop/README.md). Drive it from chapters or the video clock; inspection is not evidence that work finished. The walkthrough CLI does not add this overlay to an MP4.
+
 ## Spec
 
 ```json
