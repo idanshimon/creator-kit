@@ -157,6 +157,28 @@ Reading pages where every number points back to its source. Recorded as a guided
 
 ---
 
+## 🤖 Using an AI agent? Paste this
+
+**1. Install** (Claude Code, Hermes, GitHub Copilot CLI, Codex):
+
+```text
+Clone https://github.com/idanshimon/creator-kit into ~/projects/creator-kit, read AGENTS.md fully,
+and bootstrap it. Ask me before installing missing prerequisites. Prove it works with
+scripts/smoke.sh and show me the MP4 path. Then install the kit's skills for the agent you are
+(AGENTS.md section 3) so you can use them in future sessions. Don't ask me for API keys unless
+I want Azure voices.
+```
+
+**2. Use it.** Start with "Use Creator Kit to…" and say what you want. The agent picks the tool:
+
+```text
+Use Creator Kit to make a 60-second narrated walkthrough of <my app URL> with arrows and captions. Export MP4 and GIF.
+Use Creator Kit to turn this repo's architecture into an interactive diagram with a short video tour.
+Use Creator Kit to make a data story from <data.csv> with source-backed charts and a 45-second video.
+Use Creator Kit to make a 9:16 reel from this blog post, 30 seconds, with captions.
+Open the Creator Kit studio and help me trim my last video, add music and fade in/out.
+```
+
 ## ⚡ Quick start
 
 ```bash
