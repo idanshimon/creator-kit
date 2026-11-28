@@ -5,11 +5,23 @@
 <style>
 :root{--bg:#05050a;--ln:#1d1d29;--tx:#d8d2c2;--dim:#9893a6;--gold:#f0b94a;--cyan:#38e1cf;--pink:#ff4f9a;--vio:#9a7bff}
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:#05050a;color:var(--tx);font:13px "JetBrains Mono",ui-monospace,Menlo,monospace;display:grid;grid-template-rows:46px 1fr 300px;overflow:hidden}
+body{margin:0;background:#05050a;color:var(--tx);font:13px "JetBrains Mono",ui-monospace,Menlo,monospace;display:grid;grid-template-rows:46px 40px 1fr 300px;overflow:hidden}
+body.render-mode{grid-template-rows:46px 1fr 300px}
+body.render-mode #toolbar{display:none}
 header{display:flex;gap:22px;align-items:center;padding:0 16px;border-bottom:1px solid var(--ln);background:#05050a;z-index:2}
 header b{color:var(--gold);letter-spacing:.08em}header .m{color:var(--dim)}header .m i{color:var(--tx);font-style:normal}
 .tabs{margin-left:auto;display:flex;gap:4px}.tab{color:var(--dim);cursor:pointer;padding:5px 12px;border:1px solid #2a2a36;border-radius:2px;text-transform:uppercase;font-size:12px;letter-spacing:.14em}
 .tab:hover{color:var(--tx)}.tab.on{color:#000;background:var(--gold)}
+#toolbar{display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--ln);background:#08080f;z-index:2}
+#toolbar button{background:#10101a;color:var(--tx);border:1px solid #2a2a36;border-radius:3px;padding:4px 10px;font:12px "JetBrains Mono",ui-monospace,Menlo,monospace;cursor:pointer;letter-spacing:.06em;white-space:nowrap}
+#toolbar button:hover{border-color:var(--gold);color:var(--gold)}
+#toolbar button.on{background:var(--gold);color:#000;border-color:var(--gold)}
+#toolbar .sep{width:1px;height:18px;background:#222230;margin:0 2px}
+#toolbar input{background:#0c0c15;color:var(--tx);border:1px solid #2a2a36;border-radius:3px;padding:4px 9px;font:12px "JetBrains Mono",ui-monospace,Menlo,monospace;width:220px;outline:none}
+#toolbar input:focus{border-color:var(--cyan)}
+#toolbar input::placeholder{color:#6f6a7d}
+#match-count{font-size:11px;color:var(--cyan);letter-spacing:.06em}
+#btn-copy{margin-left:auto}
 #g{position:relative;overflow:hidden}canvas{display:block}
 #tip{position:absolute;max-width:440px;background:#07070dee;border:1px solid #f0b94a55;border-left:2px solid var(--gold);padding:10px 12px;pointer-events:none;display:none;line-height:1.5;box-shadow:0 0 30px #000}
 #tip .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
@@ -30,6 +42,18 @@ header b{color:var(--gold);letter-spacing:.08em}header .m{color:var(--dim)}heade
 #heat{flex:1;min-height:0;overflow:hidden;align-content:flex-start}#heat span{display:inline-block;margin:3px;padding:3px 7px;border-radius:2px;font-size:13px}
 </style></head><body>
 <header><b>◉ PROMPT-CRAWLER</b><span class="m" id="meta"></span><div class="tabs" id="tabs"></div></header>
+<div id="toolbar" role="toolbar" aria-label="Crawl controls">
+  <button id="btn-play" class="on" type="button" title="Pause / resume crawl">❚❚ Pause</button>
+  <button id="btn-replay" type="button" title="Replay crawl from start">↺ Replay</button>
+  <div class="sep"></div>
+  <button id="btn-zout" type="button" title="Zoom out">−</button>
+  <button id="btn-zin" type="button" title="Zoom in">+</button>
+  <button id="btn-zreset" type="button" title="Reset zoom">Reset</button>
+  <div class="sep"></div>
+  <input id="search" type="search" placeholder="Search nodes…" aria-label="Search nodes">
+  <span id="match-count"></span>
+  <button id="btn-copy" type="button" title="Copy spec score & route summary">Copy summary</button>
+</div>
 <div id="g"><canvas id="c"></canvas><div id="hud"></div><div id="legend"></div><div id="tip"></div></div>
 <div class="row">
  <div class="p"><h4>CRAWL LOG<em id="prog"></em></h4><div id="log"></div></div>
@@ -42,6 +66,8 @@ header b{color:var(--gold);letter-spacing:.08em}header .m{color:var(--dim)}heade
 const COL={code:"#38e1cf",model:"#f0b94a",human:"#ff4f9a"},KIND={rule:"#38e1cf",approval:"#ff4f9a",ambiguous:"#9a7bff",sourced:"#f0b94a",info:"#8a8698"};
 const rgba=(h,a)=>{const n=parseInt(h.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`};
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const Q=new URLSearchParams(location.search),SPEED=+Q.get("speed")||1,RENDER=!!+Q.get("render");
+if(RENDER)document.body.classList.add("render-mode");
 const SRC=typeof DATA!=="undefined"?Promise.resolve(DATA):d3.json(location.hash.slice(1)||"crawl.json");
 SRC.then(D=>{
 const strip=s=>s.replace(/^#+\s*/,"");
@@ -76,11 +102,14 @@ const bg=document.createElement("canvas");function paintBg(){bg.width=W*DPR;bg.h
  for(let i=0;i<420;i++){const r=Math.random()**2;b.fillStyle=`rgba(${220+Math.random()*35|0},${210+Math.random()*45|0},255,${.08+r*.6})`;b.beginPath();b.arc(Math.random()*W,Math.random()*H,.3+r*1.1,0,7);b.fill()}}paintBg();
 
 // ---------- view state ----------
-let T=d3.zoomIdentity,filter="all",hover=null,t0=performance.now();
-d3.select(cv).call(d3.zoom().scaleExtent([.3,8]).on("zoom",e=>T=e.transform));
+let T=d3.zoomIdentity,filter="all",query="",paused=false,hover=null,t0=performance.now();
+const zoom=d3.zoom().scaleExtent([.3,8]).on("zoom",e=>T=e.transform);
+const cvSel=d3.select(cv).call(zoom);
 d3.select("#tabs").selectAll("div").data(["all","code","model","human"]).join("div").attr("class",(d,i)=>"tab"+(i?"":" on")).text(d=>d)
- .on("click",(e,f)=>{filter=f;d3.selectAll(".tab").classed("on",d=>d==f)});
-const vis=d=>filter=="all"||d.route==filter;
+ .on("click",(e,f)=>{filter=f;d3.selectAll(".tab").classed("on",d=>d==f);syncMatchCount()});
+const matchesQuery=d=>!query||(`${d.text} ${d.section} ${d.kind} ${d.route}`).toLowerCase().includes(query);
+const vis=d=>(filter=="all"||d.route==filter)&&matchesQuery(d);
+function syncMatchCount(){const mc=document.getElementById("match-count");if(!mc)return;mc.textContent=query?`${leaves.filter(vis).length} match${leaves.filter(vis).length===1?"":"es"}`:"";}
 
 // ---------- curve helpers ----------
 function ctrl(a,b,bend){const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y;return[mx-dy*bend,my+dx*bend]}
@@ -96,7 +125,6 @@ const sp={x:W/2,y:H/2,ang:0,step:0,k:0,path:null,trail:[],pause:0};
 function planNext(){if(sp.step>=order.length){sp.path=null;return}
  const leaf=order[sp.step],sec=byId[sid[leaf.section]];
  sp.path=[{x:sp.x,y:sp.y},sec,leaf];sp.k=0;sp.leaf=leaf;sp.sec=sec}
-const Q=new URLSearchParams(location.search),SPEED=+Q.get("speed")||1;
 const logEl=d3.select("#log"),logLines=[];
 function crawled(leaf){leaf.lit=1;leaf.bloom=1;sp.sec.lit=1;links.forEach(l=>{if(l.target===leaf||(l.h&&l.target===sp.sec))l.lit=1});
  logLines.push(leaf);if(logLines.length>12)logLines.shift();
@@ -126,12 +154,12 @@ function drawSpider(x,y,ang,t,moving){ctx.save();ctx.translate(x,y);{const h=ctx
 let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000;
  let moving=false;
- if(sp.path){if(sp.pause>0)sp.pause-=dt;else{moving=true;sp.k+=dt*SPEED*(sp.k<1?3.4:4.8);
+ if(sp.path&&!paused){if(sp.pause>0)sp.pause-=dt;else{moving=true;sp.k+=dt*SPEED*(sp.k<1?3.4:4.8);
   const seg=sp.k<1?0:1,u=d3.easeCubicInOut(Math.min(1,sp.k-seg)),a=sp.path[seg],b=sp.path[seg+1],c=ctrl(a,b,seg?.16:.1),[x,y]=bez(a,c,b,u);
   const na=Math.atan2(y-sp.y,x-sp.x);if(Math.hypot(y-sp.y,x-sp.x)>.2){let d=na-sp.ang;d=Math.atan2(Math.sin(d),Math.cos(d));sp.ang+=d*Math.min(1,dt*14)}
   sp.x=x;sp.y=y;sp.trail.push([x,y]);if(sp.trail.length>46)sp.trail.shift();
   if(sp.k>=2){crawled(sp.leaf);sp.step++;sp.pause=sp.leaf.escalated?.55:.05;planNext()}}}
- else if(sp.trail.length)sp.trail.shift();
+ else if(!paused&&sp.trail.length)sp.trail.shift();
  leaves.forEach(l=>l.bloom=Math.max(0,l.bloom-dt*1.4));
 
  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.drawImage(bg,0,0,W,H);
@@ -167,7 +195,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
  for(let it=0;it<40;it++)for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const A=boxes[i],B=boxes[j],need=(A.h+B.h)/2+4;
   if(A.lx<B.lx+B.w&&B.lx<A.lx+A.w&&Math.abs(A.ey-B.ey)<need){const d=(need-Math.abs(A.ey-B.ey))/2+.5,sg=A.ey<B.ey?-1:1;A.ey+=sg*d;B.ey-=sg*d}}
  // keep labels inside the canvas (in world coords)
- boxes.forEach(b=>{const x0=(8-T.x)/T.k,x1=(W-8-T.x)/T.k,y0=(8-T.y)/T.k,y1=(H-8-T.y)/T.k;b.lx=Math.max(x0,Math.min(x1-b.w,b.lx));b.ey=Math.max(y0+b.h/2,Math.min(y1-b.h/2,b.ey))});
+ boxes.forEach(b=>{const x0=(12-T.x)/T.k,x1=(W-12-T.x)/T.k,y0=(16-T.y)/T.k,y1=(H-16-T.y)/T.k;b.lx=Math.max(x0,Math.min(x1-b.w,b.lx));b.ey=Math.max(y0+b.h/2,Math.min(y1-b.h/2,b.ey))});
  boxes.forEach(b=>b.s._lab=b);
  secs.forEach(s=>{const R=7+Math.sqrt(s.n)*2.2,on=s.lit;
   ctx.strokeStyle=rgba("#f0b94a",on?.95:.35);ctx.lineWidth=1.3;ctx.shadowColor="#f0b94a";ctx.shadowBlur=on?14:0;ctx.beginPath();ctx.arc(s.x,s.y,R,0,7);ctx.stroke();ctx.shadowBlur=0;
@@ -185,9 +213,32 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now
  if(hover){ctx.strokeStyle="#fff";ctx.lineWidth=1;ctx.beginPath();ctx.arc(hover.x,hover.y,8,0,7);ctx.stroke()}
  ctx.restore();if(!RENDER)requestAnimationFrame(frame)}
 // ?render=1: deterministic clock for frame-exact video capture; the capturer calls __advance(ms)
-const RENDER=!!+Q.get("render");
 if(RENDER){sim.stop();let vt=performance.now();t0=vt;last=vt;window.__advance=ms=>{vt+=ms;sim.tick();bounds();frame(vt);return sp.step};window.__done=()=>!sp.path&&!sp.trail.length;window.__ready=true}
-else requestAnimationFrame(frame);
+else {
+  requestAnimationFrame(frame);
+  const btnPlay=document.getElementById("btn-play");
+  const syncPlay=()=>{btnPlay.textContent=paused?"▶ Play":"❚❚ Pause";btnPlay.classList.toggle("on",!paused);};
+  btnPlay.addEventListener("click",()=>{paused=!paused;syncPlay();});
+  document.getElementById("btn-replay").addEventListener("click",()=>{
+    leaves.forEach(l=>{l.lit=0;l.bloom=0;});secs.forEach(s=>s.lit=0);links.forEach(l=>l.lit=0);
+    logLines.length=0;logEl.html("");
+    sp.x=W/2;sp.y=H/2;sp.ang=0;sp.step=0;sp.k=0;sp.trail=[];sp.pause=0;
+    d3.select("#prog").text(`0/${order.length}`);
+    paused=false;syncPlay();planNext();
+  });
+  document.getElementById("btn-zin").addEventListener("click",()=>cvSel.transition().duration(180).call(zoom.scaleBy,1.3));
+  document.getElementById("btn-zout").addEventListener("click",()=>cvSel.transition().duration(180).call(zoom.scaleBy,1/1.3));
+  document.getElementById("btn-zreset").addEventListener("click",()=>cvSel.transition().duration(220).call(zoom.transform,d3.zoomIdentity));
+  document.getElementById("search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();syncMatchCount();});
+  const btnCopy=document.getElementById("btn-copy");
+  btnCopy.addEventListener("click",()=>{
+    const grade=D.spec_score>=75?"SOLID":D.spec_score>=50?"NEEDS WORK":"WEAK";
+    const summary=`${D.file} | Spec Score: ${D.spec_score}/100 (${grade}) | Decisions: ${D.decisions} (code: ${D.routes.code||0}, model: ${D.routes.model||0}, human: ${D.routes.human||0}, vague: ${D.vague_count||0})`;
+    const done=()=>{btnCopy.textContent="Copied";clearTimeout(btnCopy._t);btnCopy._t=setTimeout(()=>btnCopy.textContent="Copy summary",1600);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(summary).then(done,()=>{const ta=document.createElement("textarea");ta.value=summary;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}ta.remove();done();});}
+    else{const ta=document.createElement("textarea");ta.value=summary;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}ta.remove();done();}
+  });
+}
 
 // tooltip
 const tip=d3.select("#tip");

@@ -66,8 +66,59 @@ class MotionTests(unittest.TestCase):
         self.assertNotIn('<script>alert(1)</script>', text)
         self.assertNotIn('<script src=', text)
         self.assertEqual(result['duration_seconds'], 8)
-        self.assertTrue((self.root/'new/manifest.json').is_file())
+        self.assertEqual(result['template'], 'classic')
+        self.assertEqual(result['composition_id'], 'gsap-motion')
+        manifest_path = self.root/'new/manifest.json'
+        self.assertTrue(manifest_path.is_file())
+        self.assertLess(manifest_path.stat().st_size, 4096)
+        manifest = json.loads(manifest_path.read_text())
+        self.assertEqual(manifest['template'], 'classic')
+        self.assertEqual(manifest['composition_id'], 'gsap-motion')
         self.assertIn('https://gsap.com/standard-license/', (self.root/'new/GSAP-LICENSE.txt').read_text())
+
+    def test_all_templates_create_offline_escaped_and_manifest(self):
+        expected = {
+            'classic': 'gsap-motion',
+            'kinetic': 'gsap-kinetic',
+            'lower-third': 'gsap-lower-third',
+            'chapter': 'gsap-chapter',
+            'spotlight': 'gsap-spotlight',
+        }
+        self.assertEqual(set(motion.TEMPLATES), set(expected))
+        for tpl, comp_id in expected.items():
+            with self.subTest(template=tpl):
+                dest = self.root / f'tpl-{tpl}'
+                result = motion.create(
+                    dest,
+                    '<script>alert(1)</script>',
+                    'Fast · Offline | Exact & Safe',
+                    root=self.root,
+                    template=tpl,
+                )
+                self.assertEqual(result['template'], tpl)
+                self.assertEqual(result['composition_id'], comp_id)
+                manifest_path = dest / 'manifest.json'
+                self.assertLess(manifest_path.stat().st_size, 4096)
+                manifest = json.loads(manifest_path.read_text())
+                self.assertEqual(manifest['template'], tpl)
+                self.assertEqual(manifest['composition_id'], comp_id)
+                text = Path(result['html']).read_text()
+                self.assertIn('&lt;script&gt;alert(1)&lt;/script&gt;', text)
+                self.assertIn('Fast · Offline | Exact &amp; Safe', text)
+                self.assertNotIn('<script>alert(1)</script>', text)
+                self.assertNotIn('<script src=', text)
+                self.assertIn('GSAP fixture; retain this notice', text)
+                self.assertIn(f'data-composition-id="{comp_id}"', text)
+                for hook in ('window.__ready', 'window.__advance', 'window.__done', 'window.__motion', 'window.__timelines'):
+                    self.assertIn(hook, text)
+                for ctrl in ('id="play"', 'id="reset"', 'id="speed"', 'id="seek"', '.render .controls{display:none}'):
+                    self.assertIn(ctrl, text)
+
+    def test_unknown_template_is_rejected(self):
+        dest = self.root / 'bad-template'
+        with self.assertRaises(ValueError):
+            motion.create(dest, 'Title', root=self.root, template='nonexistent')
+        self.assertFalse(dest.exists())
 
     def test_existing_directory_is_preserved(self):
         destination=self.root/'existing'

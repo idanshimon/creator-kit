@@ -12,7 +12,7 @@ Output directory (the command refuses to overwrite any of these):
 
 | File | What it is |
 |---|---|
-| `index.html` | The scene. Open `index.html#play` for a live preview or `index.html?t=2.5` for a still at 2.5 s |
+| `index.html` | The scene. Open `index.html` for an interactive preview HUD (`index.html#play` auto-plays, `index.html?t=2.5` seeks to 2.5 s, `index.html?render=1` hides HUD for pure deterministic recording) |
 | `reel.mp4` | H.264, yuv420p, exact spec duration. Has AAC audio when narration audio is given |
 | `poster.png` | Cover frame, taken when the first beat is fully on screen |
 | `preview.gif` | With `--gif`: 10 fps, 320 px wide (480 px for 16:9), roughly 2 MB per 10 s |
@@ -29,6 +29,8 @@ Output directory (the command refuses to overwrite any of these):
 | `stat` | Number reveal. Counts up, keeps prefix/suffix/decimals; `%` values get a ring | `value`, `label`, `text` |
 | `quote` | Quote card. Words resolve from blur, emphasis gets an underline sweep, author lands last | `text`, `author`, `role` |
 | `phone` | Screenshot or terminal in a phone mockup with zoom punch-ins and a focus ring | `text`, `zoom: {x, y, scale}`, `scroll` (0..1, image screens); spec `screen` |
+| `terminal` | Animated CLI / code demo in dark window chrome (traffic-light dots + title), typing `$` prompt, output lines with status pills (`PASS`, `OK`, `0.0s`), optional punchline beat | `cmd`, `prompt`, `lines[]` (strings or `{text, status, tone}`), `caption`, `text`, `sub`, `tag`; spec `windowTitle` |
+| `versus` | "Old Way vs New Way" / "Myth vs Reality" stacked comparison cards with animated `✕` / `✓` verdict badges and takeaway beat | `old` + `new` (or `myth` + `reality`) `{label, title, text, lines[]}`, or takeaway `{tag, text, sub}` |
 
 Any template can end on `{"kind": "end", "text": ..., "sub": ..., "cta": ...}`, a shared CTA card.
 Wrap words in `*asterisks*` for the accent colour. Each beat takes `duration` in seconds;
@@ -87,6 +89,16 @@ Beat *i* takes slide *i*'s `start`/`end`. Word timings are spread over the slide
 word times from an aligner, give a beat its own `words: [{"s": 0.0, "e": 0.3}, ...]` in
 absolute seconds, one entry per word. Audio (`narration.audio` or `--audio`) is muxed as
 AAC, padded or trimmed to the video length.
+
+## Interactive preview HUD
+
+Opening `index.html` in a browser (without `?render=1`) displays a floating bottom control bar:
+
+- **Play / Pause** (`Space`), **Reset** (`R`), **Prev / Next Beat** (`←` / `→`), **Scrub slider + time/beat readout**
+- **Safe Zones toggle** (`Z`) to inspect platform UI overlays live without re-rendering
+- **Playback speed** (`0.5×` / `1×` / `1.5×`)
+
+Opening `index.html#play` starts playback immediately. Recording via `creator.py reel` loads `index.html?render=1`, which hides `#hud` (`display:none !important`) and runs the pure deterministic `__advance` clock with zero timers or `requestAnimationFrame`.
 
 ## Determinism
 

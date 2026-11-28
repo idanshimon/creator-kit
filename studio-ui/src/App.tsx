@@ -1,19 +1,38 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CheckCircle2, X } from 'lucide-react';
 import { api, ApiError } from './lib/api';
 import type { AppState, Asset, Job, Project } from './lib/api';
 import type { Clip, Plan } from './lib/timeline';
-import { clampSpeed, clampVolume, moveClip, splitClipAt } from './lib/timeline';
+import { clampSpeed, clampVolume, moveClip, planDuration, splitClipAt } from './lib/timeline';
 import { TopBar } from './components/TopBar';
 import { AssetPanel } from './components/AssetPanel';
 import { SourcePreview } from './components/SourcePreview';
+import type { SourcePreviewHandle } from './components/SourcePreview';
 import { Timeline } from './components/Timeline';
 import { ClipInspector } from './components/ClipInspector';
 import { OutputSettings } from './components/OutputSettings';
 import { ExportPanel } from './components/ExportPanel';
+import { ShortcutsModal } from './components/ShortcutsModal';
 
 // id generator for client-minted clip ids (opaque, unique within a session)
 let idc = 0;
 const mkid = (suffix = '') => `clip_${Date.now().toString(36)}_${(idc++).toString(36)}${suffix ? '_' + suffix : ''}`;
+
+let toastSeq = 0;
+interface ToastItem {
+  id: number;
+  message: string;
+}
+
+function loadInitialTheme(): 'dark' | 'light' {
+  try {
+    const saved = window.localStorage.getItem('studio-theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch {
+    // ignore storage restrictions
+  }
+  return 'dark';
+}
 
 export function App() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -31,8 +50,36 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const [theme, setTheme] = useState<'dark' | 'light'>(loadInitialTheme);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+
   const dirtyRef = useRef(dirty);
   dirtyRef.current = dirty;
+
+  const sourceRef = useRef<SourcePreviewHandle>(null);
+
+  const addToast = useCallback((message: string) => {
+    const id = ++toastSeq;
+    setToasts((prev) => [...prev.slice(-3), { id, message }]);
+    window.setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 2800);
+  }, []);
+
+  // Apply theme token attribute on root document element.
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      window.localStorage.setItem('studio-theme', theme);
+    } catch {
+      // ignore storage restrictions
+    }
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
 
   // ---- state / polling ----
   const refreshState = useCallback(async () => {
@@ -91,6 +138,7 @@ export function App() {
   const selectedIndex = clips.findIndex((c) => c.id === selectedId);
   const selectedClip = selectedIndex >= 0 ? clips[selectedIndex] : null;
   const selectedAsset = selectedClip ? assets.find((a) => a.id === selectedClip.asset_id) ?? null : null;
+  const totalDuration = useMemo(() => (plan ? planDuration(plan) : 0), [plan]);
 
   const addAsset = (asset: Asset) => {
     const clip: Clip = {
@@ -123,6 +171,16 @@ export function App() {
   const setOut = (t: number) => {
     if (!selectedClip) return;
     patchClip({ out: Math.max(t, selectedClip.in + 0.05) });
+  };
+  const resetTrim = () => {
+    if (!selectedClip || !selectedAsset) return;
+    patchClip({ in: 0, out: selectedAsset.duration });
+    addToast('Trim reset to full source');
+  };
+  const resetClip = () => {
+    if (!selectedClip) return;
+    patchClip({ speed: 1, volume: 1, mute: false });
+    addToast('Clip settings reset');
   };
 
   const splitAt = (index: number, sourceTime: number) => {
@@ -184,12 +242,11 @@ export function App() {
     setDirty(true);
   };
 
-  const save = async () => {
+  const commitSave = async (label: string) => {
     if (!project || !plan) return;
     setBusy(true);
     setError(null);
     try {
-      const label = window.prompt('Revision label:', 'edit') || 'edit';
       const p = await api.saveProject(project.id, {
         name: project.name,
         plan,
@@ -201,12 +258,24 @@ export function App() {
       setDirty(false);
       setStale(false);
       await refreshState();
+      addToast(`Saved r${p.revision}`);
     } catch (e: any) {
       if (e instanceof ApiError && e.stale) setStale(true);
       setError(e?.message || 'Save failed');
     } finally {
       setBusy(false);
     }
+  };
+
+  const save = async () => {
+    if (!project || !plan) return;
+    const label = window.prompt('Revision label:', 'edit') || 'edit';
+    await commitSave(label);
+  };
+
+  const quickSave = async () => {
+    if (!project || !plan) return;
+    await commitSave('quick save');
   };
 
   const undo = async () => {
@@ -256,6 +325,7 @@ export function App() {
     try {
       await api.render(project.id, kind, project.revision);
       await refreshState();
+      addToast(`Started ${kind} render`);
     } catch (e: any) {
       if (e instanceof ApiError && e.stale) setStale(true);
       setError(e?.message || 'Render request failed');
@@ -270,6 +340,7 @@ export function App() {
     try {
       await api.uploadAsset(file);
       await refreshState();
+      addToast(`Uploaded ${file.name}`);
     } catch (e: any) {
       setError(e?.message || 'Upload failed');
     } finally {
@@ -290,19 +361,57 @@ export function App() {
       return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
     };
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (shortcutsOpen) {
+          e.preventDefault();
+          setShortcutsOpen(false);
+        }
+        return;
+      }
       if (isTyping(e.target)) return;
+
       const mod = e.metaKey || e.ctrlKey;
-      if (!mod) return;
       const k = e.key.toLowerCase();
-      if (k === 's') {
+
+      if (mod) {
+        if (k === 's') {
+          e.preventDefault();
+          if (dirty && !stale && project) save();
+        } else if (k === 'z' && !e.shiftKey) {
+          e.preventDefault();
+          if (project?.can_undo) undo();
+        } else if ((k === 'z' && e.shiftKey) || k === 'y') {
+          e.preventDefault();
+          if (project?.can_redo) redo();
+        }
+        return;
+      }
+
+      if (e.altKey) return;
+
+      if (e.key === '?') {
         e.preventDefault();
-        if (dirty && !stale && project) save();
-      } else if (k === 'z' && !e.shiftKey) {
-        e.preventDefault();
-        if (project?.can_undo) undo();
-      } else if ((k === 'z' && e.shiftKey) || k === 'y') {
-        e.preventDefault();
-        if (project?.can_redo) redo();
+        setShortcutsOpen((open) => !open);
+      } else if (e.code === 'Space' || e.key === ' ') {
+        if (selectedClip && selectedAsset) {
+          e.preventDefault();
+          sourceRef.current?.togglePlay();
+        }
+      } else if (k === 'i') {
+        if (selectedClip && selectedAsset) {
+          e.preventDefault();
+          sourceRef.current?.setInAtPlayhead();
+        }
+      } else if (k === 'o') {
+        if (selectedClip && selectedAsset) {
+          e.preventDefault();
+          sourceRef.current?.setOutAtPlayhead();
+        }
+      } else if (k === 's') {
+        if (selectedClip && selectedAsset) {
+          e.preventDefault();
+          sourceRef.current?.splitAtPlayhead();
+        }
       }
     };
     window.addEventListener('keydown', onKey);
@@ -331,13 +440,19 @@ export function App() {
         dirty={dirty}
         stale={stale}
         busy={busy}
+        totalDuration={totalDuration}
+        clipCount={clips.length}
+        theme={theme}
         onSelect={selectProject}
         onNew={newProject}
         onRename={rename}
         onSave={save}
+        onQuickSave={quickSave}
         onUndo={undo}
         onRedo={redo}
         onReload={() => project && loadProject(project.id)}
+        onToggleTheme={toggleTheme}
+        onToggleShortcuts={() => setShortcutsOpen((o) => !o)}
       />
 
       <div className="workspace">
@@ -359,10 +474,12 @@ export function App() {
           ) : (
             <>
               <SourcePreview
+                ref={sourceRef}
                 clip={selectedClip}
                 asset={selectedAsset}
                 onSetIn={setIn}
                 onSetOut={setOut}
+                onResetTrim={resetTrim}
                 onSplitAtPlayhead={splitSelectedAtPlayhead}
               />
               <Timeline
@@ -386,7 +503,7 @@ export function App() {
           <div className="panel-body">
             {project && plan ? (
               <>
-                <ClipInspector clip={selectedClip} onPatch={patchClip} />
+                <ClipInspector clip={selectedClip} onPatch={patchClip} onResetClip={resetClip} />
                 <div className="divider" />
                 <OutputSettings plan={plan} onPatch={patchPlan} />
                 <div className="divider" />
@@ -398,6 +515,27 @@ export function App() {
           </div>
         </div>
       </div>
+
+      <ShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+
+      {toasts.length > 0 && (
+        <div className="toast-stack" aria-live="polite">
+          {toasts.map((t) => (
+            <div className="toast" key={t.id}>
+              <CheckCircle2 size={14} className="toast-icon" />
+              <span className="grow">{t.message}</span>
+              <button
+                type="button"
+                className="toast-close"
+                onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
+                aria-label="Dismiss notification"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

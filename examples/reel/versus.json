@@ -1,0 +1,62 @@
+{
+  "template": "versus",
+  "format": "9:16",
+  "style": "noir",
+  "kicker": "WORKFLOW UPGRADE",
+  "title": "Old Way vs *New Way*",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "old": {
+        "label": "Old Way",
+        "title": "Manual timeline editing",
+        "lines": [
+          "Keyframe every caption by hand",
+          "Guess where TikTok UI covers text",
+          "Re-export separately for each ratio"
+        ]
+      },
+      "new": {
+        "label": "New Way",
+        "title": "One *JSON spec*",
+        "lines": [
+          "Deterministic clock, frame-exact MP4",
+          "*Safe zones* enforced automatically",
+          "9:16, 1:1, 4:5, 16:9 from one file"
+        ]
+      },
+      "duration": 4.2
+    },
+    {
+      "myth": {
+        "label": "Myth",
+        "title": "You need a cloud render farm",
+        "lines": [
+          "Monthly seats & watermarks",
+          "Upload raw assets to third parties"
+        ]
+      },
+      "reality": {
+        "label": "Reality",
+        "title": "100% *local* pipeline",
+        "lines": [
+          "Headless Chrome + ffmpeg locally",
+          "Zero uploads, zero drift, instant preview"
+        ]
+      },
+      "duration": 4.0
+    },
+    {
+      "tag": "TAKEAWAY",
+      "text": "Stop dragging keyframes. *Ship with code.*",
+      "sub": "10 social reel templates. One CLI.",
+      "duration": 2.6
+    },
+    {
+      "kind": "end",
+      "text": "Built with *Creator Kit*",
+      "sub": "Local. Deterministic. Repeatable.",
+      "cta": "Try it today"
+    }
+  ]
+}

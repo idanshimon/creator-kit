@@ -31,7 +31,7 @@ Repo docs own the details of each command: `docs/GSAP.md`, `docs/DIAGRAMS.md`, `
 | Need | Command |
 |---|---|
 | Narrated video (scenes, captions, render) | Upstream HyperFrames / OpenMontage (see `SETUP.md`, `references/video-workflow.md`) |
-| Code-authored animated titles/cards | `creator.py motion doctor`, `motion create [--template classic|kinetic]` |
+| Code-authored animated titles/cards | `creator.py motion doctor`, `motion create [--template classic|kinetic|lower-third|chapter|spotlight]` |
 | Narrated walkthrough: arrows, spotlight, cursor, captions | `creator.py walkthrough --spec S --output D [--gif]` (docs/WALKTHROUGH.md) |
 | TikTok / Reels / Shorts / LinkedIn short-form | `creator.py reel --spec S --output D [--platform tiktok|reels|shorts] [--format 9:16|1:1|4:5|16:9] [--gif]` (docs/REEL.md) |
 | Interactive architecture diagram | `creator.py diagram install|doctor|validate|render` |

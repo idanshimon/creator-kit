@@ -29,6 +29,9 @@ class WalkthroughTests(unittest.TestCase):
             {"steps": [{"url": "http://x", "selector": "#a", "narration": ""}]},
             {"steps": [{"url": "http://x", "selector": "#a", "narration": "x", "annotations": ["laser"]}]},
             {"steps": [{"url": "http://x", "target": {"x": 1, "y": 1, "w": 0, "h": 2}, "narration": "x"}]},
+            {"accent": "orange", "steps": [{"url": "http://x", "selector": "#a", "narration": "x"}]},
+            {"accent": "#12345", "steps": [{"url": "http://x", "selector": "#a", "narration": "x"}]},
+            {"theme": "sepia", "steps": [{"url": "http://x", "selector": "#a", "narration": "x"}]},
         ]
         for spec in bad:
             with self.assertRaises(wt.WalkthroughError, msg=spec):
@@ -58,8 +61,25 @@ class WalkthroughTests(unittest.TestCase):
         self.assertNotIn("/*__WALKTHROUGH_DATA__*/null", html)
         self.assertNotRegex(html, r"(src|href)=\"https?://")
         self.assertIn('"total": 15.0', html)
+        for ctrl in ('id="player"', 'id="btn-play"', 'id="btn-prev"', 'id="btn-next"',
+                     'id="btn-replay"', 'id="btn-cap"', 'id="btn-speed"', 'id="step-dots"'):
+            self.assertIn(ctrl, html)
         with self.assertRaises(wt.WalkthroughError):
             wt.build_html(spec, steps, {"slides": slides[:2], "total_duration": 6})
+
+    def test_optional_accent_and_theme(self):
+        raw = json.loads((EX / "pipeline-control.walkthrough.json").read_text())
+        raw["accent"] = "#38e1cf"
+        raw["theme"] = "light"
+        spec = wt.validate_spec(raw, base=EX)
+        self.assertEqual(spec["accent"], "#38e1cf")
+        self.assertEqual(spec["theme"], "light")
+        steps = [{**s, "src": "assets/x.png", "iw": 1440, "ih": 900} for s in spec["steps"]]
+        slides = [{"start": i * 2.0, "end": i * 2.0 + 2.0, "speech_duration": 1.5, "text": s["narration"]}
+                  for i, s in enumerate(spec["steps"])]
+        html = wt.build_html(spec, steps, {"slides": slides, "total_duration": len(slides) * 2.0})
+        self.assertIn('"accent": "#38e1cf"', html)
+        self.assertIn('"theme": "light"', html)
 
     def test_refuses_existing_output(self):
         ap = wt.add_arguments(argparse.ArgumentParser())

@@ -30,3 +30,16 @@ body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased
 .card{background:var(--panel);border:1px solid var(--border);border-radius:calc(var(--r)*3.2);box-shadow:0 40px 120px rgba(0,0,0,.45)}
 .pill{display:inline-block;border-radius:99px;padding:.32em .8em;font-weight:650;letter-spacing:.01em}
 .mono{font-family:var(--mono)}
+body.render #hud{display:none!important}
+#hud{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:10px;
+  padding:10px 16px;border-radius:16px;background:rgba(12,13,18,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.14);box-shadow:0 16px 48px rgba(0,0,0,.55);color:#f4f4f6;
+  font:600 13px/1 var(--mono);max-width:calc(100vw - 32px);user-select:none}
+#hud button{appearance:none;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#f4f4f6;
+  font:600 13px/1 var(--mono);padding:8px 11px;border-radius:10px;cursor:pointer;white-space:nowrap;
+  transition:background .15s,border-color .15s,color .15s}
+#hud button:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28)}
+#hud button.active{background:var(--hi);color:var(--onhi);border-color:var(--hi)}
+#hud .scrub{width:180px;accent-color:var(--hi);cursor:pointer;height:6px}
+#hud .readout{min-width:108px;text-align:center;color:rgba(244,244,246,.82);font-variant-numeric:tabular-nums;white-space:nowrap}
+#hud .sep{width:1px;height:20px;background:rgba(255,255,255,.14);flex:none}

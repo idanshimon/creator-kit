@@ -7,8 +7,13 @@ Added and locally exercised **2026-10-20**. GSAP is the animation engine; the ex
 - Exact GSAP **3.15.1**, package version and UMD runtime SHA-256 checked against [`integrations/gsap-lock.json`](../integrations/gsap-lock.json).
 - `creator.py motion doctor`: reports the verified local bundle or fails clearly. No download, repair, upstream edit or upgrade is performed.
 - `creator.py motion create`: creates a **new directory** containing standalone `index.html`, `manifest.json` and `GSAP-LICENSE.txt`.
-- An eight-second, silent 1280×720 composition with title motion, SVG line drawing, staggered cards, semantic timeline labels and a readable final hold.
-- Play/Pause, Reset and keyboard-accessible scrubber for previews; render mode hides those controls.
+- Five built-in 8-second, silent 1280×720 templates (`--template`):
+  - `classic` (`gsap-motion`): editorial title motion, SVG line drawing, staggered cards and a readable final hold.
+  - `kinetic` (`gsap-kinetic`): high-energy 3D letter slam, seeded particle burst, orbital rings and subtitle chips.
+  - `lower-third` (`gsap-lower-third`): broadcast/explainer lower-third overlay card in the bottom-left safe area with animated accent bar, shimmer sweep, hold and clean exit.
+  - `chapter` (`gsap-chapter`): dark/gold editorial chapter divider with diagonal accent rule wipe, faint concentric geometry and serif heading reveal.
+  - `spotlight` (`gsap-spotlight`): dark-mode feature launch card with animated glowing border frame, ambient light sweep and staggered feature pills (`·` / `|` / `•` separated).
+- Interactive preview bar on every template: Play/Pause, Reset, Speed (`0.5×`/`1×`/`2×`), keyboard-accessible scrubber and `Space` / `R` shortcuts; `?render=1` hides the bar cleanly for export.
 - Explicit seek and showcase hooks, with backward/out-of-order seek verification.
 
 The generated HTML inlines the checksum-verified runtime and uses system fonts: it can be opened and rendered offline after creation. The runtime's proprietary notice is retained. No plugin bundle is loaded automatically.
@@ -21,9 +26,11 @@ Run from the Creator Kit root:
 python3.13 creator.py motion doctor
 python3.13 creator.py motion create \
   --output productions/gsap-motion-demo \
+  --template classic \
   --title 'Ideas, set in motion.' \
   --subtitle 'One timeline. Every frame in its place.'
 
+# Templates: classic | kinetic | lower-third | chapter | spotlight
 # Open productions/gsap-motion-demo/index.html to preview.
 # Use a NEW output path for every export; showcase refuses overwrites.
 python3.13 creator.py showcase \
@@ -46,10 +53,10 @@ Follow the repo's [pinned setup](../SETUP.md) to restore a missing upstream chec
 
 ## Authoring contract
 
-Source template: [`templates/motion/gsap/template.html`](../templates/motion/gsap/template.html). Edit a generated production's HTML for custom choreography; do not change the pinned runtime.
+Source templates: `templates/motion/gsap/{template,kinetic,lower-third,chapter,spotlight}.html`. Edit a generated production's HTML for custom choreography; do not change the pinned runtime.
 
-- The root carries `data-composition-id="gsap-motion"` and `data-duration="8"`.
-- A synchronously created `gsap.timeline({paused:true})` is registered as `window.__timelines['gsap-motion']`.
+- The root carries `data-composition-id` (`gsap-motion` for `classic`, `gsap-<template>` for the others) and `data-duration="8"`.
+- A synchronously created `gsap.timeline({paused:true})` is registered as `window.__timelines[<composition-id>]`.
 - `window.__motion.seek(seconds)` seeks absolutely, pauses preview and updates the preview UI as a pure function of time. `reset()` returns to zero; `getTime()` reads the authored clock.
 - `window.__advance(delta_ms)` stops interactive preview, validates its input, advances an explicit clock and seeks with callbacks suppressed. `window.__done()` reports the terminal authored state. `window.__ready` is set only after construction.
 - Preview uses a separate requestAnimationFrame loop, never GSAP autoplay. Once showcase capture takes over, that preview loop cannot race the frame clock.

@@ -102,14 +102,19 @@
     handle = R.el('div', '', stage, R.esc(S.handle)); handle.id = 'handle';
     R.css(handle, { left: sz.l, width: S.W - sz.l - sz.r, textAlign: 'center', top: S.H - sz.b - 54 * u, fontSize: 30 * u, color: S.pal.ink });
   }
-  if (S.showSafe) {
-    const z = R.el('div', '', stage); z.id = 'zones'; z.style.display = 'block';
-    const add = (o, label) => { const e = R.css(R.el('div', 'z', z), o); if (label) R.css(R.el('div', 'lbl', e, label), { left: 12, top: 12 }); };
+  const qs = new URLSearchParams(location.search);
+  const RENDER = qs.get('render') === '1';
+  if (RENDER) document.body.classList.add('render');
+
+  const zones = R.el('div', '', stage); zones.id = 'zones';
+  zones.style.display = S.showSafe ? 'block' : 'none';
+  {
+    const add = (o, label) => { const e = R.css(R.el('div', 'z', zones), o); if (label) R.css(R.el('div', 'lbl', e, label), { left: 12, top: 12 }); };
     add({ left: 0, top: 0, width: S.W, height: sz.t }, 'top UI ' + sz.t + 'px');
     add({ left: 0, top: S.H - sz.b, width: S.W, height: sz.b }, 'caption / sound ' + sz.b + 'px');
     if (sz.l) add({ left: 0, top: sz.t, width: sz.l, height: S.H - sz.t - sz.b });
     add({ left: S.W - sz.r, top: sz.t, width: sz.r, height: S.H - sz.t - sz.b }, sz.r > 120 ? 'rail' : '');
-    R.css(R.el('div', 'box', z), { left: sz.l, top: sz.t, width: S.W - sz.l - sz.r, height: S.H - sz.t - sz.b });
+    R.css(R.el('div', 'box', zones), { left: sz.l, top: sz.t, width: S.W - sz.l - sz.r, height: S.H - sz.t - sz.b });
   }
 
   R.content = S.beats.filter(b => b.kind !== 'end');
@@ -161,16 +166,96 @@
     drawEnds(t);
   }
 
-  let T = 0;
+  let T = 0, syncHud = null;
   window.__advance = ms => { T += ms; draw(T / 1000); };
   window.__done = () => T / 1000 >= S.duration;
-  window.__seek = s => { T = s * 1000; draw(s); };
-  const qt = new URLSearchParams(location.search).get('t'); /* ?t=2.5 -> still at 2.5 s */
+  window.__seek = s => { T = clamp(s, 0, S.duration) * 1000; draw(T / 1000); if (syncHud) syncHud(); };
+  const qt = qs.get('t'); /* ?t=2.5 -> still at 2.5 s */
   if (qt) window.__seek(Math.max(0, +qt || 0)); else draw(0);
   window.__ready = true;
-  if (location.hash === '#play') {
-    let last = null;
-    const loop = now => { if (last != null) { T += now - last; if (T / 1000 > S.duration) T = 0; draw(T / 1000); } last = now; requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
+
+  if (!RENDER) {
+    const hud = R.el('div', '', document.body); hud.id = 'hud';
+    const btn = (label, act, title) => {
+      const b = R.el('button', '', hud, label);
+      b.type = 'button'; b.dataset.act = act; b.title = title;
+      return b;
+    };
+    const bPlay = btn('▶', 'play', 'Play / Pause (Space)');
+    const bReset = btn('↺', 'reset', 'Reset (R)');
+    const bPrev = btn('⏮', 'prev', 'Prev Beat (←)');
+    const bNext = btn('⏭', 'next', 'Next Beat (→)');
+    R.el('span', 'sep', hud);
+    const slider = R.el('input', 'scrub', hud);
+    slider.type = 'range'; slider.min = '0'; slider.max = String(S.duration); slider.step = '0.01'; slider.value = String(T / 1000);
+    const readout = R.el('span', 'readout', hud);
+    R.el('span', 'sep', hud);
+    const bZones = btn('Safe', 'zones', 'Toggle Safe Zones (Z)');
+    const speeds = [0.5, 1, 1.5];
+    let spIdx = 1;
+    const bSpeed = btn('1×', 'speed', 'Playback Speed');
+
+    let playing = false, rafId = null, last = null;
+    let zonesOn = !!S.showSafe;
+
+    const fmtT = s => s.toFixed(1) + 's';
+    syncHud = () => {
+      const sec = clamp(T / 1000, 0, S.duration);
+      const bi = R.beatIndex(sec) + 1;
+      slider.value = sec.toFixed(2);
+      readout.textContent = `${fmtT(sec)} / ${fmtT(S.duration)} · ${bi}/${S.beats.length}`;
+      bPlay.textContent = playing ? '⏸' : '▶';
+      bPlay.classList.toggle('active', playing);
+      bZones.classList.toggle('active', zonesOn);
+      bSpeed.textContent = speeds[spIdx] + '×';
+    };
+
+    const tick = now => {
+      if (!playing) return;
+      if (last != null) {
+        T += (now - last) * speeds[spIdx];
+        if (T / 1000 > S.duration) T = 0;
+        draw(T / 1000);
+        syncHud();
+      }
+      last = now;
+      rafId = requestAnimationFrame(tick);
+    };
+    const setPlaying = on => {
+      playing = !!on;
+      if (playing) { last = null; if (!rafId) rafId = requestAnimationFrame(tick); }
+      else { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } last = null; }
+      syncHud();
+    };
+    const toggleZones = () => { zonesOn = !zonesOn; zones.style.display = zonesOn ? 'block' : 'none'; syncHud(); };
+    const jumpBeat = dir => {
+      const sec = T / 1000;
+      const cur = R.beatIndex(sec);
+      let target = cur;
+      if (dir < 0) target = (sec - S.beats[cur].start > 0.25) ? cur : Math.max(0, cur - 1);
+      else target = Math.min(S.beats.length - 1, cur + 1);
+      window.__seek(S.beats[target].start);
+    };
+
+    bPlay.addEventListener('click', () => setPlaying(!playing));
+    bReset.addEventListener('click', () => { window.__seek(0); });
+    bPrev.addEventListener('click', () => jumpBeat(-1));
+    bNext.addEventListener('click', () => jumpBeat(1));
+    bZones.addEventListener('click', toggleZones);
+    bSpeed.addEventListener('click', () => { spIdx = (spIdx + 1) % speeds.length; syncHud(); });
+    slider.addEventListener('input', () => { window.__seek(parseFloat(slider.value) || 0); });
+
+    document.addEventListener('keydown', e => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key;
+      if (k === ' ') { e.preventDefault(); setPlaying(!playing); }
+      else if (k === 'ArrowLeft') { e.preventDefault(); jumpBeat(-1); }
+      else if (k === 'ArrowRight') { e.preventDefault(); jumpBeat(1); }
+      else if (k === 'r' || k === 'R') { e.preventDefault(); window.__seek(0); }
+      else if (k === 'z' || k === 'Z') { e.preventDefault(); toggleZones(); }
+    });
+
+    syncHud();
+    if (location.hash === '#play') setPlaying(true);
   }
 })();

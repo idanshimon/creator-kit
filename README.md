@@ -42,30 +42,33 @@ dims everything else, zooms in, moves a cursor and burns in captions synced word
 
 ---
 
-## ⚡ Kinetic motion titles
+## ⚡ GSAP motion templates — 5 seekable, frame-exact styles
 
 <div align="center">
 <img src="docs/assets/readme/motion-kinetic.gif" alt="Kinetic GSAP title: 3D letter flip, glitch, particle burst" width="92%"/>
 </div>
 
-3D letter flip-in, RGB glitch, seeded particle burst, orbit rings, light sweep, word chips. One GSAP timeline, seekable, **frame-exact** — same seed, same frames, every render.
+Five offline GSAP templates — **`classic`**, **`kinetic`** (3D letter flip, glitch, particle burst), **`lower-third`** (broadcast overlay card), **`chapter`** (editorial section divider), and **`spotlight`** (glowing feature launch). Each ships with interactive Play/Pause, Seek, Reset and Speed controls (auto-hidden under `?render=1`) and renders **frame-exact** — same seed, same frames, every time.
 
 <sub><code>python3 creator.py motion create --template kinetic --title "Creator Kit" --subtitle "Script · Voice · Motion" --output title</code></sub>
 
 ---
 
-## 📱 Reels, TikToks, Shorts — vertical and ready to post
+## 📱 Reels, TikToks, Shorts — 10 vertical templates, ready to post
 
 <div align="center">
-<img src="docs/assets/readme/reel-kinetic.gif" width="18%" alt="kinetic hook reel"/>
-<img src="docs/assets/readme/reel-pov.gif" width="18%" alt="POV reel"/>
-<img src="docs/assets/readme/reel-countdown.gif" width="18%" alt="Top-N countdown reel"/>
-<img src="docs/assets/readme/reel-before-after.gif" width="18%" alt="before/after wipe reel"/>
-<img src="docs/assets/readme/reel-phone.gif" width="18%" alt="phone mockup punch-in reel"/>
-<br/><sub><b>hook</b> · <b>POV</b> · <b>top-N countdown</b> · <b>before / after</b> · <b>phone punch-in</b> — plus quote, stat reveal and carousel</sub>
+<img src="docs/assets/readme/reel-kinetic.gif" width="13.5%" alt="kinetic hook reel"/>
+<img src="docs/assets/readme/reel-pov.gif" width="13.5%" alt="POV reel"/>
+<img src="docs/assets/readme/reel-countdown.gif" width="13.5%" alt="Top-N countdown reel"/>
+<img src="docs/assets/readme/reel-before-after.gif" width="13.5%" alt="before/after wipe reel"/>
+<img src="docs/assets/readme/reel-phone.gif" width="13.5%" alt="phone mockup punch-in reel"/>
+<img src="docs/assets/readme/reel-terminal.gif" width="13.5%" alt="animated CLI terminal reel"/>
+<img src="docs/assets/readme/reel-versus.gif" width="13.5%" alt="old way vs new way versus reel"/>
+<br/><sub><b>hook</b> · <b>POV</b> · <b>top-N countdown</b> · <b>before / after</b> · <b>phone punch-in</b> · <b>terminal</b> · <b>versus</b> — plus quote, stat reveal and carousel</sub>
 </div>
 
-Eight short-form formats people actually post, made calm and premium instead of loud. 9:16, 1:1, 4:5 or 16:9.
+Ten short-form formats people actually post, made calm and premium instead of loud. 9:16, 1:1, 4:5 or 16:9.
+Includes an interactive browser preview HUD (Play/Pause, beat jump, scrub, speed, live safe-zone overlay — hidden during `?render=1` recording).
 Captions stay out of the TikTok / Reels / Shorts button areas (`--safe-zones` draws them). Word-by-word karaoke captions can sync to your narration.
 
 <sub><code>python3 creator.py reel --spec examples/reel/countdown.json --platform tiktok --output my-reel --gif</code></sub>
@@ -132,14 +135,14 @@ Reading pages where every number points back to its source. Recorded as a guided
 | | Power | One-liner |
 |---|---|---|
 | 🎙️ | **Five voice engines** | Kokoro, Qwen3, Chatterbox, F5 voice clone, Azure Speech → `narration.wav` + a synced `timeline.json` |
-| ✨ | **GSAP motion** | Code-authored title cards and motion graphics you can seek frame by frame |
+| ✨ | **GSAP motion** | 5 offline templates (`classic`, `kinetic`, `lower-third`, `chapter`, `spotlight`) with interactive player controls |
 | 🏛️ | **Architecture diagrams** | Interactive Archify diagrams with an optional guided video tour |
 | 🎥 | **Record anything** | `creator.py showcase` turns any animated web page (D3, canvas, three.js) into a frame-exact MP4 |
-| 🧱 | **Hero wall** | Your past work as drifting columns with hover-pause and lightbox |
+| 🧱 | **Hero wall** | Drifting columns with pause/density/theme toggles and keyboard lightbox navigation |
 | 🎨 | **Brand styles + design QA** | Brand palettes, plus a browser gate for contrast, overflow and "AI-look" tells |
-| ✂️ | **Browser Studio** | Cut, trim, speed, fades, music ducking and captions — non-destructive |
-| 👉 | **Walkthroughs** | Arrows, spotlight, zoom, cursor and synced captions over screenshots, narrated |
-| 📱 | **Social reels** | Hook, POV, countdown, before/after, phone punch-in, quote, stat, carousel |
+| ✂️ | **Browser Studio** | Non-destructive editor with quick speed/volume/fade/aspect presets, drag-drop upload, light/dark themes and keyboard shortcuts |
+| 👉 | **Walkthroughs** | Arrows, spotlight, zoom, cursor, synced captions and interactive step player over screenshots, narrated |
+| 📱 | **Social reels** | 10 formats: hook, POV, countdown, before/after, phone punch-in, terminal, versus, quote, stat, carousel |
 | 🔒 | **Safe by default** | Nothing leaves your machine unless you pass `--allow-cloud` |
 
 <details>

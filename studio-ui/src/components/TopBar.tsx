@@ -1,8 +1,9 @@
-import { FilePlus, Save, Undo2, Redo2, RotateCcw } from 'lucide-react';
+import { FilePlus, Save, Zap, Undo2, Redo2, RotateCcw, Sun, Moon, HelpCircle, Clock } from 'lucide-react';
 import type { ProjectSummary, Project } from '../lib/api';
-import { Button, Badge } from './ui';
+import { Button, Badge, fmt } from './ui';
 
-// Top bar: project selection / new / rename / save, revision + unsaved + stale state.
+// Top bar: project selection / new / rename / save / quick save, duration pill,
+// theme toggle, shortcuts help, revision + unsaved + stale state.
 // All names are rendered as text (React escapes) — no HTML injection from names/paths.
 
 export function TopBar(props: {
@@ -11,13 +12,19 @@ export function TopBar(props: {
   dirty: boolean;
   stale: boolean;
   busy: boolean;
+  totalDuration: number;
+  clipCount: number;
+  theme: 'dark' | 'light';
   onSelect: (id: string) => void;
   onNew: () => void;
   onRename: (name: string) => void;
   onSave: () => void;
+  onQuickSave: () => void;
   onUndo: () => void;
   onRedo: () => void;
   onReload: () => void;
+  onToggleTheme: () => void;
+  onToggleShortcuts: () => void;
 }) {
   const { project } = props;
   return (
@@ -27,8 +34,7 @@ export function TopBar(props: {
       </span>
 
       <select
-        className="select"
-        style={{ width: 200 }}
+        className="select topbar-select"
         value={project?.id || ''}
         onChange={(e) => props.onSelect(e.target.value)}
         aria-label="Select project"
@@ -49,12 +55,17 @@ export function TopBar(props: {
 
       {project && (
         <input
-          className="input"
-          style={{ width: 180 }}
+          className="input topbar-name"
           value={project.name}
           onChange={(e) => props.onRename(e.target.value)}
           aria-label="Project name"
         />
+      )}
+
+      {project && props.clipCount > 0 && (
+        <span className="pill mono" title="Total timeline duration">
+          <Clock size={12} /> {fmt(props.totalDuration)}
+        </span>
       )}
 
       <div className="spacer" />
@@ -95,6 +106,15 @@ export function TopBar(props: {
           )}
 
           <Button
+            size="sm"
+            onClick={props.onQuickSave}
+            disabled={!props.dirty || props.busy || props.stale}
+            title="Quick save (no prompt)"
+          >
+            <Zap size={14} /> Quick Save
+          </Button>
+
+          <Button
             variant="primary"
             size="sm"
             onClick={props.onSave}
@@ -105,6 +125,27 @@ export function TopBar(props: {
           </Button>
         </>
       )}
+
+      <div className="topbar-utils">
+        <Button
+          size="icon"
+          className="ghost"
+          onClick={props.onToggleTheme}
+          title={props.theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          aria-label={props.theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        >
+          {props.theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </Button>
+        <Button
+          size="icon"
+          className="ghost"
+          onClick={props.onToggleShortcuts}
+          title="Keyboard shortcuts (?)"
+          aria-label="Keyboard shortcuts"
+        >
+          <HelpCircle size={16} />
+        </Button>
+      </div>
     </div>
   );
 }

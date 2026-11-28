@@ -4,7 +4,8 @@ import type { Clip } from '../lib/timeline';
 import { clipDuration } from '../lib/timeline';
 import { Button, fmt } from './ui';
 
-// Timeline: ordered clip list with select / reorder / duplicate / split / remove.
+// Timeline: ordered clip list with total duration header, proportional duration bar,
+// select / reorder / duplicate / split / remove.
 
 export function Timeline(props: {
   clips: Clip[];
@@ -17,50 +18,63 @@ export function Timeline(props: {
   onRemove: (index: number) => void;
 }) {
   const nameFor = (assetId: string) => props.assets.find((a) => a.id === assetId)?.name || '(missing asset)';
+  const totalDuration = props.clips.reduce((acc, c) => acc + clipDuration(c), 0);
 
   return (
     <div className="timeline">
-      <div className="section-title">Timeline · {props.clips.length} clip(s)</div>
+      <div className="timeline-head">
+        <span className="section-title">
+          Timeline · {props.clips.length} clip(s)
+        </span>
+        <span className="mono muted timeline-total">Total {fmt(totalDuration)}</span>
+      </div>
       {props.clips.length === 0 && <div className="muted">Empty timeline. Add an asset from the left.</div>}
-      {props.clips.map((c, i) => (
-        <div
-          key={c.id}
-          className={['clip', c.id === props.selectedId ? 'selected' : ''].filter(Boolean).join(' ')}
-          onClick={() => props.onSelect(c.id)}
-        >
-          <span className="idx mono">{i + 1}</span>
-          <div className="grow" style={{ minWidth: 0 }}>
-            <div className="clip-name truncate">{nameFor(c.asset_id)}</div>
-            <div className="clip-meta mono">
-              In {fmt(c.in)} · Out {fmt(c.out)} · {fmt(clipDuration(c))} · {c.speed}× · vol {c.volume}
-              {c.mute ? ' · muted' : ''}
+      {props.clips.map((c, i) => {
+        const dur = clipDuration(c);
+        const pct = totalDuration > 0 ? Math.max(4, Math.min(100, (dur / totalDuration) * 100)) : 0;
+        return (
+          <div
+            key={c.id}
+            className={['clip', c.id === props.selectedId ? 'selected' : ''].filter(Boolean).join(' ')}
+            onClick={() => props.onSelect(c.id)}
+          >
+            <span className="idx mono">{i + 1}</span>
+            <div className="grow" style={{ minWidth: 0 }}>
+              <div className="clip-name truncate">{nameFor(c.asset_id)}</div>
+              <div className="clip-meta mono">
+                In {fmt(c.in)} · Out {fmt(c.out)} · {fmt(dur)} · {c.speed}× · vol {c.volume}
+                {c.mute ? ' · muted' : ''}
+              </div>
+              <div className="clip-bar" aria-hidden="true">
+                <div className="clip-bar-fill" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+            <div className="clip-actions" onClick={(e) => e.stopPropagation()}>
+              <Button size="icon" className="sm" onClick={() => props.onMove(i, -1)} disabled={i === 0} title="Move up">
+                <ArrowUp size={14} />
+              </Button>
+              <Button
+                size="icon"
+                className="sm"
+                onClick={() => props.onMove(i, 1)}
+                disabled={i === props.clips.length - 1}
+                title="Move down"
+              >
+                <ArrowDown size={14} />
+              </Button>
+              <Button size="icon" className="sm" onClick={() => props.onDuplicate(i)} title="Duplicate">
+                <Copy size={14} />
+              </Button>
+              <Button size="icon" className="sm" onClick={() => props.onSplit(i)} title="Split at source midpoint">
+                <Scissors size={14} />
+              </Button>
+              <Button size="icon" className="sm danger" onClick={() => props.onRemove(i)} title="Remove">
+                <Trash2 size={14} />
+              </Button>
             </div>
           </div>
-          <div className="clip-actions" onClick={(e) => e.stopPropagation()}>
-            <Button size="icon" className="sm" onClick={() => props.onMove(i, -1)} disabled={i === 0} title="Move up">
-              <ArrowUp size={14} />
-            </Button>
-            <Button
-              size="icon"
-              className="sm"
-              onClick={() => props.onMove(i, 1)}
-              disabled={i === props.clips.length - 1}
-              title="Move down"
-            >
-              <ArrowDown size={14} />
-            </Button>
-            <Button size="icon" className="sm" onClick={() => props.onDuplicate(i)} title="Duplicate">
-              <Copy size={14} />
-            </Button>
-            <Button size="icon" className="sm" onClick={() => props.onSplit(i)} title="Split at source midpoint">
-              <Scissors size={14} />
-            </Button>
-            <Button size="icon" className="sm danger" onClick={() => props.onRemove(i)} title="Remove">
-              <Trash2 size={14} />
-            </Button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

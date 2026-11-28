@@ -129,8 +129,10 @@ class DataStoryTests(unittest.TestCase):
         self.assertIn('&lt;/script&gt;', html)
         for text in ('<svg', '<details', '<summary', 'Explain', 'Human interpretation',
                      'Not verified', '2025 Q1 (Jan–Mar)', 'synthetic-v1', 'Exact executed query',
-                     'https://example.org/synthetic', 'Calculation inputs', '12', '18'):
+                     'https://example.org/synthetic', 'Calculation inputs', '12', '18',
+                     'id="ds-progress"', 'id="ds-expand"', 'id="ds-print"', 'id="ds-top"', 'copy-link'):
             self.assertIn(text, html)
+        self.assertEqual(html.count('<script>'), 1)
         self.assertNotIn('<script src=', html)
         self.assertNotIn('<link ', html)
 

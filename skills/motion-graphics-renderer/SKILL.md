@@ -219,6 +219,6 @@ scene and ask "what does this frame claim?" before a full render.
 
 ## Creator Kit fast path
 
-- Title cards: `creator.py motion create --template kinetic|classic` (pinned GSAP, frame-exact via `?render=1`). Kinetic template pitfall: measure an inline wrapper for fit-to-width, never the full-width block (it always reads as stage width and shrinks the title to nothing).
-- Vertical/social: `creator.py reel` templates before hand-authoring a scene.
+- Title cards: `creator.py motion create --template classic|kinetic|lower-third|chapter|spotlight` (pinned GSAP, frame-exact via `?render=1`, interactive player controls hidden in render mode). Kinetic template pitfall: measure an inline wrapper for fit-to-width, never the full-width block (it always reads as stage width and shrinks the title to nothing).
+- Vertical/social: `creator.py reel` (10 templates incl. `terminal` and `versus`, plus interactive preview HUD) before hand-authoring a scene.
 - Verify by sampling frames at 3+ timestamps and looking: a passing ffprobe proved nothing about a 12px title.

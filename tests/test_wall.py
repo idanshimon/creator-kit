@@ -22,6 +22,8 @@ class WallTests(unittest.TestCase):
             self.assertIn('<span class="tail">look alike</span>', html)
             self.assertIn("window.__advance", html)
             self.assertIn("<b>5</b><span>pieces</span>", html)  # derived, not invented
+            for ctrl in ('id="pause"', 'id="density"', 'id="theme"', 'id="lbPrev"', 'id="lbNext"', 'id="lbClose"'):
+                self.assertIn(ctrl, html)
             self.assertNotIn("http", html.split("<script>")[0].replace("http-equiv", ""))
             self.assertNotIn("__", html.replace("__ready", "").replace("__advance", "").replace("__done", "").replace("__render", ""))
 

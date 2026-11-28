@@ -34,6 +34,49 @@
          padding:10px 18px; border-radius:12px; background:rgba(8,11,18,.78); }
   #hdr span { color:var(--accent); margin-left:12px; }
   #bar { position:absolute; left:0; top:0; height:7px; background:var(--accent); }
+  /* Light theme */
+  :root[data-theme="light"] body, :root[data-theme="light"] { background:#e6ebf2; }
+  :root[data-theme="light"] #stage { background:radial-gradient(circle at 50% 40%, #f8fafc, #dfe6f0); }
+  :root[data-theme="light"] .shot { box-shadow:0 24px 64px rgba(15,23,42,.22); }
+  :root[data-theme="light"] .badge { box-shadow:0 0 0 5px rgba(248,250,252,.92), 0 8px 18px rgba(15,23,42,.22); }
+  :root[data-theme="light"] #hdr { background:rgba(255,255,255,.9); color:#0f172a; border:1px solid rgba(15,23,42,.12); }
+  :root[data-theme="light"] #cap { background:rgba(255,255,255,.94); color:#0f172a; border-color:rgba(15,23,42,.14);
+                                   box-shadow:0 18px 50px rgba(15,23,42,.18); }
+  :root[data-theme="light"] #cap .w { opacity:.52; }
+  :root[data-theme="light"] #cap .w.on { opacity:1; }
+  :root[data-theme="light"] #cap .w.now { opacity:1; color:var(--accent); }
+  /* Interactive viewport fit & floating player bar (hidden in ?render=1) */
+  body.interactive { display:flex; align-items:center; justify-content:center; width:100vw; height:100vh; }
+  body.interactive #stage { flex:none; transform-origin:center center; }
+  #player { position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:100;
+            display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px;
+            background:rgba(10,14,22,.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,.14); box-shadow:0 14px 40px rgba(0,0,0,.55);
+            color:#f8fafc; font-size:13px; white-space:nowrap; user-select:none; }
+  #player button { appearance:none; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.07);
+                   color:inherit; font:600 13px/1 inherit; padding:7px 11px; border-radius:999px; cursor:pointer;
+                   display:inline-flex; align-items:center; gap:5px; transition:background .15s, border-color .15s, transform .1s; }
+  #player button:hover { background:rgba(255,255,255,.16); }
+  #player button:active { transform:scale(.96); }
+  #player button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  #player button.primary { background:var(--accent); color:#111; border-color:transparent; min-width:78px; justify-content:center; }
+  #player button.primary:hover { filter:brightness(1.06); background:var(--accent); }
+  #player button.active { border-color:var(--accent); color:var(--accent); }
+  #player .sep { width:1px; height:18px; background:rgba(255,255,255,.16); margin:0 2px; }
+  #step-dots { display:flex; align-items:center; gap:6px; padding:0 4px; }
+  #step-dots .dot { width:10px; height:10px; padding:0; min-width:0; border-radius:999px; border:0;
+                    background:rgba(255,255,255,.3); transition:width .18s, background .18s; }
+  #step-dots .dot:hover { background:rgba(255,255,255,.65); }
+  #step-dots .dot.on { width:24px; background:var(--accent); }
+  :root[data-theme="light"] #player { background:rgba(255,255,255,.92); color:#0f172a;
+                                      border-color:rgba(15,23,42,.14); box-shadow:0 12px 36px rgba(15,23,42,.18); }
+  :root[data-theme="light"] #player button { border-color:rgba(15,23,42,.14); background:rgba(15,23,42,.05); }
+  :root[data-theme="light"] #player button:hover { background:rgba(15,23,42,.11); }
+  :root[data-theme="light"] #player button.primary { background:var(--accent); color:#111; border-color:transparent; }
+  :root[data-theme="light"] #player .sep { background:rgba(15,23,42,.14); }
+  :root[data-theme="light"] #step-dots .dot { background:rgba(15,23,42,.24); }
+  :root[data-theme="light"] #step-dots .dot.on { background:var(--accent); }
+  body.render-mode #player { display:none !important; }
 </style>
 </head>
 <body>
@@ -60,10 +103,26 @@
   <div id="bar"></div>
   <div id="cap"><div class="num"></div><div class="txt"></div></div>
 </div>
+<div id="player" role="toolbar" aria-label="Walkthrough playback controls">
+  <button id="btn-prev" type="button" title="Previous step (←)" aria-label="Previous step">◀</button>
+  <button id="btn-play" class="primary" type="button" title="Play / Pause (Space)">❚❚ Pause</button>
+  <button id="btn-next" type="button" title="Next step (→)" aria-label="Next step">▶</button>
+  <div class="sep"></div>
+  <div id="step-dots" aria-label="Steps"></div>
+  <div class="sep"></div>
+  <button id="btn-replay" type="button" title="Replay (R)">↺ Replay</button>
+  <button id="btn-cap" class="active" type="button" title="Toggle captions (C)" aria-pressed="true">CC</button>
+  <button id="btn-speed" type="button" title="Playback speed">1×</button>
+</div>
 <script>
 const D = /*__WALKTHROUGH_DATA__*/null;
 const W = D.W, H = D.H, S = D.steps;
 const $ = id => document.getElementById(id);
+if (D.accent) document.documentElement.style.setProperty('--accent', D.accent);
+if (D.theme === 'light') document.documentElement.dataset.theme = 'light';
+const IS_RENDER = new URLSearchParams(location.search).get('render') === '1';
+let renderMode = IS_RENDER;
+let captionsOn = true;
 const stage = $('stage'); stage.style.width = W + 'px'; stage.style.height = H + 'px';
 for (const id of ['mfull','dim']) { $(id).setAttribute('width', W); $(id).setAttribute('height', H); }
 $('fx').setAttribute('viewBox', `0 0 ${W} ${H}`);
@@ -157,7 +216,8 @@ function drawCaption(i, lt) {
   [...txt.children].forEach((sp, j) => { const o = cs[ci][j];
     sp.className = 'w' + (frac >= o.b ? ' on' : frac >= o.a ? ' now' : ''); });
   const cap = $('cap'); const top = capTop[i];
-  cap.style.top = top ? '96px' : ''; cap.style.bottom = top ? '' : '44px';
+  cap.style.display = (renderMode || captionsOn) ? 'flex' : 'none';
+  cap.style.top = top ? '96px' : ''; cap.style.bottom = top ? '' : (renderMode ? '44px' : '110px');
   cap.style.opacity = clamp(lt / 0.25);
 }
 
@@ -233,13 +293,107 @@ function render(t) {
   const rr = screenRect(s, camera(s, 1), 40); $('hdr').style.opacity = (capTop[i] || (rr.y < 110 && rr.x < 560)) ? 0 : 1;
   $('bar').style.width = (W * t / D.total) + 'px';
   drawCaption(i, lt);
+  if (!renderMode) syncDots(i);
 }
 
-let T = 0;
-window.__advance = ms => { T += ms / 1000; render(T); };
+let T = 0, playing = !IS_RENDER, speedIdx = 1, rafId = 0, lastNow = 0;
+const SPEEDS = [0.75, 1, 1.5];
+const dotsHost = $('step-dots');
+const dotEls = S.map((s, idx) => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dot' + (idx === 0 ? ' on' : '');
+  b.title = `Step ${s.n}`;
+  b.setAttribute('aria-label', `Go to step ${s.n}`);
+  b.addEventListener('click', () => { T = s.start; render(T); });
+  dotsHost.appendChild(b);
+  return b;
+});
+function syncDots(activeIdx) {
+  dotEls.forEach((b, idx) => b.classList.toggle('on', idx === activeIdx));
+}
+function syncPlayBtn() {
+  const b = $('btn-play');
+  b.textContent = playing ? '❚❚ Pause' : '▶ Play';
+  b.setAttribute('aria-pressed', String(playing));
+}
+function fitStage() {
+  if (renderMode) { stage.style.transform = ''; return; }
+  const sc = Math.min(innerWidth / W, innerHeight / H);
+  stage.style.transform = `scale(${sc})`;
+}
+function enterRenderMode() {
+  if (renderMode) return;
+  renderMode = true;
+  playing = false;
+  if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+  document.body.classList.remove('interactive');
+  document.body.classList.add('render-mode');
+  stage.style.transform = '';
+}
+if (IS_RENDER) {
+  document.body.classList.add('render-mode');
+} else {
+  document.body.classList.add('interactive');
+  fitStage();
+  addEventListener('resize', fitStage);
+  $('btn-play').addEventListener('click', () => {
+    if (T >= D.total - 0.05) T = 0;
+    playing = !playing;
+    lastNow = performance.now();
+    syncPlayBtn();
+  });
+  $('btn-prev').addEventListener('click', () => {
+    const i = stepAt(T);
+    const target = (T - S[i].start > 1.2) ? i : Math.max(0, i - 1);
+    T = S[target].start; render(T);
+  });
+  $('btn-next').addEventListener('click', () => {
+    const i = stepAt(T);
+    T = S[Math.min(S.length - 1, i + 1)].start; render(T);
+  });
+  $('btn-replay').addEventListener('click', () => {
+    T = 0; playing = true; lastNow = performance.now(); syncPlayBtn(); render(T);
+  });
+  $('btn-cap').addEventListener('click', () => {
+    captionsOn = !captionsOn;
+    $('btn-cap').classList.toggle('active', captionsOn);
+    $('btn-cap').setAttribute('aria-pressed', String(captionsOn));
+    render(T);
+  });
+  $('btn-speed').addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    $('btn-speed').textContent = SPEEDS[speedIdx] + '×';
+  });
+  addEventListener('keydown', e => {
+    if (renderMode || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.code === 'Space') { e.preventDefault(); $('btn-play').click(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); $('btn-prev').click(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); $('btn-next').click(); }
+    else if (e.key === 'r' || e.key === 'R') { e.preventDefault(); $('btn-replay').click(); }
+    else if (e.key === 'c' || e.key === 'C') { e.preventDefault(); $('btn-cap').click(); }
+  });
+  syncPlayBtn();
+}
+function loop(now) {
+  if (renderMode) return;
+  if (playing) {
+    const dt = Math.min(0.1, (now - lastNow) / 1000) * SPEEDS[speedIdx];
+    T = Math.min(D.total, T + dt);
+    render(T);
+    if (T >= D.total) { playing = false; syncPlayBtn(); }
+  }
+  lastNow = now;
+  rafId = requestAnimationFrame(loop);
+}
+window.__advance = ms => { enterRenderMode(); T += ms / 1000; render(T); };
 window.__done = () => T >= D.total;
 window.__seek = s => { T = s; render(T); };  // for spot checks
-Promise.all(imgs.map(im => im.decode().catch(() => null))).then(() => { render(0); window.__ready = true; });
+Promise.all(imgs.map(im => im.decode().catch(() => null))).then(() => {
+  render(0);
+  window.__ready = true;
+  if (!renderMode) { lastNow = performance.now(); rafId = requestAnimationFrame(loop); }
+});
 </script>
 </body>
 </html>

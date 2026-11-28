@@ -1,0 +1,50 @@
+{
+  "template": "terminal",
+  "format": "9:16",
+  "style": "noir",
+  "kicker": "CLI DEMO",
+  "title": "One command. *Zero* editing.",
+  "windowTitle": "~/creator-kit — zsh",
+  "handle": "@creatorkit",
+  "beats": [
+    {
+      "cmd": "creator.py reel --spec demo.json -o out",
+      "lines": [
+        { "text": "validating spec (9:16 · cross safe zones)", "status": "OK", "tone": "ok" },
+        { "text": "building deterministic index.html", "status": "0.1s", "tone": "accent" }
+      ],
+      "caption": "Point it at one *JSON spec*.",
+      "duration": 3.0
+    },
+    {
+      "cmd": "python3 -m unittest tests.test_reel -q",
+      "lines": [
+        { "text": "10 templates · safe-zone & clock checks", "status": "PASS", "tone": "ok" },
+        { "text": "recording 1080x1920 @ 30fps", "status": "H.264", "tone": "accent" }
+      ],
+      "caption": "Every frame is *pure and repeatable*.",
+      "duration": 3.0
+    },
+    {
+      "cmd": "ls -lh out/",
+      "lines": [
+        { "text": "reel.mp4   1080x1920  yuv420p", "status": "READY", "tone": "ok" },
+        { "text": "poster.png + preview.gif", "status": "DONE", "tone": "ok" }
+      ],
+      "caption": "Ready to post in *seconds*.",
+      "duration": 3.0
+    },
+    {
+      "tag": "SHIP FASTER",
+      "text": "Code once. *Render forever.*",
+      "sub": "Local Chrome + ffmpeg. No cloud uploads.",
+      "duration": 2.4
+    },
+    {
+      "kind": "end",
+      "text": "Built with *Creator Kit*",
+      "sub": "10 deterministic reel templates.",
+      "cta": "Star on GitHub"
+    }
+  ]
+}

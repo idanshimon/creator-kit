@@ -26,6 +26,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -64,9 +65,19 @@ def validate_spec(spec: dict, base: Path | None = None) -> dict:
     if not isinstance(spec, dict) or not isinstance(spec.get("steps"), list) or not spec["steps"]:
         raise WalkthroughError("spec needs a non-empty 'steps' list")
     base = Path(base or ".")
+    accent = spec.get("accent")
+    if accent is not None:
+        if not isinstance(accent, str) or not re.fullmatch(r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})", accent.strip()):
+            raise WalkthroughError("accent must be a valid hex color (#RGB or #RRGGBB)")
+        accent = accent.strip()
+    theme = spec.get("theme", "dark")
+    if theme not in ("dark", "light"):
+        raise WalkthroughError("theme must be 'dark' or 'light'")
     out = {"title": str(spec.get("title", "")), "width": int(spec.get("width", 1920)),
            "height": int(spec.get("height", 1080)),
-           "viewport": list(spec.get("viewport", [1440, 900])), "steps": []}
+           "viewport": list(spec.get("viewport", [1440, 900])), "theme": theme, "steps": []}
+    if accent:
+        out["accent"] = accent
     for i, s in enumerate(spec["steps"], 1):
         where = f"step {i}"
         if not isinstance(s, dict):
@@ -252,7 +263,10 @@ def build_html(spec: dict, steps: list[dict], timeline: dict) -> str:
         data_steps.append({**s, "n": i, "start": sl["start"], "end": sl["end"],
                            "speech": sl["speech_duration"], "spoken": sl["text"]})
     data = {"title": spec.get("title", ""), "W": spec["width"], "H": spec["height"],
+            "theme": spec.get("theme", "dark"),
             "total": timeline["total_duration"], "steps": data_steps}
+    if spec.get("accent"):
+        data["accent"] = spec["accent"]
     blob = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     tpl = TEMPLATE.read_text(encoding="utf-8")
     if "/*__WALKTHROUGH_DATA__*/null" not in tpl:

@@ -35,6 +35,9 @@ class ReelSpecTests(unittest.TestCase):
         return p
 
     def test_every_template_has_example_and_script(self):
+        self.assertEqual(len(reel.TEMPLATES), 10)
+        self.assertIn("terminal", reel.TEMPLATES)
+        self.assertIn("versus", reel.TEMPLATES)
         for t in reel.TEMPLATES:
             self.assertTrue((EXAMPLES / f"{t}.json").is_file(), t)
             self.assertTrue((reel.TEMPLATE_DIR / f"{t}.js").is_file(), t)
@@ -62,6 +65,8 @@ class ReelSpecTests(unittest.TestCase):
             {"template": "kinetic", "beats": [{"kind": "end", "text": "only end"}]},
             {"template": "kinetic", "beats": ["string"]},
             {"template": "kinetic", "fps": 29, "beats": [{"text": "x"}]},
+            {"template": "terminal", "beats": [{}]},
+            {"template": "versus", "beats": [{"old": {"title": "missing new"}}]},
         ]
         for spec in bad:
             with self.assertRaises(reel.ReelError, msg=spec):
@@ -128,6 +133,95 @@ class ReelSpecTests(unittest.TestCase):
         reel.add_arguments(ap)
         a = ap.parse_args(["--spec", "s.json", "--output", "o", "--format", "4:5", "--safe-zones", "--gif", "--platform", "tiktok"])
         self.assertEqual((a.format, a.safe_zones, a.gif, a.platform, a.html_only), ("4:5", True, True, "tiktok", False))
+
+    def test_hud_markup_and_render_hide_rule(self):
+        html = reel.render_html(reel.build(json.loads((EXAMPLES / "terminal.json").read_text()), EXAMPLES))
+        self.assertIn("body.render #hud{display:none!important}", html)
+        self.assertIn("qs.get('render') === '1'", html)
+        for act in ("'play'", "'reset'", "'prev'", "'next'", "'zones'", "'speed'"):
+            self.assertIn(act, html)
+
+    @unittest.skipUnless(_have_render(), "needs Chrome + ffmpeg")
+    def test_hud_visible_in_preview_and_hidden_in_render_mode(self):
+        import asyncio
+        import urllib.request
+        import websockets
+
+        p = self.spec(json.loads((EXAMPLES / "versus.json").read_text()))
+        r = reel.make(p, self.tmp / "out", html_only=True, log=lambda m: None)
+        uri = Path(r["html"]).as_uri()
+
+        async def inspect(url):
+            port = showcase._free_port()
+            profile = tempfile.mkdtemp(prefix="hud-test-")
+            chrome = subprocess.Popen(
+                [showcase.find_chrome(), "--headless=new", f"--remote-debugging-port={port}",
+                 "--remote-debugging-address=127.0.0.1", f"--user-data-dir={profile}",
+                 "--no-first-run", "--window-size=1080,1920", "about:blank"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            try:
+                ws_url = None
+                for _ in range(80):
+                    try:
+                        tabs = json.load(urllib.request.urlopen(f"http://127.0.0.1:{port}/json"))
+                        ws_url = next(t["webSocketDebuggerUrl"] for t in tabs if t.get("type") == "page")
+                        break
+                    except Exception:
+                        await asyncio.sleep(0.05)
+                assert ws_url is not None
+                async with websockets.connect(ws_url) as ws:
+                    seq = 0
+                    async def cdp(method, **params):
+                        nonlocal seq
+                        seq += 1
+                        my = seq
+                        await ws.send(json.dumps({"id": my, "method": method, "params": params}))
+                        while True:
+                            msg = json.loads(await ws.recv())
+                            if msg.get("id") == my:
+                                return msg.get("result", {})
+                    async def ev(expr):
+                        res = await cdp("Runtime.evaluate", expression=expr, returnByValue=True)
+                        return res.get("result", {}).get("value")
+                    await cdp("Page.navigate", url=url)
+                    for _ in range(80):
+                        await asyncio.sleep(0.05)
+                        if await ev("!!window.__ready"):
+                            break
+                    return await ev("""(() => {
+                        const hud = document.getElementById('hud');
+                        const zones = document.getElementById('zones');
+                        const hasHud = !!hud;
+                        const hudDisplay = hud ? getComputedStyle(hud).display : 'none';
+                        let zonesAfterClick = zones ? zones.style.display : null;
+                        if (hud) {
+                            hud.querySelector('[data-act="zones"]').click();
+                            zonesAfterClick = zones.style.display;
+                        }
+                        return {
+                            renderClass: document.body.classList.contains('render'),
+                            hasHud, hudDisplay, zonesAfterClick,
+                            ready: !!window.__ready
+                        };
+                    })()""")
+            finally:
+                chrome.terminate()
+                try:
+                    chrome.wait(5)
+                except subprocess.TimeoutExpired:
+                    chrome.kill()
+                shutil.rmtree(profile, ignore_errors=True)
+
+        preview = asyncio.run(inspect(uri))
+        self.assertFalse(preview["renderClass"])
+        self.assertTrue(preview["hasHud"])
+        self.assertEqual(preview["hudDisplay"], "flex")
+        self.assertEqual(preview["zonesAfterClick"], "block")
+
+        rendered = asyncio.run(inspect(uri + "?render=1"))
+        self.assertTrue(rendered["renderClass"])
+        self.assertFalse(rendered["hasHud"])
+        self.assertEqual(rendered["hudDisplay"], "none")
 
     @unittest.skipUnless(_have_render(), "needs Chrome + ffmpeg")
     def test_render_with_audio(self):

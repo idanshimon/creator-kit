@@ -30,7 +30,13 @@ def doctor(*, root=None):
                      f'{lock["version"]} from npm and verifies its sha512 before use')
 
 
-TEMPLATES = {'classic': 'template.html', 'kinetic': 'kinetic.html'}
+TEMPLATES = {
+    'classic': 'template.html',
+    'kinetic': 'kinetic.html',
+    'lower-third': 'lower-third.html',
+    'chapter': 'chapter.html',
+    'spotlight': 'spotlight.html',
+}
 
 
 def create(output, title, subtitle='One timeline. Every frame in its place.', *, root=None, template='classic'):
@@ -49,20 +55,21 @@ def create(output, title, subtitle='One timeline. Every frame in its place.', *,
     runtime = Path(dependency['runtime']).read_text()
     # HTML's parser terminates script elements even when the text is inside JS strings.
     runtime = re.sub(r'</script', r'<\\/script', runtime, flags=re.IGNORECASE)
-    template = (ROOT / 'templates/motion/gsap' / TEMPLATES[template]).read_text()
+    template_html = (ROOT / 'templates/motion/gsap' / TEMPLATES[template]).read_text()
     replacements = {
         'RUNTIME': runtime,
         'TITLE': html.escape(title.strip()),
         'SUBTITLE': html.escape(subtitle),
         'TITLE_SIZE': str(46 if len(title) > 80 else 66 if len(title) > 45 else 92),
     }
-    document = re.sub(r'@@(RUNTIME|TITLE|SUBTITLE|TITLE_SIZE)@@', lambda m: replacements[m[1]], template)
+    document = re.sub(r'@@(RUNTIME|TITLE|SUBTITLE|TITLE_SIZE)@@', lambda m: replacements[m[1]], template_html)
     license_text = (ROOT / 'integrations/gsap-license.txt').read_text()
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.mkdir()  # atomic conflict check; do not reuse a directory
     paths = []
+    composition_id = 'gsap-motion' if template == 'classic' else f'gsap-{template}'
     result = {'html': str((destination / 'index.html').resolve()), 'duration_seconds': 8,
-              'composition_id': 'gsap-motion' if template == 'classic' else 'gsap-kinetic', 'template': template, 'runtime': dependency,
+              'composition_id': composition_id, 'template': template, 'runtime': dependency,
               'capture': 'showcase', 'offline': True, 'audio': False}
     try:
         for name, text in [('index.html', document), ('GSAP-LICENSE.txt', license_text),

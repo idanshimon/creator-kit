@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@@TITLE@@ — chapter divider</title>
+<script>document.documentElement.classList.toggle('render',new URLSearchParams(location.search).has('render'));</script>
+<style>
+:root{color-scheme:dark;--bg:#0b0a08;--ivory:#f7f2e8;--muted:#b9b09f;--gold:#d8b25a;--gold-bright:#f4dc96;--title-size:@@TITLE_SIZE@@px}
+*{box-sizing:border-box;margin:0}
+html,body{height:100vh;background:#070605;color:var(--ivory);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+body{display:grid;grid-template-rows:1fr auto}
+.viewport{position:relative;min-height:0;overflow:hidden}
+.stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform:translate(-50%,-50%) scale(var(--fit,1));transform-origin:center;overflow:hidden;
+ background:radial-gradient(880px 560px at 66% 44%,rgba(216,178,90,.13),transparent 62%),radial-gradient(640px 440px at 22% 72%,rgba(166,126,52,.09),transparent 60%),linear-gradient(140deg,#110f0c 0%,#080706 100%)}
+.geo-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(216,178,90,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(216,178,90,.055) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 55% 50%,black 25%,transparent 78%)}
+svg.ornament{position:absolute;inset:0;width:1280px;height:720px;pointer-events:none}
+.ring{fill:none;stroke:var(--gold);transform-origin:890px 360px}
+.diag-rule{stroke:url(#goldGrad);stroke-width:3;fill:none;filter:drop-shadow(0 0 14px rgba(216,178,90,.45))}
+.diag-ghost{stroke:rgba(216,178,90,.16);stroke-width:1;fill:none}
+.frame-top,.frame-bot{position:absolute;left:84px;right:84px;height:1px;background:linear-gradient(90deg,rgba(216,178,90,.5),rgba(216,178,90,.14) 70%,transparent);transform-origin:left}
+.frame-top{top:68px}.frame-bot{bottom:68px}
+.meta-top{position:absolute;left:84px;right:84px;top:38px;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.meta-top strong{color:var(--gold-bright);font-weight:700}
+.content{position:absolute;left:84px;top:172px;width:820px;z-index:2}
+.kicker{display:inline-flex;align-items:center;gap:14px;font-size:13px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.kicker-diamond{width:8px;height:8px;background:var(--gold-bright);transform:rotate(45deg);box-shadow:0 0 12px rgba(244,220,150,.7)}
+.mask{overflow:hidden}
+.title{font-family:Georgia,"Times New Roman",serif;font-size:var(--title-size);font-weight:700;line-height:1.05;letter-spacing:-.025em;color:var(--ivory);overflow-wrap:anywhere}
+.accent-bar{width:136px;height:3px;margin:28px 0 24px;background:linear-gradient(90deg,var(--gold-bright),var(--gold),transparent);transform-origin:left}
+.subtitle{font-size:24px;line-height:1.45;font-weight:400;color:var(--muted);max-width:740px;overflow-wrap:anywhere}
+.meta-bot{position:absolute;left:84px;right:84px;bottom:38px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(185,176,159,.68)}
+.progress{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(216,178,90,.12)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));transform-origin:left;transform:scaleX(0)}
+.controls{display:flex;align-items:center;gap:12px;padding:12px 24px;border-top:1px solid rgba(216,178,90,.18);background:#090806}
+.controls button{border:1px solid rgba(216,178,90,.32);border-radius:7px;background:#1a1610;color:var(--ivory);padding:8px 14px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.controls button:focus-visible,.controls input:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
+.controls input{flex:1;min-width:44px;accent-color:var(--gold)}
+.time{font:12px monospace;min-width:86px;color:var(--muted);white-space:nowrap}
+.render .controls{display:none}
+@media(max-width:550px){.controls{gap:6px;padding:8px}.controls button{padding:6px 8px;font-size:12px}.time{font-size:10px;min-width:68px}}
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" data-composition-id="gsap-chapter" data-duration="8" aria-label="GSAP chapter divider composition">
+  <div class="geo-grid"></div>
+  <svg class="ornament" viewBox="0 0 1280 720" aria-hidden="true">
+    <defs>
+      <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#d8b25a" stop-opacity="0"/>
+        <stop offset="35%" stop-color="#d8b25a" stop-opacity=".95"/>
+        <stop offset="65%" stop-color="#f4dc96" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#d8b25a" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <circle class="ring r-outer" cx="890" cy="360" r="300" stroke-width="1" stroke-opacity=".22" stroke-dasharray="10 14"/>
+    <circle class="ring r-mid" cx="890" cy="360" r="224" stroke-width="1.2" stroke-opacity=".28"/>
+    <circle class="ring r-inner" cx="890" cy="360" r="146" stroke-width="1" stroke-opacity=".2" stroke-dasharray="2 10"/>
+    <line class="diag-ghost" x1="760" y1="720" x2="1170" y2="0"/>
+    <line class="diag-rule" x1="720" y1="720" x2="1130" y2="0"/>
+    <line class="diag-ghost" x1="680" y1="720" x2="1090" y2="0"/>
+  </svg>
+  <div class="meta-top"><span><strong>CHAPTER</strong> / EDITORIAL</span><span>CREATOR KIT</span></div>
+  <div class="frame-top"></div>
+  <section class="content" aria-label="Chapter heading">
+    <div class="kicker"><span class="kicker-diamond"></span><span>SECTION DIVIDER</span></div>
+    <div class="mask"><h1 class="title">@@TITLE@@</h1></div>
+    <div class="accent-bar"></div>
+    <div class="mask"><p class="subtitle">@@SUBTITLE@@</p></div>
+  </section>
+  <div class="frame-bot"></div>
+  <div class="meta-bot"><span>OFFLINE · SEEKABLE · 16:9</span><span>GSAP MOTION</span></div>
+  <div class="progress"><div class="progress-fill"></div></div>
+</main>
+</div>
+<nav class="controls" aria-label="Motion preview controls"><button id="play" type="button">Play</button><button id="reset" type="button">Reset</button><button id="speed" type="button" aria-label="Playback speed">1×</button><input id="seek" aria-label="Seek animation" type="range" min="0" max="8" step="0.01" value="0"><output class="time" id="time">0.00 / 8.00s</output></nav>
+<!-- GSAP's original proprietary notice is retained in the runtime below. Standard License: https://gsap.com/standard-license/ -->
+<script>@@RUNTIME@@</script>
+<script>
+(()=>{'use strict';
+const DURATION=8,stage=document.querySelector('.stage'),viewport=document.querySelector('.viewport');
+const fit=()=>stage.style.setProperty('--fit',Math.min(viewport.clientWidth/1280,viewport.clientHeight/720));
+fit();addEventListener('resize',fit);
+// Fit authored copy within the editorial column before constructing timeline.
+const content=document.querySelector('.content'),titleEl=document.querySelector('.title'),subEl=document.querySelector('.subtitle');
+let tSize=parseFloat(getComputedStyle(titleEl).fontSize),sSize=24;
+for(let i=0;content.scrollHeight>420&&i<40;i++){
+  tSize=Math.max(28,tSize*.95);sSize=Math.max(14,sSize*.96);
+  titleEl.style.fontSize=tSize+'px';subEl.style.fontSize=sSize+'px';
+}
+if(!subEl.textContent.trim())subEl.style.display='none';
+const diag=document.querySelector('.diag-rule'),diagLen=Math.hypot(1130-720,720);
+gsap.set(diag,{strokeDasharray:diagLen,strokeDashoffset:diagLen});
+gsap.set('.diag-ghost',{opacity:0});
+gsap.set('.ring',{opacity:0,scale:.82});
+gsap.set('.frame-top,.frame-bot',{scaleX:0});
+gsap.set('.meta-top,.meta-bot',{opacity:0});
+gsap.set('.kicker',{opacity:0,x:-20});
+gsap.set('.title',{y:'108%',opacity:0});
+gsap.set('.accent-bar',{scaleX:0});
+gsap.set('.subtitle',{y:'100%',opacity:0});
+const tl=gsap.timeline({paused:true});
+tl.addLabel('wipe',0)
+  .to(diag,{strokeDashoffset:0,duration:1.15,ease:'power3.inOut'},.05)
+  .to('.diag-ghost',{opacity:1,duration:.8,stagger:.12,ease:'power2.out'},.25)
+  .to('.ring',{opacity:1,scale:1,duration:1.3,stagger:.12,ease:'power2.out'},.15)
+  .to('.frame-top,.frame-bot',{scaleX:1,duration:1.0,stagger:.15,ease:'power3.out'},.2)
+  .to('.meta-top,.meta-bot',{opacity:1,duration:.7,stagger:.15,ease:'power2.out'},.35)
+  .addLabel('reveal',.4)
+  .to('.kicker',{opacity:1,x:0,duration:.65,ease:'power3.out'},.4)
+  .to('.title',{y:'0%',opacity:1,duration:.95,ease:'power3.out'},.52)
+  .to('.accent-bar',{scaleX:1,duration:.85,ease:'power3.out'},.88)
+  .to('.subtitle',{y:'0%',opacity:1,duration:.8,ease:'power2.out'},1.0)
+  .addLabel('drift',1.5)
+  .to('.r-outer',{rotation:28,duration:DURATION-.2,ease:'none'},.2)
+  .to('.r-mid',{rotation:-20,duration:DURATION-.2,ease:'none'},.2)
+  .to('.r-inner',{rotation:42,duration:DURATION-.2,ease:'none'},.2)
+  .to('.progress-fill',{scaleX:1,duration:DURATION,ease:'none'},0)
+  .addLabel('complete',DURATION);
+window.__timelines=window.__timelines||{};window.__timelines[stage.dataset.compositionId]=tl;
+let clock=0,playing=false,raf=0,last=0,speedIdx=1,capturing=document.documentElement.classList.contains('render');
+const SPEEDS=[0.5,1,2];
+const play=document.querySelector('#play'),speedBtn=document.querySelector('#speed'),seek=document.querySelector('#seek'),time=document.querySelector('#time');
+function pause(){playing=false;if(raf)cancelAnimationFrame(raf);raf=0;play.textContent='Play';}
+function draw(s){if(!Number.isFinite(s))throw new TypeError('Time must be finite');clock=Math.max(0,Math.min(DURATION,s));tl.seek(clock,true);seek.value=String(clock);time.textContent=clock.toFixed(2)+' / 8.00s';return clock;}
+function frame(now){if(!playing)return;if(last)draw(clock+((now-last)/1000)*SPEEDS[speedIdx]);last=now;if(clock>=DURATION){pause();return;}raf=requestAnimationFrame(frame);}
+function start(){if(playing){pause();return;}if(capturing)return;if(clock>=DURATION)draw(0);playing=true;last=0;play.textContent='Pause';raf=requestAnimationFrame(frame);}
+play.addEventListener('click',start);document.querySelector('#reset').addEventListener('click',()=>{pause();draw(0);});
+speedBtn.addEventListener('click',()=>{speedIdx=(speedIdx+1)%SPEEDS.length;speedBtn.textContent=SPEEDS[speedIdx]+'×';});
+seek.addEventListener('input',()=>{pause();draw(Number(seek.value));});
+addEventListener('keydown',e=>{if(capturing||e.metaKey||e.ctrlKey||e.altKey)return;if(e.code==='Space'&&e.target.tagName!=='BUTTON'){e.preventDefault();start();}else if(e.key==='r'||e.key==='R'){pause();draw(0);}});
+window.__motion={seek(s){pause();return draw(s);},reset(){pause();return draw(0);},duration:DURATION,getTime:()=>clock};
+window.__advance=ms=>{if(!Number.isFinite(ms)||ms<0)throw new TypeError('Advance must be finite and nonnegative');capturing=true;pause();return draw(clock+ms/1000);};
+window.__done=()=>clock>=DURATION;
+draw(0);window.__ready=true;
+if(!capturing&&matchMedia('(prefers-reduced-motion: reduce)').matches)draw(DURATION);
+else if(!capturing)start();
+})();
+</script>
+</body>
+</html>

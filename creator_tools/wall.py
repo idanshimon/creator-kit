@@ -106,8 +106,10 @@ __CSS__
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;background:var(--w-bg);color:var(--w-ink);font-family:var(--w-font)}
 .hero{position:relative;height:100vh;min-height:560px;overflow:hidden}
-.wall{position:absolute;inset:-4% -4% -4% 40%;display:flex;gap:20px;transform:perspective(1600px) rotateY(-9deg) rotateX(4deg);transform-origin:left center}
-.col{flex:1;display:flex;flex-direction:column;gap:20px;will-change:transform}
+.wall{position:absolute;inset:-4% -4% -4% 40%;display:flex;gap:20px;transform:perspective(1600px) rotateY(-9deg) rotateX(4deg);transform-origin:left center;transition:gap .25s ease}
+.col{flex:1;display:flex;flex-direction:column;gap:20px;will-change:transform;transition:gap .25s ease}
+[data-density=compact] .wall,[data-density=compact] .col{gap:10px}
+[data-density=compact] .wall{inset:-4% -4% -4% 34%}
 .tile{flex:0 0 auto;aspect-ratio:16/10;border-radius:var(--w-radius);overflow:hidden;cursor:zoom-in;padding:0;border:0;background:var(--w-raised);
   box-shadow:0 0 0 1px color-mix(in srgb,var(--w-ink) 10%,transparent),0 20px 50px -10px rgba(0,0,0,.6);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
 .tile:hover,.tile:focus-visible{transform:scale(1.03);outline:2px solid var(--w-ink);outline-offset:2px}
@@ -126,15 +128,27 @@ h1 .tail{display:block;color:var(--w-muted)}
 .stats b{display:block;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stats span{font-size:13px;color:var(--w-muted)}
 .hint{position:absolute;right:24px;bottom:20px;z-index:2;font:12px var(--w-mono);color:var(--w-ink);background:color-mix(in srgb,var(--w-panel) 85%,transparent);backdrop-filter:blur(8px);border:1px solid var(--w-border);border-radius:999px;padding:6px 12px}
-.toggle{position:absolute;top:18px;right:20px;z-index:3;background:color-mix(in srgb,var(--w-panel) 85%,transparent);backdrop-filter:blur(8px);color:var(--w-ink);border:1px solid var(--w-border);border-radius:999px;padding:6px 12px;font:13px var(--w-font);cursor:pointer}
+.controls{position:absolute;top:18px;right:20px;z-index:3;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.toggle{background:color-mix(in srgb,var(--w-panel) 85%,transparent);backdrop-filter:blur(8px);color:var(--w-ink);border:1px solid var(--w-border);border-radius:999px;padding:6px 12px;font:13px var(--w-font);cursor:pointer;transition:background .15s,border-color .15s}
+.toggle:hover{border-color:var(--w-ink)}
+.toggle[aria-pressed=true]{border-color:var(--w-accent);color:var(--w-accent)}
+.render-mode .controls,.render-mode .hint{display:none!important}
 [data-theme=light] .tile{box-shadow:0 0 0 1px var(--w-border),0 14px 30px -14px rgba(20,22,26,.25)}
 .lightbox{position:fixed;inset:0;z-index:50;background:rgba(6,7,8,.92);backdrop-filter:blur(10px);display:none;place-items:center;padding:4vw}
 .lightbox.open{display:grid;animation:lbin .35s cubic-bezier(.2,.8,.2,1)}
-.lightbox img,.lightbox video{max-width:92vw;max-height:86vh;border-radius:var(--w-radius);box-shadow:0 30px 80px rgba(0,0,0,.7)}
-.lightbox p{color:#e8e8ea;font:13px var(--w-mono);margin-top:12px;text-align:center}
+.lb-stage{display:flex;flex-direction:column;align-items:center;max-width:86vw}
+.lightbox img,.lightbox video{max-width:84vw;max-height:80vh;border-radius:var(--w-radius);box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.lb-meta{display:flex;align-items:center;gap:14px;color:#e8e8ea;font:13px var(--w-mono);margin-top:14px;text-align:center}
+.lb-count{color:#9ca3af;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);font-variant-numeric:tabular-nums}
+.lb-close,.lb-nav{position:fixed;z-index:55;background:rgba(20,22,28,.82);color:#f4f4f5;border:1px solid rgba(255,255,255,.2);border-radius:999px;cursor:pointer;display:grid;place-items:center;transition:background .15s,border-color .15s}
+.lb-close:hover,.lb-nav:hover{background:rgba(40,44,54,.95);border-color:#fff}
+.lb-close{top:20px;right:24px;width:40px;height:40px;font:22px/1 var(--w-font)}
+.lb-nav{top:50%;transform:translateY(-50%);width:44px;height:44px;font:20px/1 var(--w-font)}
+.lb-prev{left:20px}
+.lb-next{right:20px}
 @keyframes lbin{from{opacity:0;transform:translateY(6px)}}
 @media (max-width:760px){.hero{min-height:760px}.wall{inset:auto -10% -6% -10%;height:44%;transform:none}.copy{padding-top:9vh}
-  .shade{background:linear-gradient(180deg,var(--w-bg) 0%,var(--w-bg) 56%,color-mix(in srgb,var(--w-bg) 30%,transparent) 66%,transparent 76%)}.stats{gap:24px;margin-top:28px}}
+  .shade{background:linear-gradient(180deg,var(--w-bg) 0%,var(--w-bg) 56%,color-mix(in srgb,var(--w-bg) 30%,transparent) 66%,transparent 76%)}.stats{gap:24px;margin-top:28px}.lb-nav{width:38px;height:38px}.lb-prev{left:10px}.lb-next{right:10px}}
 @media (prefers-reduced-motion:reduce){.tile,.btn{transition:none}}
 </style>
 </head>
@@ -142,7 +156,11 @@ h1 .tail{display:block;color:var(--w-muted)}
 <header class="hero">
   <div class="wall" id="wall" aria-label="Gallery of work"></div>
   <div class="shade"></div>
-  <button class="toggle" id="theme" type="button"></button>
+  <div class="controls" role="toolbar" aria-label="Wall controls">
+    <button class="toggle" id="pause" type="button" aria-pressed="false">Pause</button>
+    <button class="toggle" id="density" type="button" aria-pressed="false">Compact</button>
+    <button class="toggle" id="theme" type="button"></button>
+  </div>
   <div class="copy">
     <h1><span>__HEAD__</span> <span class="tail">__TAIL__</span></h1>
     <p class="sub">__SUB__</p>
@@ -151,41 +169,75 @@ h1 .tail{display:block;color:var(--w-muted)}
   </div>
   <div class="hint">Click any tile ↗</div>
 </header>
-<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Preview"><div id="lbBody"></div></div>
+<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Preview">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close">×</button>
+  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous tile">←</button>
+  <div class="lb-stage" id="lbBody"></div>
+  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next tile">→</button>
+</div>
 <script>
 (()=>{
 const TILES=__TILES__, COLS=__COLS__;
+const root=document.documentElement;
 const wall=document.getElementById('wall');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isRenderQuery=new URLSearchParams(location.search).get('render')==='1';
+if(isRenderQuery){window.__render=true;root.classList.add('render-mode');}
+let globalPaused=false;
 const cols=[];
 for(let c=0;c<COLS;c++){
   const el=document.createElement('div');el.className='col';
-  const mine=TILES.filter((_,i)=>i%COLS===c); const set=mine.length?mine:TILES;
-  for(const pass of [0,1]) for(const t of set){            // doubled list = seamless loop
+  const mine=TILES.map((t,idx)=>({t,idx})).filter(({idx})=>idx%COLS===c);
+  const set=mine.length?mine:TILES.map((t,idx)=>({t,idx}));
+  for(const pass of [0,1]) for(const item of set){            // doubled list = seamless loop
+    const t=item.t;
     const b=document.createElement('button');b.className='tile';b.type='button';
     b.setAttribute('aria-label',t.label);if(pass)b.tabIndex=-1,b.setAttribute('aria-hidden','true');
     const m=document.createElement(t.video?'video':'img');m.src=t.src;
     if(t.video){m.muted=true;m.loop=true;m.playsInline=true;m.autoplay=!window.__render;}else{m.alt='';m.loading='lazy';}
-    b.appendChild(m);b.onclick=()=>open(t);el.appendChild(b);
+    b.appendChild(m);b.onclick=()=>openAt(item.idx);el.appendChild(b);
   }
   el.dataset.dir=c%2?'down':'up';el.dataset.speed=String(0.018+0.004*(c%3)); // px per ms
   let paused=false;el.addEventListener('pointerenter',()=>paused=true);el.addEventListener('pointerleave',()=>paused=false);
   el.addEventListener('focusin',()=>paused=true);el.addEventListener('focusout',()=>paused=false);
-  wall.appendChild(el);cols.push({el,get paused(){return paused},off:0});
+  wall.appendChild(el);cols.push({el,get paused(){return paused||globalPaused},off:0});
 }
 function step(ms){for(const c of cols){if(c.paused&&!window.__render)continue;
   const half=c.el.scrollHeight/2; if(!half)continue; c.off=(c.off+ms*+c.el.dataset.speed)%half;
   const y=c.el.dataset.dir==='up'?-c.off:-(half-c.off); c.el.style.transform=`translateY(${y}px)`;}}
-const lb=document.getElementById('lb'),body=document.getElementById('lbBody');let openedAt=0;
-function open(t){body.innerHTML='';const m=document.createElement(t.video?'video':'img');m.src=t.src;if(t.video){m.controls=true;m.autoplay=true;}
-  const p=document.createElement('p');p.textContent=t.label;body.append(m,p);lb.classList.add('open');openedAt=performance.now();}
-lb.addEventListener('click',e=>{if(performance.now()-openedAt<450)return;if(e.target===lb||e.target===body)lb.classList.remove('open')});
-addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
-const tb=document.getElementById('theme');const root=document.documentElement;
+const lb=document.getElementById('lb'),body=document.getElementById('lbBody');
+let openedAt=0,activeIdx=0;
+function renderLightbox(){
+  const t=TILES[activeIdx];
+  body.innerHTML='';
+  const m=document.createElement(t.video?'video':'img');m.src=t.src;if(t.video){m.controls=true;m.autoplay=true;}
+  const meta=document.createElement('div');meta.className='lb-meta';
+  const lbl=document.createElement('span');lbl.textContent=t.label;
+  const cnt=document.createElement('span');cnt.className='lb-count';cnt.textContent=`${activeIdx+1} / ${TILES.length}`;
+  meta.append(lbl,cnt);body.append(m,meta);
+}
+function openAt(idx){activeIdx=(idx+TILES.length)%TILES.length;renderLightbox();lb.classList.add('open');openedAt=performance.now();}
+function closeLb(){lb.classList.remove('open');body.innerHTML='';}
+function navLb(delta){if(!lb.classList.contains('open'))return;activeIdx=(activeIdx+delta+TILES.length)%TILES.length;renderLightbox();}
+document.getElementById('lbClose').onclick=closeLb;
+document.getElementById('lbPrev').onclick=()=>navLb(-1);
+document.getElementById('lbNext').onclick=()=>navLb(1);
+lb.addEventListener('click',e=>{if(performance.now()-openedAt<450)return;if(e.target===lb||e.target===body)closeLb();});
+addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  else if(e.key==='ArrowLeft'){e.preventDefault();navLb(-1);}
+  else if(e.key==='ArrowRight'){e.preventDefault();navLb(1);}
+});
+const pb=document.getElementById('pause');
+pb.onclick=()=>{globalPaused=!globalPaused;pb.setAttribute('aria-pressed',String(globalPaused));pb.textContent=globalPaused?'Resume':'Pause';};
+const db=document.getElementById('density');
+db.onclick=()=>{const compact=root.dataset.density!=='compact';root.dataset.density=compact?'compact':'spacious';db.setAttribute('aria-pressed',String(compact));db.textContent=compact?'Spacious':'Compact';};
+const tb=document.getElementById('theme');
 const label=()=>tb.textContent=root.dataset.theme==='dark'?'Light':'Dark';label();
 tb.onclick=()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';label()};
 // showcase hooks (frame-exact recording); live view uses rAF.
-window.__ready=true;window.__advance=ms=>{window.__render=true;step(ms)};window.__done=()=>false;
+window.__ready=true;window.__advance=ms=>{window.__render=true;root.classList.add('render-mode');step(ms)};window.__done=()=>false;
 if(!reduce){let last=performance.now();const tick=n=>{if(!window.__render)step(Math.min(64,n-last));last=n;requestAnimationFrame(tick)};requestAnimationFrame(tick);}
 })();
 </script>

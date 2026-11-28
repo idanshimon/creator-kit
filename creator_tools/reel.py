@@ -6,7 +6,7 @@ deterministic `index.html` (no network, no wall clock), records it frame-exact w
 and (with --gif) `preview.gif`.
 
 Spec (JSON):
-  template   kinetic | pov | countdown | before-after | carousel | stat | quote | phone
+  template   kinetic | pov | countdown | before-after | carousel | stat | quote | phone | terminal | versus
   format     9:16 (default) | 1:1 | 4:5 | 16:9
   platform   cross (default) | tiktok | reels | shorts | none   (safe zones, 9:16 only)
   style / theme / accent     palette from styles.py (default noir/dark) + optional highlight hex
@@ -29,7 +29,7 @@ from . import showcase, styles
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = ROOT / "templates" / "reel"
-TEMPLATES = ("kinetic", "pov", "countdown", "before-after", "carousel", "stat", "quote", "phone")
+TEMPLATES = ("kinetic", "pov", "countdown", "before-after", "carousel", "stat", "quote", "phone", "terminal", "versus")
 FORMATS = {"9:16": (1080, 1920), "1:1": (1080, 1080), "4:5": (1080, 1350), "16:9": (1920, 1080)}
 
 # 9:16 safe zones in px (top, right, bottom, left) on 1080x1920. Sources (checked 2026-11):
@@ -45,7 +45,7 @@ SAFE_916 = {
 FEED_MARGIN = {"1:1": 80, "4:5": 80, "16:9": 96}
 
 DEFAULT_BEAT = {"kinetic": 1.8, "pov": 1.7, "countdown": 3.0, "before-after": 2.6, "carousel": 2.9,
-                "stat": 3.2, "quote": 5.0, "phone": 2.8}
+                "stat": 3.2, "quote": 5.0, "phone": 2.8, "terminal": 3.0, "versus": 3.8}
 MEDIA_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp",
                ".gif": "image/gif", ".svg": "image/svg+xml"}
 OUTPUTS = ("index.html", "reel.mp4", "poster.png", "preview.gif")
@@ -158,13 +158,17 @@ def validate(spec: dict) -> None:
     for i, b in enumerate(beats, 1):
         if b.get("kind") == "end" and not b.get("text"):
             raise ReelError(f"beat {i}: end card needs text")
-    need = {"kinetic": "text", "pov": "text", "countdown": "title", "carousel": None, "stat": "value", "quote": "text", "phone": None}
+    need = {"kinetic": "text", "pov": "text", "countdown": "title", "carousel": None, "stat": "value", "quote": "text", "phone": None, "terminal": None, "versus": None}
     for i, b in enumerate(content, 1):
         key = need.get(t)
         if key and not str(b.get(key, "")).strip():
             raise ReelError(f"{t} beat {i} needs {key!r}")
         if t == "carousel" and not (b.get("title") or b.get("text")):
             raise ReelError(f"carousel beat {i} needs title or text")
+        if t == "terminal" and not (b.get("cmd") or b.get("lines") or b.get("text")):
+            raise ReelError(f"terminal beat {i} needs cmd, lines, or text")
+        if t == "versus" and not ((b.get("old") and b.get("new")) or (b.get("myth") and b.get("reality")) or b.get("text")):
+            raise ReelError(f"versus beat {i} needs old+new, myth+reality, or text")
     if t == "before-after" and len(content) < 2:
         raise ReelError("before-after needs a before beat and an after beat")
     if spec.get("fps", 30) not in (24, 25, 30, 60):
@@ -197,6 +201,7 @@ def build(spec: dict, base: Path, *, fmt=None, platform=None, style=None, theme=
         "template": spec["template"], "format": fmt, "W": W, "H": H, "u": min(W, H) / 1080,
         "safe": safe_zone(fmt, platform or spec.get("platform", "cross")), "duration": duration,
         "beats": beats, "title": spec.get("title"), "kicker": spec.get("kicker"), "handle": spec.get("handle"),
+        "windowTitle": spec.get("windowTitle"),
         "mode": spec.get("mode"), "align": spec.get("align"), "progress": bool(spec.get("progress", True)),
         "loop": bool(spec.get("loop", True)), "showSafe": bool(show_safe), "fps": int(spec.get("fps", 30)),
         "background": _media(spec["background"], base) if spec.get("background") else None,
@@ -267,7 +272,7 @@ def make(spec_path, out_dir, *, fmt=None, platform=None, style=None, theme=None,
     video = out / "reel.mp4"
     silent = out / ".reel-silent.mp4" if au_path else video
     log(f"recording {model['template']} {model['W']}x{model['H']} {model['duration']}s @ {model['fps']}fps")
-    showcase.record(html, silent, width=model["W"], height=model["H"], fps=model["fps"],
+    showcase.record(f"{html}?render=1", silent, width=model["W"], height=model["H"], fps=model["fps"],
                     seconds=model["duration"], log=log)
     if au_path:
         _ff("-i", str(silent), "-i", str(au_path), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",

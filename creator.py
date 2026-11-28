@@ -49,7 +49,7 @@ def main(argv=None):
     motion_create.add_argument('--output', required=True, help='New directory; refuses to overwrite')
     motion_create.add_argument('--title', required=True, help='Single-line headline, maximum 120 characters')
     motion_create.add_argument('--subtitle', default='One timeline. Every frame in its place.', help='Single-line subtitle, maximum 240 characters')
-    motion_create.add_argument('--template', choices=['classic', 'kinetic'], default='classic', help='classic: calm editorial card; kinetic: 3D letter flip, glitch, particle burst, word chips')
+    motion_create.add_argument('--template', choices=['classic', 'kinetic', 'lower-third', 'chapter', 'spotlight'], default='classic', help='classic: calm editorial card; kinetic: 3D letter flip + particles; lower-third: broadcast overlay; chapter: editorial divider; spotlight: glowing feature launch')
     diagram = sub.add_parser('diagram', help='Pinned local Archify diagrams; standalone HTML, not video')
     diagram_sub = diagram.add_subparsers(dest='diagram_action', required=True)
     di = diagram_sub.add_parser('install', help='Install the checksum-pinned local release ZIP; never overwrite')
